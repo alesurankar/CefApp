@@ -1,7 +1,7 @@
 #include "MyWin.h"
 #include <filesystem>
 #include "NanoCefApp.h"
-#include "NanoBrowserWindow.h" 
+#include "NanoBrowserWindow.h"
 
 using namespace std::string_literals;
 
@@ -16,6 +16,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	CefSettings settings;
 	settings.multi_threaded_message_loop = true;
+	settings.no_sandbox = true;
 	CefString(&settings.cache_path).FromString((std::filesystem::current_path() / "cef_cache"s).string());
 	if (!CefInitialize(mainArgs, settings, pApp, nullptr))
 	{
