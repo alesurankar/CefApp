@@ -12,7 +12,7 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	{
 	case WM_CREATE:
 	{
-		pClient = new NanoCefClient{};
+		pClient = new NanoCefClient{ hWnd };
 
 		RECT rect{};
 		GetClientRect(hWnd, &rect);
@@ -25,6 +25,9 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		CefWindowInfo info;
 		info.SetAsChild(hWnd, cefRect);
 		CefBrowserHost::CreateBrowser(info, pClient, "http://localhost:5173/"s, {}, {}, {});
+
+		// Post WM_SIZE to resize browser after creation is complete
+		PostMessage(hWnd, WM_SIZE, 0, 0);
 		break;
 	}
 	case WM_SIZE:
