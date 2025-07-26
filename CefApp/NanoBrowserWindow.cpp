@@ -1,7 +1,7 @@
 #include "NanoBrowserWindow.h"
 #include "NanoCefClient.h"
 
-using namespace std::literals;
+using namespace std::string_literals;
 
 static constexpr const char* wndClassName = "$client - window$";
 static CefRefPtr<NanoCefClient> pClient;
@@ -23,8 +23,8 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		cefRect.height = rect.bottom - rect.top;
 
 		CefWindowInfo info;
-		info.SetAsChild(hWnd, cefRect);																					 //4.Error check
-		CefBrowserHost::CreateBrowser(info, pClient, "https://youtube.com"s, {}, {}, {});
+		info.SetAsChild(hWnd, cefRect);
+		CefBrowserHost::CreateBrowser(info, pClient, "http://disk/index.html"s, {}, {}, {});
 		break;
 	}
 	case WM_SIZE:
@@ -80,7 +80,7 @@ HWND CreateBrowserWindow(HINSTANCE hInstance)
 	}
 
 	hWndBrowser = CreateWindowExA(
-		0, wndClassName, "CEF",
+		0, wndClassName, "Nano CEF",
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 200, 20,
 		1360, 1020, nullptr, nullptr, hInstance, nullptr
 	);

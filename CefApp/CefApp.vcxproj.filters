@@ -35,5 +35,11 @@
     <ClInclude Include="NanoCefClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NanoFileResourceHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoFileSchemeHandlerFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

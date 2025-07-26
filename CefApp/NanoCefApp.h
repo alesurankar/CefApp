@@ -1,7 +1,18 @@
 #pragma once
 #include "include/cef_app.h"
+#include "NanoFileSchemeHandlerFactory.h"
 
-class NanoCefApp : public CefApp
+class NanoCefApp : public CefApp, public CefBrowserProcessHandler
 {
-	IMPLEMENT_REFCOUNTING(NanoCefApp);
+public:
+    CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override
+    {
+        return this;
+    }
+    void OnContextInitialized() override
+    {
+        CefRegisterSchemeHandlerFactory("http", "disk", new NanoFileSchemeHandlerFactory{});
+    }
+
+    IMPLEMENT_REFCOUNTING(NanoCefApp);
 };
