@@ -16,22 +16,6 @@ public:
 		handleRequest = true;
 
 		CefURLParts urlParts;
-		//
-		//MessageBoxA(nullptr, path.string().c_str(), "Resolved Path", MB_OK);
-		//// file size is needed later to populate the response header when requested
-		//fileSize_ = (int64_t)std::filesystem::file_size(path);
-		//// extension is needed later for mime type in the response headers
-		//auto ext = path.extension().string();
-		//ext.erase(std::remove(ext.begin(), ext.end(), '.'), ext.end());
-		//if (!ext.empty()) 
-		//{
-		//	fileMimeType_ = CefGetMimeType(ext);
-		//}
-		//// open the file, success if file is trueish
-		//fileStream_ = std::ifstream{ path, std::ios::binary };
-		//return bool(fileStream_);
-
-
 
 		if (!CefParseURL(pRequest->GetURL(), urlParts))
 		{
@@ -49,7 +33,7 @@ public:
 			}
 
 			// Sanitize and resolve path
-			const auto fullPath = std::filesystem::path{ rawPath }.relative_path();
+			const auto fullPath = "dist" / std::filesystem::path{ rawPath }.relative_path();
 
 			// Verify file exists and is regular file
 			if (!std::filesystem::exists(fullPath) || !std::filesystem::is_regular_file(fullPath))
