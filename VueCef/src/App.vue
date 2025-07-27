@@ -27,33 +27,41 @@ const resultText = computed(() => {
     return `You have: ${answer.value}`;
   }
 })
-// functions
-function doit() {
+async function doit() {
   inProgress.value = true;
-  answer.value = null
-  doVersion("Path 1").then((yes) => {
-    if(yes) {
-      return doVersion("Path 1.1").then((yes) => {
-        if(yes) {
-          answer.value = "1.1";
+  answer.value = null;
+
+  try {
+    if (await doVersion("Path 1")) {
+      if (await doVersion("Path 2")) {
+        if (await doVersion("Path 3")) {
+          answer.value = "3";
         }
         else {
-          answer.value = "1";
+          answer.value = "3.1";
         }
-      })
-    }
-    else {
-      return doVersion("Path 2.1").then((yes) => {
-        if(yes) {
+      }
+      else {
+        if (await doVersion("Path 2.1")) {
           answer.value = "2.1";
         }
         else {
           answer.value = "2";
         }
-      })
+      }
     }
-  })
-  .finally(() => inProgress.value = false)
+    else {
+      if (await doVersion("Path 1.1")) {
+        answer.value = "1.1";
+      }
+      else {
+        answer.value = "1";
+      }
+    }
+  }
+  finally {
+    inProgress.value = false;
+  }
 }
 </script>
 
