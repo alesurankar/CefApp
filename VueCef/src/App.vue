@@ -10,48 +10,31 @@ interface MyApi {
 }
 
 const myApi = window as unknown as MyApi;
+
+function doVersion(text:string): Promise<boolean> {
+  return new Promise<boolean>((accept, reject) => myApi.doVersion(text, accept, reject))
+}
+
 // reactive data
 const powerLevel = ref<number|null>(null)
 const inProgress = ref(false)
 // computed data
 const powerLevelNorm = computed(() => powerLevel.value ?? 0)
 // functions
+function quest(text: string): Promise<void> {
+  return doVersion(text).then((btn) => {powerLevel.value = btn ? <number>powerLevel.value + 1 : <number>powerLevel.value})
+}
 function doit() {
   inProgress.value = true;
   powerLevel.value = 0
 
-
-  myApi.doVersion("Question1",
-    btn => { 
-      powerLevel.value = btn ? <number>powerLevel.value + 1 : <number>powerLevel.value
-      myApi.doVersion("Question2",
-        btn => { 
-          powerLevel.value = btn ? <number>powerLevel.value + 1 : <number>powerLevel.value
-          myApi.doVersion("Question3",
-            btn => { 
-              powerLevel.value = btn ? <number>powerLevel.value + 1 : <number>powerLevel.value
-              myApi.doVersion("Question4",
-                btn => { 
-                  powerLevel.value = btn ? <number>powerLevel.value + 1 : <number>powerLevel.value
-                  myApi.doVersion("Question5",
-                    btn => { 
-                      powerLevel.value = btn ? <number>powerLevel.value + 1 : <number>powerLevel.value
-                      inProgress.value = false
-                    },
-                    msg => { inProgress.value = false; powerLevel.value = null },
-                  )
-                },
-                msg => { inProgress.value = false; powerLevel.value = null },
-              )
-            },
-            msg => { inProgress.value = false; powerLevel.value = null },
-          )
-        },
-        msg => { inProgress.value = false; powerLevel.value = null },
-      )
-    },
-    msg => { inProgress.value = false; powerLevel.value = null },
-  )
+  doVersion("Question1")
+  .then(() => quest("Question2"))
+  .then(() => quest("Question3"))
+  .then(() => quest("Question4"))
+  .then(() => quest("Question5"))
+  .catch(() => powerLevel.value = null)
+  .finally(() => inProgress.value = false)
 }
 </script>
 
