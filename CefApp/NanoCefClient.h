@@ -35,6 +35,13 @@ public:
 		}
 	}
 
+	// this is the last call after Browser is destroyed
+	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override
+	{
+		pBrowser_ = nullptr; 
+		PostMessage(hWndParent_, WM_CLOSE, 0, 0);
+	}
+
 private:
 	HWND hWndParent_;
 	CefRefPtr<CefBrowser> pBrowser_;

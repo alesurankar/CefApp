@@ -5,6 +5,7 @@ using namespace std::string_literals;
 
 static constexpr const char* wndClassName = "$client - window$";
 static CefRefPtr<NanoCefClient> pClient;
+static bool g_isClosing = false;
 
 LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -57,6 +58,14 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 					return 1;
 				}
 			}
+		}
+		break;
+	case WM_CLOSE:
+		if (!g_isClosing && pClient && pClient->GetBrowser())
+		{
+			g_isClosing = true;
+			pClient->GetBrowser()->GetHost()->CloseBrowser(true);
+			return 0;
 		}
 		break;
 	case WM_DESTROY:
