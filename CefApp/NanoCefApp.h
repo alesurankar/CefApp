@@ -31,24 +31,36 @@ public:
     {
         return this;
     }
-    // Step 3: Register custom schemes
+    // Step 3: CEF global context initialized (no browser yet)
     void OnContextInitialized() override
     {
-        //Step 9: Browser starts loading URL
+        //Step 10: Browser starts loading URL
         CefRegisterSchemeHandlerFactory("http", "disk", new NanoFileSchemeHandlerFactory{});
     }
-    //Step 8: JS context creation
-    void OnContextCreated(CefRefPtr<CefBrowser> pBrowser, CefRefPtr<CefFrame> pFrame, CefRefPtr<CefV8Context> pV8Context)
+    //Step 8: JS context created (V8 ready, DOM may not be loaded yet)
+    void OnContextCreated(
+        CefRefPtr<CefBrowser> pBrowser, 
+        CefRefPtr<CefFrame> pFrame, 
+        CefRefPtr<CefV8Context> pV8Context
+    ) override
     {
         // From JS, calling doVersion(...) goes to NanoCefApp::Execute()
-        pV8Context->GetGlobal()->SetValue("doVersion", CefV8Value::CreateFunction("doVersion", this), V8_PROPERTY_ATTRIBUTE_NONE);
+        pV8Context->GetGlobal()->SetValue(
+            "doVersion", 
+            CefV8Value::CreateFunction("doVersion", this), 
+            V8_PROPERTY_ATTRIBUTE_NONE
+        );
+        pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
+        pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     }
-    // Step 10: JS <-> C++ bridge
-    bool Execute(const CefString& name,
+    // Step 11: JS <-> C++ bridge
+    bool Execute(
+        const CefString& name,
         CefRefPtr<CefV8Value> object,
         const CefV8ValueList& argPtrs,
         CefRefPtr<CefV8Value>& pRet,
-        CefString& exception) override
+        CefString& exception
+    ) override
     {
         const auto id = nextInvocationId_++;
         auto& invocation = invocations_[id];

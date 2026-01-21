@@ -39,7 +39,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		return -1;
 	}
 
-	// Step 11: Win32 message loop
+	// Step 12: Win32 message loop
 	MSG msg;
 	while (GetMessageA(&msg, nullptr, 0, 0))
 	{
@@ -78,3 +78,58 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 // 12. Win32 message loop handles input, resize, close
 //
 // 13. App quits -> cleanup -> CefShutdown()
+
+
+//CEF + Win32 Browser Lifecycle Diagram
+//WinMain(HINSTANCE)
+//|
+//|- CefExecuteProcess(mainArgs, app)
+//|    |-[Renderer subprocess may start here if needed]
+//|
+//|- CefInitialize(mainArgs, settings, app)
+//|    |- CEF UI thread initialized
+//|
+//|- CreateBrowserWindow(hInstance)
+//|    |- Win32 WM_CREATE fired
+//|
+//WM_CREATE(Window Procedure)
+//|
+//|- pClient = new NanoCefClient(hWnd)
+//|- Set initial CefWindowInfo(size / child HWND)
+//|- CefBrowserHost::CreateBrowser(...)
+//|- Asynchronous : Browser object and renderer process start
+//|- Browser HWND may exist soon after, but painting may not happen yet
+//
+//CEF Life - span Callbacks :
+//|
+//|- OnAfterCreated(CefBrowser * pBrowser)
+//|- Browser object exists
+//|- HWND exists(child window)
+//|- Safe to resize / show window with SetWindowPos(...)
+//|- Safe to execute JS that doesn’t rely on page content
+//
+//CEF Loading Callbacks :
+//|
+//|- OnLoadStart(CefBrowser*, CefFrame*, TransitionType)
+//|    |- Frame starts loading URL(page not ready yet)
+//|
+//|- OnContextCreated(CefBrowser*, CefFrame*, CefV8Context*)
+//|    |- JS context ready
+//|    |- Can inject JS functions or objects here
+//|
+//|- OnLoadEnd(CefBrowser*, CefFrame*, int httpStatusCode)
+//|    |- Frame finished loading URL
+//|    |- Page content fully loaded
+//|    |- Safe to run JS that accesses DOM
+//|
+//|- OnLoadError(CefBrowser*, CefFrame*, ErrorCode, string, string)
+//|- Called if a frame failed to load
+//
+//CEF User Interaction / Optional Callbacks :
+//|
+//|- OnBeforePopup(...) -> intercept window.open()
+//|- OnSetFocus(...) -> browser focus events
+//|- OnConsoleMessage(...) -> catch console.log from JS
+//|- OnBeforeResourceLoad(...) -> intercept network requests
+//|- Custom scheme / resource handlers(NanoFileResourceHandler)
+//

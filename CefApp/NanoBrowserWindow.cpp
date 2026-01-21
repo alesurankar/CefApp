@@ -24,7 +24,7 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 				rect.right - rect.left,
 				rect.bottom - rect.top)
 		);
-		// Step 6: CEF starts renderer process
+		// Step 6: CEF starts renderer process (non-blocking)
 		CefBrowserHost::CreateBrowser(
 			info,
 			pClient,
@@ -35,7 +35,7 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		);
 		// Post WM_SIZE to resize browser after creation is complete
 		PostMessage(hWnd, WM_SIZE, 0, 0);
-		return 0;
+		return 0; // back to main message loop
 	}
 	case WM_SIZE:
 		if (wParam != SIZE_MINIMIZED && pClient)

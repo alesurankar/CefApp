@@ -5,7 +5,7 @@
 #include <string>
 #include <filesystem>
 
-// Step 9.1: Chromium renders the page
+// Step 10.1: Chromium renders the page
 class NanoFileResourceHandler : public CefResourceHandler
 {
 public:
