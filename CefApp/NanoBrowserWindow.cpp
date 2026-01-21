@@ -10,6 +10,7 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 {
 	switch (msg)
 	{
+	// Step 5: WM_CREATE fires in window procedure
 	case WM_CREATE:
 	{
 		pClient = new NanoCefClient{ hWnd };
@@ -24,7 +25,8 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 
 		CefWindowInfo info;
 		info.SetAsChild(hWnd, cefRect);
-		CefBrowserHost::CreateBrowser(info, pClient, "http://localhost:5173/"s, {}, {}, {});
+		// Step 6: CEF starts renderer process
+		CefBrowserHost::CreateBrowser(info, pClient, "http://localhost:5173/"s, {}, {}, {}); 
 
 		// Post WM_SIZE to resize browser after creation is complete
 		PostMessage(hWnd, WM_SIZE, 0, 0);
@@ -64,7 +66,7 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	return DefWindowProcA(hWnd, msg, wParam, lParam);
 }
 
-
+// Step 4: Create Win32 window + browser
 HWND CreateBrowserWindow(HINSTANCE hInstance)
 {
 	HWND hWndBrowser = nullptr;
@@ -93,8 +95,8 @@ HWND CreateBrowserWindow(HINSTANCE hInstance)
 		return nullptr;
 	}
 
-	ShowWindow(hWndBrowser, SW_SHOWDEFAULT);
-	UpdateWindow(hWndBrowser);
+	ShowWindow(hWndBrowser, SW_SHOWDEFAULT);    // this + 
+	UpdateWindow(hWndBrowser);                  // this -> triggers WM_CREATE
 
 	return hWndBrowser;
 }

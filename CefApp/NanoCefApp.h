@@ -31,14 +31,19 @@ public:
     {
         return this;
     }
+    // Step 3: Register custom schemes
     void OnContextInitialized() override
     {
+        //Step 9: Browser starts loading URL
         CefRegisterSchemeHandlerFactory("http", "disk", new NanoFileSchemeHandlerFactory{});
     }
+    //Step 8: JS context creation
     void OnContextCreated(CefRefPtr<CefBrowser> pBrowser, CefRefPtr<CefFrame> pFrame, CefRefPtr<CefV8Context> pV8Context)
     {
+        // From JS, calling doVersion(...) goes to NanoCefApp::Execute()
         pV8Context->GetGlobal()->SetValue("doVersion", CefV8Value::CreateFunction("doVersion", this), V8_PROPERTY_ATTRIBUTE_NONE);
     }
+    // Step 10: JS <-> C++ bridge
     bool Execute(const CefString& name,
         CefRefPtr<CefV8Value> object,
         const CefV8ValueList& argPtrs,

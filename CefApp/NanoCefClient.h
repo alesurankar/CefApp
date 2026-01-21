@@ -19,6 +19,7 @@ public:
 		return this;
 	}
 
+	// Step 7: Browser HWND created. At this point, the browser is visible
 	void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override
 	{
 		assert(pBrowser);
