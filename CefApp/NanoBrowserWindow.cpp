@@ -15,23 +15,27 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	case WM_CREATE:
 	{
 		pClient = new NanoCefClient{ hWnd };
-
 		RECT rect{};
 		GetClientRect(hWnd, &rect);
-		CefRect cefRect;
-		cefRect.x = rect.left;
-		cefRect.y = rect.top;
-		cefRect.width = rect.right - rect.left;
-		cefRect.height = rect.bottom - rect.top;
-
 		CefWindowInfo info;
-		info.SetAsChild(hWnd, cefRect);
+		info.SetAsChild(
+			hWnd,
+			CefRect(0, 0,
+				rect.right - rect.left,
+				rect.bottom - rect.top)
+		);
 		// Step 6: CEF starts renderer process
-		CefBrowserHost::CreateBrowser(info, pClient, "http://localhost:5173/"s, {}, {}, {}); 
-
+		CefBrowserHost::CreateBrowser(
+			info,
+			pClient,
+			"http://localhost:5173/"s,
+			CefBrowserSettings{},
+			nullptr,
+			nullptr
+		);
 		// Post WM_SIZE to resize browser after creation is complete
 		PostMessage(hWnd, WM_SIZE, 0, 0);
-		break;
+		return 0;
 	}
 	case WM_SIZE:
 		if (wParam != SIZE_MINIMIZED && pClient)
@@ -76,7 +80,7 @@ LRESULT CALLBACK BrowserWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 }
 
 // Step 4: Create Win32 window + browser
-HWND CreateBrowserWindow(HINSTANCE hInstance)
+HWND CreateMainWindow(HINSTANCE hInstance)
 {
 	HWND hWndBrowser = nullptr;
 	WNDCLASSEXA wcex{};
@@ -87,16 +91,16 @@ HWND CreateBrowserWindow(HINSTANCE hInstance)
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wcex.lpszClassName = wndClassName;
-	if (!RegisterClassExA(&wcex))
-	{
+	if (!RegisterClassExA(&wcex)) {
 		MessageBoxA(nullptr, "RegisterClassExA failed!", "Error", MB_ICONERROR);
 		return nullptr;
 	}
 
 	hWndBrowser = CreateWindowExA(
 		0, wndClassName, "CEF",
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 200, 20,
-		1360, 1020, nullptr, nullptr, hInstance, nullptr
+		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 
+		200, 20, 1360, 1020, 
+		nullptr, nullptr, hInstance, nullptr
 	);
 	if (!hWndBrowser)
 	{
@@ -110,7 +114,7 @@ HWND CreateBrowserWindow(HINSTANCE hInstance)
 	return hWndBrowser;
 }
 
-void CleanupBrowserWindow(HINSTANCE hInstance)
+void CleanupMainWindow(HINSTANCE hInstance)
 {
 	pClient.reset();
 	UnregisterClassA(wndClassName, hInstance);

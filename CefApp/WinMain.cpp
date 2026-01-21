@@ -12,24 +12,32 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	const CefMainArgs mainArgs(hInstance);
 	CefRefPtr<CefApp> pApp = new NanoCefApp();
 	// ensures child processes never execute WinMain app logic.
-	if (const auto code = CefExecuteProcess(mainArgs, pApp, nullptr); code >= 0)
-	{
-		return (int)code;
-	} 
+	const int exitCode = CefExecuteProcess(mainArgs, pApp, nullptr);
+	if (exitCode >= 0) {
+		return exitCode;
+	}
 
 	// Step 2: Initialize CEF in the browser process
 	CefSettings settings;
 	settings.multi_threaded_message_loop = true;
 	settings.no_sandbox = true;
-	CefString(&settings.cache_path).FromString((std::filesystem::current_path() / "cef_cache"s).string());
-	if (!CefInitialize(mainArgs, settings, pApp, nullptr))
-	{
+	CefString(&settings.cache_path).FromString(
+		(std::filesystem::current_path() / "cef_cache"s).string()
+	);
+
+	if (!CefInitialize(mainArgs, settings, pApp, nullptr)) {
 		MessageBoxA(nullptr, "CEF Initialization failed", "Error", MB_ICONERROR);
 		return -1;
 	}
 
 	// Step 4: Create Win32 window + browser
-	CreateBrowserWindow(hInstance);
+	HWND hWndMain = CreateMainWindow(hInstance);
+	if (!hWndMain)
+	{
+		MessageBoxA(nullptr, "Failed to create browser window", "Error", MB_ICONERROR);
+		CefShutdown();
+		return -1;
+	}
 
 	// Step 11: Win32 message loop
 	MSG msg;
@@ -39,7 +47,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		DispatchMessageA(&msg);
 	}
 
-	CleanupBrowserWindow(hInstance);
+	CleanupMainWindow(hInstance);
 	CefShutdown();
 
 	return (int)msg.wParam;
