@@ -1,7 +1,7 @@
 #include "MyWin.h"
 #include <filesystem>
 #include "NanoCefApp.h"
-#include "NanoBrowserWindow.h"
+#include "MainWindow.h"
 
 using namespace std::string_literals;
 

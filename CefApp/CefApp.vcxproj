@@ -141,13 +141,13 @@
     </ManifestResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NanoBrowserWindow.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NanoCefApp.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyWin.h" />
-    <ClInclude Include="NanoBrowserWindow.h" />
+    <ClInclude Include="MainWindow.h" />
     <ClInclude Include="NanoCefApp.h" />
     <ClInclude Include="NanoCefClient.h" />
     <ClInclude Include="NanoFileResourceHandler.h" />
