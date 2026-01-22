@@ -11,9 +11,8 @@ namespace
 {
 	LRESULT CALLBACK MainWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		switch (msg)
-		{
-			// Step 5: WM_CREATE fires in window procedure
+		switch (msg) {
+		// Step 5: WM_CREATE fires in window procedure
 		case WM_CREATE:
 		{
 			pClient = new NanoCefClient{ hWnd };
@@ -40,12 +39,9 @@ namespace
 			return 0; // back to main message loop
 		}
 		case WM_SIZE:
-			if (wParam != SIZE_MINIMIZED && pClient)
-			{
-				if (auto pBrowser = pClient->GetBrowser())
-				{
-					if (auto hWndBrowser = pBrowser->GetHost()->GetWindowHandle())
-					{
+			if (wParam != SIZE_MINIMIZED && pClient) {
+				if (auto pBrowser = pClient->GetBrowser()) {
+					if (auto hWndBrowser = pBrowser->GetHost()->GetWindowHandle()) {
 						RECT rect{};
 						GetClientRect(hWnd, &rect);
 						SetWindowPos(hWndBrowser, NULL, rect.left, rect.top,
@@ -55,20 +51,16 @@ namespace
 			}
 			break;
 		case WM_ERASEBKGND:
-			if (pClient)
-			{
-				if (auto pBrowser = pClient->GetBrowser())
-				{
-					if (pBrowser->GetHost()->GetWindowHandle())
-					{
+			if (pClient) {
+				if (auto pBrowser = pClient->GetBrowser()) {
+					if (pBrowser->GetHost()->GetWindowHandle()) {
 						return 1;
 					}
 				}
 			}
 			break;
 		case WM_CLOSE:
-			if (!g_isClosing && pClient && pClient->GetBrowser())
-			{
+			if (!g_isClosing && pClient && pClient->GetBrowser()) {
 				g_isClosing = true;
 				pClient->GetBrowser()->GetHost()->CloseBrowser(true);
 				return 0;
@@ -105,8 +97,7 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		200, 20, 1360, 1020, 
 		nullptr, nullptr, hInstance, nullptr
 	);
-	if (!hWndBrowser)
-	{
+	if (!hWndBrowser) {
 		MessageBoxA(nullptr, "CreateWindowExA failed!", "Error", MB_ICONERROR);
 		return nullptr;
 	}

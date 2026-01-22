@@ -27,6 +27,9 @@
     <ClCompile Include="NanoCefClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileResourceHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyWin.h">
@@ -41,10 +44,10 @@
     <ClInclude Include="NanoCefClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NanoFileResourceHandler.h">
+    <ClInclude Include="FileResourceHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NanoFileSchemeHandlerFactory.h">
+    <ClInclude Include="FileSchemeHandlerFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

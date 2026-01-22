@@ -144,6 +144,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NanoCefApp.cpp" />
     <ClCompile Include="NanoCefClient.cpp" />
+    <ClCompile Include="FileResourceHandler.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,8 +152,8 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="NanoCefApp.h" />
     <ClInclude Include="NanoCefClient.h" />
-    <ClInclude Include="NanoFileResourceHandler.h" />
-    <ClInclude Include="NanoFileSchemeHandlerFactory.h" />
+    <ClInclude Include="FileResourceHandler.h" />
+    <ClInclude Include="FileSchemeHandlerFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="compatibility.manifest" />

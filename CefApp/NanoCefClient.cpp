@@ -6,8 +6,7 @@ void NanoCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 	assert(pBrowser);
 	pBrowser_ = pBrowser;
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
-	if (hWndBrowser)
-	{
+	if (hWndBrowser) {
 		RECT rect{};
 		GetClientRect(hWndParent_, &rect);
 		SetWindowPos(hWndBrowser, NULL, 0, 0,
@@ -26,11 +25,8 @@ void NanoCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 	}
 }
 
-void NanoCefClient::OnLoadEnd(
-	CefRefPtr<CefBrowser> pBrowser,
-	CefRefPtr<CefFrame> pFrame,
-	int httpStatusCode
-)
+void NanoCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser, 
+	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
 	pFrame->ExecuteJavaScript("alert('Step9: Page loaded!')", pFrame->GetURL(), 0);
 	pFrame->ExecuteJavaScript("console.log('Step9: Page loaded!')", pFrame->GetURL(), 0);

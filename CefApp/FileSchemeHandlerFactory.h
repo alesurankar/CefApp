@@ -1,9 +1,9 @@
 #pragma once
 #include "include/cef_scheme.h"
-#include "NanoFileResourceHandler.h"
+#include "FileResourceHandler.h"
 
 // Step 3 Global CEF phase (no browser yet)
-class NanoFileSchemeHandlerFactory 
+class FileSchemeHandlerFactory 
     : 
     public CefSchemeHandlerFactory
 {
@@ -14,8 +14,8 @@ public:
         const CefString& scheme_name,
         CefRefPtr<CefRequest> request) override
     {
-        return new NanoFileResourceHandler{};
+        return new FileResourceHandler{};
     }
-
-    IMPLEMENT_REFCOUNTING(NanoFileSchemeHandlerFactory);
+private:
+    IMPLEMENT_REFCOUNTING(FileSchemeHandlerFactory);
 };
