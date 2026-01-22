@@ -368,3 +368,4 @@ libcef.lib
 libcef_dll_wrapper.lib
 libcef.dll
 chrome_elf.dll
+/ReactCef/package-lock.json
