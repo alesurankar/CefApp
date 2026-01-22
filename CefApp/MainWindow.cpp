@@ -1,10 +1,10 @@
 #include "MainWindow.h"
-#include "NanoCefClient.h"
+#include "MyCefClient.h"
 
 using namespace std::string_literals;
 
 static constexpr const char* wndClassName = "$client - window$";
-static CefRefPtr<NanoCefClient> pClient;
+static CefRefPtr<MyCefClient> pClient;
 static bool g_isClosing = false;
 
 namespace 
@@ -15,7 +15,7 @@ namespace
 		// Step 5: WM_CREATE fires in window procedure
 		case WM_CREATE:
 		{
-			pClient = new NanoCefClient{ hWnd };
+			pClient = new MyCefClient{ hWnd };
 			RECT rect{};
 			GetClientRect(hWnd, &rect);
 			CefWindowInfo info;

@@ -2,14 +2,14 @@
 #include "include/cef_client.h"
 #include <cassert>
 
-class NanoCefClient 
+class MyCefClient
 	: 
 	public CefClient, 
 	public CefLifeSpanHandler, 
 	public CefLoadHandler
 {
 public:
-	explicit NanoCefClient(HWND hWndParent) : hWndParent_(hWndParent)
+	explicit MyCefClient(HWND hWndParent) : hWndParent_(hWndParent)
 	{
 	}
 	CefRefPtr<CefBrowser> GetBrowser() const
@@ -42,5 +42,5 @@ public:
 private:
 	HWND hWndParent_;
 	CefRefPtr<CefBrowser> pBrowser_;
-	IMPLEMENT_REFCOUNTING(NanoCefClient);
+	IMPLEMENT_REFCOUNTING(MyCefClient);
 };

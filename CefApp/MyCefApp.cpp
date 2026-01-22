@@ -1,10 +1,10 @@
 #include "MyWin.h"
-#include "NanoCefApp.h"
+#include "MyCefApp.h"
 #include "Include/wrapper/cef_closure_task.h"
 #include "Include/base/cef_callback.h"
 
 
-void NanoCefApp::OnContextInitialized()
+void MyCefApp::OnContextInitialized()
 {
     // Register custom scheme handler (used later during requests)
     CefRegisterSchemeHandlerFactory(
@@ -12,10 +12,10 @@ void NanoCefApp::OnContextInitialized()
     );
 }
 
-void NanoCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser, 
+void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
     CefRefPtr<CefFrame> pFrame, CefRefPtr<CefV8Context> pV8Context)
 {
-    // From JS, calling doVersion(...) goes to NanoCefApp::Execute()
+    // From JS, calling doVersion(...) goes to MyCefApp::Execute()
     auto global = pV8Context->GetGlobal();
     global->SetValue(
         "doVersion",
@@ -31,7 +31,7 @@ void NanoCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
     pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
 }
 
-bool NanoCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object, 
+bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     const CefV8ValueList& argPtrs, CefRefPtr<CefV8Value>& pRet, CefString& exception)
 {
     if (name == "doVersion") {
@@ -47,7 +47,7 @@ bool NanoCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     return true;
 }
 
-void NanoCefApp::HandleDoVersion(const CefV8ValueList& argPtrs)
+void MyCefApp::HandleDoVersion(const CefV8ValueList& argPtrs)
 {
     const auto id = nextInvocationId_++;
     auto& invocation = invocations_[id];
@@ -58,13 +58,13 @@ void NanoCefApp::HandleDoVersion(const CefV8ValueList& argPtrs)
         {
             const auto ret = MessageBoxA(nullptr, text.c_str(),
                 "henlo", MB_SYSTEMMODAL | MB_ICONQUESTION | MB_YESNOCANCEL);
-            CefPostTask(TID_RENDERER, base::BindOnce(&NanoCefApp::ResolveJsPromise, this,
+            CefPostTask(TID_RENDERER, base::BindOnce(&MyCefApp::ResolveJsPromise, this,
                 id, ret == IDYES, ret == IDCANCEL ? "CAN"s : ""s
             ));
         });
 }
 
-void NanoCefApp::ResolveJsPromise(uint32_t id, bool success, std::string error)
+void MyCefApp::ResolveJsPromise(uint32_t id, bool success, std::string error)
 {
     auto& invocation = invocations_[id];    // Get the stored invocation info
     invocation.pV8Context->Enter();         // Enter the V8 context

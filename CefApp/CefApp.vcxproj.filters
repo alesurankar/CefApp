@@ -21,10 +21,10 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NanoCefApp.cpp">
+    <ClCompile Include="MyCefApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NanoCefClient.cpp">
+    <ClCompile Include="MyCefClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileResourceHandler.cpp">
@@ -38,10 +38,10 @@
     <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NanoCefApp.h">
+    <ClInclude Include="MyCefApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NanoCefClient.h">
+    <ClInclude Include="MyCefClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileResourceHandler.h">

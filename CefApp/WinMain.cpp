@@ -1,6 +1,6 @@
 #include "MyWin.h"
 #include <filesystem>
-#include "NanoCefApp.h"
+#include "MyCefApp.h"
 #include "MainWindow.h"
 
 using namespace std::string_literals;
@@ -10,7 +10,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	// Step 1: Handle CEF child processes
 	const CefMainArgs mainArgs(hInstance);
-	CefRefPtr<CefApp> pApp = new NanoCefApp();
+	CefRefPtr<CefApp> pApp = new MyCefApp();
 	// ensures child processes never execute WinMain app logic.
 	const int exitCode = CefExecuteProcess(mainArgs, pApp, nullptr);
 	if (exitCode >= 0) {

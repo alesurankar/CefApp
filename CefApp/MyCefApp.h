@@ -6,7 +6,7 @@
 
 using namespace std::string_literals;
 
-class NanoCefApp
+class MyCefApp
     :
     public CefApp,
     public CefBrowserProcessHandler,
@@ -43,5 +43,5 @@ private:
 private:
     uint32_t nextInvocationId_ = 0;
     std::unordered_map<uint32_t, Invocation_> invocations_;
-    IMPLEMENT_REFCOUNTING(NanoCefApp);
+    IMPLEMENT_REFCOUNTING(MyCefApp);
 };

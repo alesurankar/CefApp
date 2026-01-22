@@ -1,7 +1,7 @@
 #include "MyWin.h"
-#include "NanoCefClient.h"
+#include "MyCefClient.h"
 
-void NanoCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
+void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 {
 	assert(pBrowser);
 	pBrowser_ = pBrowser;
@@ -25,14 +25,14 @@ void NanoCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 	}
 }
 
-void NanoCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser, 
+void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
 	pFrame->ExecuteJavaScript("alert('Step9: Page loaded!')", pFrame->GetURL(), 0);
 	pFrame->ExecuteJavaScript("console.log('Step9: Page loaded!')", pFrame->GetURL(), 0);
 }
 
-void NanoCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
+void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
 	pBrowser_ = nullptr;
 	PostMessage(hWndParent_, WM_CLOSE, 0, 0);
