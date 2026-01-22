@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NanoCefApp.cpp" />
+    <ClCompile Include="NanoCefClient.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
