@@ -39,7 +39,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		return -1;
 	}
 
-	// Step 12: Win32 message loop
+	// Step 11: Win32 message loop
 	MSG msg;
 	while (GetMessageA(&msg, nullptr, 0, 0))
 	{

@@ -5,10 +5,12 @@
 #include <string>
 #include <filesystem>
 
-// Step 10.1: Chromium renders the page
-class NanoFileResourceHandler : public CefResourceHandler
+class NanoFileResourceHandler 
+	: 
+	public CefResourceHandler
 {
 public:
+	// Step 9.1 Network + resource handling
 	bool Open(
 		CefRefPtr<CefRequest> pRequest,
 		bool& handleRequest,
@@ -83,6 +85,8 @@ public:
 		responseLength = fileSize_;
 	}
 	void Cancel() override {}
+
+	// Step 9.2 Network + resource handling
 	bool Read(
 		void* pDataOut,
 		int bytesToRead,

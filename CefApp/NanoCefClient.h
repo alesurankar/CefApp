@@ -28,7 +28,7 @@ public:
 		return this;
 	}
 
-	// Step 7: Browser object and HWND created
+	// Step 8: Browser object and HWND created
 	// At this point:
 	// - The browser object exists
 	// - The child window (HWND) exists
@@ -48,10 +48,10 @@ public:
 				rect.bottom - rect.top, SWP_NOZORDER);
 
 			// Safe to run JS now, but page may not be fully loaded
-			pBrowser->GetMainFrame()->ExecuteJavaScript(
-				"alert('Step7: Browser initialized!');",
-				pBrowser->GetMainFrame()->GetURL(), 0
-			);
+			//pBrowser->GetMainFrame()->ExecuteJavaScript(
+			//	"alert('Step7: Browser initialized!');",
+			//	pBrowser->GetMainFrame()->GetURL(), 0
+			//);
 			pBrowser->GetMainFrame()->ExecuteJavaScript(
 				"console.log('Step7: Browser initialized!');",
 				pBrowser->GetMainFrame()->GetURL(), 0
@@ -59,7 +59,7 @@ public:
 		}
 	}
 
-	// Step 9: Page finished loading
+	// Step 10: Page finished loading
 	// At this point:
 	// - Main frame and all content (HTML/CSS/JS) is fully loaded
 	// - Safe to access DOM elements or execute JS that depends on the page
@@ -72,7 +72,6 @@ public:
 		pFrame->ExecuteJavaScript("alert('Step9: Page loaded!')", pFrame->GetURL(), 0);
 		pFrame->ExecuteJavaScript("console.log('Step9: Page loaded!')", pFrame->GetURL(), 0);
 	}
-
 
 	// this is the last call after Browser is destroyed
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override

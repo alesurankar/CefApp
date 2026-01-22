@@ -31,13 +31,15 @@ public:
     {
         return this;
     }
-    // Step 3: CEF global context initialized (no browser yet)
+    // Step 3: Global CEF context initialized (browser-independent)
     void OnContextInitialized() override
     {
-        //Step 10: Browser starts loading URL
-        CefRegisterSchemeHandlerFactory("http", "disk", new NanoFileSchemeHandlerFactory{});
+        // Register custom scheme handler (used later during requests)
+        CefRegisterSchemeHandlerFactory(
+            "http", "disk", new NanoFileSchemeHandlerFactory{}
+        );
     }
-    //Step 8: JS context created (V8 ready, DOM may not be loaded yet)
+    //Step 7: JS context created (V8 ready, DOM may not be loaded yet)
     void OnContextCreated(
         CefRefPtr<CefBrowser> pBrowser, 
         CefRefPtr<CefFrame> pFrame, 
@@ -45,15 +47,21 @@ public:
     ) override
     {
         // From JS, calling doVersion(...) goes to NanoCefApp::Execute()
-        pV8Context->GetGlobal()->SetValue(
+        auto global = pV8Context->GetGlobal();
+        global->SetValue(
             "doVersion", 
             CefV8Value::CreateFunction("doVersion", this), 
             V8_PROPERTY_ATTRIBUTE_NONE
         );
-        pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
+        global->SetValue(
+            "function2",
+            CefV8Value::CreateFunction("function2", this),
+            V8_PROPERTY_ATTRIBUTE_NONE
+        );
+        //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
         pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     }
-    // Step 11: JS <-> C++ bridge
+    // Step X: JS <-> C++ bridge
     bool Execute(
         const CefString& name,
         CefRefPtr<CefV8Value> object,
@@ -61,6 +69,22 @@ public:
         CefRefPtr<CefV8Value>& pRet,
         CefString& exception
     ) override
+    {
+        if (name == "doVersion") {
+            HandleDoVersion(argPtrs);
+        }
+        else if (name == "function2") {
+            // this is a placeholder for next function
+        }
+        else {
+            exception = "Unknown native function: " + name.ToString();
+            return false;
+        }
+        return true;
+    }
+
+private:
+    void HandleDoVersion(const CefV8ValueList&  argPtrs)
     {
         const auto id = nextInvocationId_++;
         auto& invocation = invocations_[id];
@@ -71,32 +95,31 @@ public:
             {
                 const auto ret = MessageBoxA(nullptr, text.c_str(),
                     "henlo", MB_SYSTEMMODAL | MB_ICONQUESTION | MB_YESNOCANCEL);
-                CefPostTask(TID_RENDERER, base::BindOnce(&NanoCefApp::ResolveDoChili_, this,
+                CefPostTask(TID_RENDERER, base::BindOnce(&NanoCefApp::ResolveJsPromise, this,
                     id, ret == IDYES, ret == IDCANCEL ? "CAN"s : ""s
                 ));
             });
-        return true;
     }
-
-private:
-    void ResolveDoChili_(uint32_t id, bool yesno, std::string exception)
+    void ResolveJsPromise(uint32_t id, bool success, std::string error)
     {
-        auto& invocation = invocations_[id];
-        invocation.pV8Context->Enter();
-        if (!exception.empty())
+        auto& invocation = invocations_[id];    // Get the stored invocation info
+        invocation.pV8Context->Enter();         // Enter the V8 context
+        if (!error.empty())                 // If there’s an error
         {
-            invocation.pReject->ExecuteFunction({}, CefV8ValueList{ CefV8Value::CreateString(exception) });
+            // reject()
+            invocation.pReject->ExecuteFunction({}, CefV8ValueList{ CefV8Value::CreateString(error) });
         }
         else
         {
-            invocation.pAccept->ExecuteFunction({}, CefV8ValueList{ CefV8Value::CreateBool(yesno) });
+            // resolve()
+            invocation.pAccept->ExecuteFunction({}, CefV8ValueList{ CefV8Value::CreateBool(success) });
         }
-        invocation.pV8Context->Exit();
-        invocations_.erase(id);
+        invocation.pV8Context->Exit();         // Leave the V8 context
+        invocations_.erase(id);                // Remove this invocation
     }
 
     uint32_t nextInvocationId_ = 0;
     std::unordered_map<uint32_t, Invocation_> invocations_;
-
+private:
     IMPLEMENT_REFCOUNTING(NanoCefApp);
 };
