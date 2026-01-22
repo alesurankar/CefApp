@@ -4,6 +4,7 @@
 using namespace std::string_literals;
 
 static constexpr const char* wndClassName = "$client - window$";
+static HWND g_hWndMain = nullptr;
 static CefRefPtr<MyCefClient> pClient;
 static bool g_isClosing = false;
 
@@ -60,14 +61,24 @@ namespace
 			}
 			break;
 		case WM_CLOSE:
-			if (!g_isClosing && pClient && pClient->GetBrowser()) {
-				g_isClosing = true;
-				pClient->GetBrowser()->GetHost()->CloseBrowser(true);
-				return 0;
+			if (hWnd == g_hWndMain) {
+				// Close main app
+				if (!g_isClosing && pClient && pClient->GetBrowser()) {
+					g_isClosing = true;
+					pClient->GetBrowser()->GetHost()->CloseBrowser(true);
+					return 0;
+				}
+				else {
+					// Only destroy this window (DevTools), do not quit app
+					DestroyWindow(hWnd);
+					return 0;
+				}
 			}
 			break;
 		case WM_DESTROY:
-			PostQuitMessage(0);
+			if (hWnd == g_hWndMain) {
+				PostQuitMessage(0); // only main app quits
+			}
 			break;
 		}
 		return DefWindowProcA(hWnd, msg, wParam, lParam);
@@ -77,7 +88,6 @@ namespace
 // Step 4: Create Win32 window + browser
 HWND CreateMainWindow(HINSTANCE hInstance)
 {
-	HWND hWndBrowser = nullptr;
 	WNDCLASSEXA wcex{};
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -91,21 +101,21 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		return nullptr;
 	}
 
-	hWndBrowser = CreateWindowExA(
+	g_hWndMain = CreateWindowExA(
 		0, wndClassName, "CEF",
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 
 		200, 20, 1360, 1020, 
 		nullptr, nullptr, hInstance, nullptr
 	);
-	if (!hWndBrowser) {
+	if (!g_hWndMain) {
 		MessageBoxA(nullptr, "CreateWindowExA failed!", "Error", MB_ICONERROR);
 		return nullptr;
 	}
 
-	ShowWindow(hWndBrowser, SW_SHOWDEFAULT);    // this + 
-	UpdateWindow(hWndBrowser);                  // this -> triggers WM_CREATE
+	ShowWindow(g_hWndMain, SW_SHOWDEFAULT);    // this + 
+	UpdateWindow(g_hWndMain);                  // this -> triggers WM_CREATE
 
-	return hWndBrowser;
+	return g_hWndMain;
 }
 
 void CleanupMainWindow(HINSTANCE hInstance)

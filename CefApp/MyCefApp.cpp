@@ -23,22 +23,40 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         V8_PROPERTY_ATTRIBUTE_NONE
     );
     global->SetValue(
+        "function1",
+        CefV8Value::CreateFunction("function1", this),
+        V8_PROPERTY_ATTRIBUTE_NONE
+    );
+    global->SetValue(
         "function2",
         CefV8Value::CreateFunction("function2", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
+    global->SetValue(
+        "function3",
+        CefV8Value::CreateFunction("function3", this),
+        V8_PROPERTY_ATTRIBUTE_NONE
+    );
     //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
+    currentFrame_ = pFrame;
 }
 
 bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     const CefV8ValueList& argPtrs, CefRefPtr<CefV8Value>& pRet, CefString& exception)
 {
     if (name == "doVersion") {
-        HandleDoVersion(argPtrs);
+        //HandleDoVersion(argPtrs);
+        HandleFunction1();
+    }
+    else if (name == "function1") {
+        // TODO function body
     }
     else if (name == "function2") {
-        // this is a placeholder for next function
+        // TODO function body
+    }
+    else if (name == "function3") {
+        // TODO function body
     }
     else {
         exception = "Unknown native function: " + name.ToString();
@@ -62,6 +80,11 @@ void MyCefApp::HandleDoVersion(const CefV8ValueList& argPtrs)
                 id, ret == IDYES, ret == IDCANCEL ? "CAN"s : ""s
             ));
         });
+}
+
+void MyCefApp::HandleFunction1()
+{
+    currentFrame_->ExecuteJavaScript("alert('Step9: Page loaded!')", currentFrame_->GetURL(), 0);
 }
 
 void MyCefApp::ResolveJsPromise(uint32_t id, bool success, std::string error)

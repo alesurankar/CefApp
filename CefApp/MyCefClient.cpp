@@ -4,7 +4,9 @@
 void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 {
 	assert(pBrowser);
-	pBrowser_ = pBrowser;
+	if (!mainBrowser_) {
+		mainBrowser_ = pBrowser;
+	}
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
 	if (hWndBrowser) {
 		RECT rect{};
@@ -14,13 +16,13 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 			rect.bottom - rect.top, SWP_NOZORDER);
 
 		// Safe to run JS now, but page may not be fully loaded
-		//pBrowser->GetMainFrame()->ExecuteJavaScript(
+		//mainBrowser_->GetMainFrame()->ExecuteJavaScript(
 		//	"alert('Step7: Browser initialized!');",
-		//	pBrowser->GetMainFrame()->GetURL(), 0
+		//	mainBrowser_->GetMainFrame()->GetURL(), 0
 		//);
-		pBrowser->GetMainFrame()->ExecuteJavaScript(
+		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
 			"console.log('Step7: Browser initialized!');",
-			pBrowser->GetMainFrame()->GetURL(), 0
+			mainBrowser_->GetMainFrame()->GetURL(), 0
 		);
 	}
 }
@@ -28,12 +30,14 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
-	pFrame->ExecuteJavaScript("alert('Step9: Page loaded!')", pFrame->GetURL(), 0);
+	//pFrame->ExecuteJavaScript("alert('Step9: Page loaded!')", pFrame->GetURL(), 0);
 	pFrame->ExecuteJavaScript("console.log('Step9: Page loaded!')", pFrame->GetURL(), 0);
 }
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
-	pBrowser_ = nullptr;
-	PostMessage(hWndParent_, WM_CLOSE, 0, 0);
+	if (browser == mainBrowser_) {
+		mainBrowser_ = nullptr;
+		PostMessage(hWndParent_, WM_CLOSE, 0, 0);
+	}
 }

@@ -14,7 +14,7 @@ public:
 	}
 	CefRefPtr<CefBrowser> GetBrowser() const
 	{
-		return pBrowser_;
+		return mainBrowser_;
 	}
 	CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override
 	{
@@ -41,6 +41,6 @@ public:
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
 private:
 	HWND hWndParent_;
-	CefRefPtr<CefBrowser> pBrowser_;
+	CefRefPtr<CefBrowser> mainBrowser_;
 	IMPLEMENT_REFCOUNTING(MyCefClient);
 };

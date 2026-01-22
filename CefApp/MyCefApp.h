@@ -39,9 +39,11 @@ public:
         const CefV8ValueList& argPtrs, CefRefPtr<CefV8Value>& pRet, CefString& exception) override;
 private:
     void HandleDoVersion(const CefV8ValueList& argPtrs);
+    void HandleFunction1();
     void ResolveJsPromise(uint32_t id, bool success, std::string error);
 private:
     uint32_t nextInvocationId_ = 0;
     std::unordered_map<uint32_t, Invocation_> invocations_;
+    CefRefPtr<CefFrame> currentFrame_; 
     IMPLEMENT_REFCOUNTING(MyCefApp);
 };
