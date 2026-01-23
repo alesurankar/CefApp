@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import Page1 from './pages/Page1';
+import Page2 from './pages/Page2';
+import Page3 from './pages/Page3';
+import PublicLayout from "./layouts/PublicLayout";
 
-// Simulated API call
-const fakeApi = () =>
-  new Promise<string>((resolve) => setTimeout(() => resolve("Hello from API!"), 500));
-
-export default function App() {
-  const [message, setMessage] = useState("Loading...");
-
-  useEffect(() => {
-    fakeApi().then(setMessage);
-  }, []);
+const App = () => {
+  
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
-      <h1>{message}</h1>
-    </div>
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/page1" element={<Page1 />} />
+        <Route path="/page2" element={<Page2 />} />
+        <Route path="/page3" element={<Page3 />} />
+      </Route>
+    </Routes>
   );
 }
+
+export default App;
