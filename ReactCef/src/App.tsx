@@ -6,28 +6,18 @@ import Page3 from './pages/Page3';
 import PublicLayout from "./layouts/PublicLayout";
 
 
-export default function App() {
+const App = () => {
+  
   return (
-    <div className="min-h-screen bg-blueColor text-white flex items-center justify-center text-3xl">
-      Tailwind is working 🚀
-    </div>
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/page1" element={<Page1 />} />
+        <Route path="/page2" element={<Page2 />} />
+        <Route path="/page3" element={<Page3 />} />
+      </Route>
+    </Routes>
   );
 }
 
-
-// const App = () => {
-  
-
-//   return (
-//     <Routes>
-//       <Route element={<PublicLayout />}>
-//         <Route path="/" element={<HomePage />} />
-//         <Route path="/page1" element={<Page1 />} />
-//         <Route path="/page2" element={<Page2 />} />
-//         <Route path="/page3" element={<Page3 />} />
-//       </Route>
-//     </Routes>
-//   );
-// }
-
-// export default App;
+export default App;

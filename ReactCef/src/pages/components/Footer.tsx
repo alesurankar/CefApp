@@ -1,3 +1,4 @@
+import { Logo2 } from '../../assets/images/images'
 import { FacebookIcon, InstagramIcon, LinkedInIcon, TwitterIcon } from '../../assets/icons/icons'
 
 const Footer = () => {
@@ -26,6 +27,7 @@ const Footer = () => {
                 <div className='shrink-0 w-40 cursor-pointer'>
                     <img
                         className='w-full h-full'
+                        src={Logo2}
                         alt="Logo"
                     />
                 </div>

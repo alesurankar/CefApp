@@ -1,3 +1,4 @@
+import { Logo1 } from '../../assets/images/images'
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -9,6 +10,7 @@ const Navbar = () => {
             <div className='shrink-0 w-40 cursor-pointer'>
                 <img
                     className='w-full h-full'
+                        src={Logo1}
                     alt="Logo"
                 />
             </div>
