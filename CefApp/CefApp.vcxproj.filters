@@ -13,48 +13,74 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\utils">
+    <Filter Include="Source Files\app">
+      <UniqueIdentifier>{f118302c-1a9f-4b77-b4df-f94f8e2b0fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cef">
+      <UniqueIdentifier>{7994ff83-e48e-491f-8dad-e5c4d9cca04a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cef">
+      <UniqueIdentifier>{60af0299-0973-4822-b29b-dfb87c9c22cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform">
       <UniqueIdentifier>{709d4eec-f0b7-43a5-992c-c1a5a6a9ddc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resources">
+      <UniqueIdentifier>{2bde883a-3012-45d0-a527-3bbe7093c99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\resources">
+      <UniqueIdentifier>{8ee9f37f-b3b6-4f01-98d0-ccf0dd86ca63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{be07a8d0-4758-43e7-ab53-2f588ba3dfb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{25953b43-695b-4322-b47f-db7526c96397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manifests">
+      <UniqueIdentifier>{0696173f-9e67-46be-886a-8dc27ce88e50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\MainWindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="src\cef\MyCefApp.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cef</Filter>
     </ClCompile>
     <ClCompile Include="src\cef\MyCefClient.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cef</Filter>
     </ClCompile>
     <ClCompile Include="src\resources\FileResourceHandler.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\resources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\MainWindow.cpp">
+      <Filter>Source Files\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ui\MainWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\platform\MyWin.h">
+      <Filter>Header Files\platform</Filter>
     </ClInclude>
     <ClInclude Include="src\cef\MyCefApp.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\cef</Filter>
     </ClInclude>
     <ClInclude Include="src\cef\MyCefClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resources\FileResourceHandler.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\cef</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\FileSchemeHandlerFactory.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\resources</Filter>
     </ClInclude>
-    <ClInclude Include="src\platform\MyWin.h">
-      <Filter>Header Files\utils</Filter>
+    <ClInclude Include="src\resources\FileResourceHandler.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\MainWindow.h">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="bin\compatibility.manifest" />
+    <Manifest Include="bin\compatibility.manifest">
+      <Filter>manifests</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>

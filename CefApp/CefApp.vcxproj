@@ -70,7 +70,7 @@
       </AdditionalManifestDependencies>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>bin/compatibility.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>$(ProjectDir)/bin/compatibility.manifest</AdditionalManifestFiles>
     </Manifest>
     <PostBuildEvent>
       <Command>
@@ -98,7 +98,7 @@
       </AdditionalManifestDependencies>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>bin/compatibility.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <AdditionalManifestFiles>$(ProjectDir)/bin/compatibility.manifest</AdditionalManifestFiles>
     </Manifest>
     <ManifestResourceCompile>
       <ResourceOutputFileName>
