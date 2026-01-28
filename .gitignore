@@ -370,3 +370,4 @@ libcef.dll
 chrome_elf.dll
 /ReactCef/package-lock.json
 *.env
+/Server/package-lock.json
