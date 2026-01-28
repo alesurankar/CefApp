@@ -1,6 +1,6 @@
 #pragma once
 #include "include/cef_app.h"
-#include "FileSchemeHandlerFactory.h"
+#include "../resources/FileSchemeHandlerFactory.h"
 #include <future>
 #include <unordered_map>
 

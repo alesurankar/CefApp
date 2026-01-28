@@ -1,6 +1,6 @@
 #pragma once
-#include "Include/cef_resource_handler.h"
-#include "Include/cef_parser.h"
+#include "include/cef_resource_handler.h"
+#include "include/cef_parser.h"
 #include <fstream>
 #include <string>
 #include <filesystem>

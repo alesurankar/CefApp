@@ -1,5 +1,5 @@
 #pragma once
-#include "MyWin.h"
+#include "../platform/MyWin.h"
 
 HWND CreateMainWindow(HINSTANCE hInstance);
 void CleanupMainWindow(HINSTANCE hInstance);

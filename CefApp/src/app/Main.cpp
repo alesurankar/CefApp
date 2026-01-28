@@ -1,7 +1,7 @@
-#include "MyWin.h"
+#include "../platform/MyWin.h"
 #include <filesystem>
-#include "MyCefApp.h"
-#include "MainWindow.h"
+#include "../cef/MyCefApp.h"
+#include "../ui/MainWindow.h"
 
 using namespace std::string_literals;
 

@@ -1,7 +1,7 @@
-#include "MyWin.h"
+#include "../platform/MyWin.h"
 #include "MyCefApp.h"
-#include "Include/wrapper/cef_closure_task.h"
-#include "Include/base/cef_callback.h"
+#include "include/wrapper/cef_closure_task.h"
+#include "include/base/cef_callback.h"
 
 
 void MyCefApp::OnContextInitialized()

@@ -18,43 +18,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinMain.cpp">
+    <ClCompile Include="src\app\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
+    <ClCompile Include="src\ui\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyCefApp.cpp">
+    <ClCompile Include="src\cef\MyCefApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyCefClient.cpp">
+    <ClCompile Include="src\cef\MyCefClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileResourceHandler.cpp">
+    <ClCompile Include="src\resources\FileResourceHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainWindow.h">
+    <ClInclude Include="src\ui\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyCefApp.h">
+    <ClInclude Include="src\cef\MyCefApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyCefClient.h">
+    <ClInclude Include="src\cef\MyCefClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileResourceHandler.h">
+    <ClInclude Include="src\resources\FileResourceHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileSchemeHandlerFactory.h">
+    <ClInclude Include="src\resources\FileSchemeHandlerFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyWin.h">
+    <ClInclude Include="src\platform\MyWin.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="compatibility.manifest" />
+    <Manifest Include="bin\compatibility.manifest" />
   </ItemGroup>
 </Project>
