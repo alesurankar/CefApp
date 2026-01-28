@@ -47,7 +47,7 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
         HandleFunction2();
     }
     else if (name == "function3") {
-        // TODO function body
+        HandleFunction3(argPtrs);
     }
     else {
         exception = "Unknown native function: " + name.ToString();
@@ -76,6 +76,29 @@ void MyCefApp::HandleFunction1(const CefV8ValueList& argPtrs)
 void MyCefApp::HandleFunction2()
 {
     currentFrame_->ExecuteJavaScript("alert('Function2 Executed!')", currentFrame_->GetURL(), 0);
+}
+
+void MyCefApp::HandleFunction3(const CefV8ValueList& argPtrs)
+{
+    const auto id = nextInvocationId_++;
+    auto& invocation = invocations_[id];
+
+    // Store JS callbacks for later
+    invocation.pAccept = argPtrs[1];
+    invocation.pReject = argPtrs[2];
+    invocation.pV8Context = CefV8Context::GetCurrentContext();
+
+    // Start async task (example: simulate some work)
+    invocation.task = std::async([this, text = argPtrs[0]->GetStringValue().ToString(), id]
+        {
+            // Simulate a long-running operation or user input
+            const bool success = !text.empty(); // example logic
+
+            // Resolve JS promise on renderer thread
+            CefPostTask(TID_RENDERER, base::BindOnce(&MyCefApp::ResolveJsPromise, this,
+                id, success, success ? ""s : "Text was empty"s
+            ));
+        });
 }
 
 void MyCefApp::ResolveJsPromise(uint32_t id, bool success, std::string error)

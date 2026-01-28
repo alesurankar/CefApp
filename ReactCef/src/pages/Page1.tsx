@@ -7,6 +7,11 @@ interface CefApi {
         reject: (msg: string) => void
     ): void;
     function2(): void;
+    function3(
+        text: string,
+        accept: (result: boolean) => void,
+        reject: (msg: string) => void
+    ): void;
 }
 const cef = window as unknown as CefApi;
 
@@ -22,6 +27,12 @@ function myCefFunction2(): void
     return cef.function2();
 }
 
+function myCefFunction3(text: string): Promise<boolean> {
+    return new Promise((resolve, reject) =>
+        cef.function3(text, resolve, reject)
+    );
+}
+
 const Page1 = () => {
     const [answer, setAnswer] = useState<string | null>(null);
     const [inProgress, setInProgress] = useState(false);
@@ -33,7 +44,7 @@ const Page1 = () => {
         try {
             if (await myCefFunction1("Path 1")) {
                 if (await myCefFunction1("Path 2")) {
-                    if (await myCefFunction1("Path 3")) {
+                    if (await myCefFunction3("")) {
                         setAnswer("3");
                     } 
                     else {

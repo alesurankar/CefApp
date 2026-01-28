@@ -40,6 +40,7 @@ public:
 private:
     void HandleFunction1(const CefV8ValueList& argPtrs);
     void HandleFunction2();
+    void HandleFunction3(const CefV8ValueList& argPtrs);
     void ResolveJsPromise(uint32_t id, bool success, std::string error);
 private:
     uint32_t nextInvocationId_ = 0;
