@@ -18,11 +18,6 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
     // From JS, calling doVersion(...) goes to MyCefApp::Execute()
     auto global = pV8Context->GetGlobal();
     global->SetValue(
-        "doVersion",
-        CefV8Value::CreateFunction("doVersion", this),
-        V8_PROPERTY_ATTRIBUTE_NONE
-    );
-    global->SetValue(
         "function1",
         CefV8Value::CreateFunction("function1", this),
         V8_PROPERTY_ATTRIBUTE_NONE
@@ -45,15 +40,11 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
 bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     const CefV8ValueList& argPtrs, CefRefPtr<CefV8Value>& pRet, CefString& exception)
 {
-    if (name == "doVersion") {
-        //HandleDoVersion(argPtrs);
-        HandleFunction1();
-    }
-    else if (name == "function1") {
-        // TODO function body
+    if (name == "function1") {
+        HandleFunction1(argPtrs);
     }
     else if (name == "function2") {
-        // TODO function body
+        HandleFunction2();
     }
     else if (name == "function3") {
         // TODO function body
@@ -65,7 +56,7 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     return true;
 }
 
-void MyCefApp::HandleDoVersion(const CefV8ValueList& argPtrs)
+void MyCefApp::HandleFunction1(const CefV8ValueList& argPtrs)
 {
     const auto id = nextInvocationId_++;
     auto& invocation = invocations_[id];
@@ -82,9 +73,9 @@ void MyCefApp::HandleDoVersion(const CefV8ValueList& argPtrs)
         });
 }
 
-void MyCefApp::HandleFunction1()
+void MyCefApp::HandleFunction2()
 {
-    currentFrame_->ExecuteJavaScript("alert('Step9: Page loaded!')", currentFrame_->GetURL(), 0);
+    currentFrame_->ExecuteJavaScript("alert('Function2 Executed!')", currentFrame_->GetURL(), 0);
 }
 
 void MyCefApp::ResolveJsPromise(uint32_t id, bool success, std::string error)
