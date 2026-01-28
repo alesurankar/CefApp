@@ -114,10 +114,10 @@
     <ClCompile Include="src\cef\MyCefApp.cpp" />
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
-    <ClCompile Include="src\app\Main.cpp" />
+    <ClCompile Include="src\app\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\platform\MyWin.h" />
+    <ClInclude Include="src\platform\WinWrapper.h" />
     <ClInclude Include="src\ui\MainWindow.h" />
     <ClInclude Include="src\cef\MyCefApp.h" />
     <ClInclude Include="src\cef\MyCefClient.h" />

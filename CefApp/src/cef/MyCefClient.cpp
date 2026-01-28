@@ -1,4 +1,4 @@
-#include "../platform/MyWin.h"
+#include "../platform/WinWrapper.h"
 #include "MyCefClient.h"
 
 void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)

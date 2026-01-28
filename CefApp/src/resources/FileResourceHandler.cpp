@@ -1,4 +1,4 @@
-#include "../platform/MyWin.h"
+#include "../platform/WinWrapper.h"
 #include "FileResourceHandler.h"
 
 

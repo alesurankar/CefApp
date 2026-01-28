@@ -42,7 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\Main.cpp">
+    <ClCompile Include="src\app\WinMain.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="src\cef\MyCefApp.cpp">
@@ -59,7 +59,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\platform\MyWin.h">
+    <ClInclude Include="src\platform\WinWrapper.h">
       <Filter>Header Files\platform</Filter>
     </ClInclude>
     <ClInclude Include="src\cef\MyCefApp.h">
