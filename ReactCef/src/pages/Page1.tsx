@@ -6,13 +6,20 @@ interface CefApi {
         accept: (result: boolean) => void,
         reject: (msg: string) => void
     ): void;
+    function2(): void;
 }
 const cef = window as unknown as CefApi;
 
-function myCefFunction(text: string): Promise<boolean> {
+function myCefFunction1(text: string): Promise<boolean> 
+{
     return new Promise((resolve, reject) =>
         cef.function1(text, resolve, reject)
     );
+}
+
+function myCefFunction2(): void
+{
+    return cef.function2();
 }
 
 const Page1 = () => {
@@ -24,9 +31,9 @@ const Page1 = () => {
         setInProgress(true);
         setAnswer(null);
         try {
-            if (await myCefFunction("Path 1")) {
-                if (await myCefFunction("Path 2")) {
-                    if (await myCefFunction("Path 3")) {
+            if (await myCefFunction1("Path 1")) {
+                if (await myCefFunction1("Path 2")) {
+                    if (await myCefFunction1("Path 3")) {
                         setAnswer("3");
                     } 
                     else {
@@ -34,11 +41,11 @@ const Page1 = () => {
                     }
                 } 
                 else {
-                    setAnswer((await myCefFunction("Path 2.1")) ? "2.1" : "2");
+                    setAnswer((await myCefFunction1("Path 2.1")) ? "2.1" : "2");
                 }
             } 
             else {
-                setAnswer((await myCefFunction("Path 1.1")) ? "1.1" : "1");
+                setAnswer((await myCefFunction1("Path 1.1")) ? "1.1" : "1");
             }
         } 
         finally {
@@ -49,16 +56,12 @@ const Page1 = () => {
     return (
         <div className="text-4xl font-bold text-center my-20">
         <p>
-            {inProgress
-            ? "Test in progress..."
-            : answer ?? "NO DATA"}
+            {inProgress ? "Test in progress..." : answer ?? "NO DATA"}
         </p>
             <button
-                className="text-red-500 mt-6"
-                onClick={handleClick}
-            >
-                JUST DO IT
+                className="text-red-500 mt-6" onClick={handleClick}>Async function
             </button>
+            <button onClick={() => myCefFunction2()}>Sync function</button>
         </div>
     );
 };
