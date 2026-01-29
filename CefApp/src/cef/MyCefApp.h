@@ -41,10 +41,12 @@ private:
     void HandleFunction1(const CefV8ValueList& argPtrs);
     void HandleFunction2();
     void HandleFunction3(const CefV8ValueList& argPtrs);
+    void HandleFunction4(const std::string& msg);
     void ResolveJsPromise(uint32_t id, bool success, std::string error);
 private:
     uint32_t nextInvocationId_ = 0;
     std::unordered_map<uint32_t, Invocation_> invocations_;
+    CefRefPtr<CefBrowser> browser_;
     CefRefPtr<CefFrame> currentFrame_; 
     IMPLEMENT_REFCOUNTING(MyCefApp);
 };

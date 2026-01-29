@@ -9,9 +9,10 @@ class MyCefClient
 	public CefLoadHandler
 {
 public:
-	explicit MyCefClient(HWND hWndParent) : hWndParent_(hWndParent)
-	{
-	}
+	explicit MyCefClient(HWND hWndParent) 
+		: 
+		hWndParent_(hWndParent)
+	{}
 	CefRefPtr<CefBrowser> GetBrowser() const
 	{
 		return mainBrowser_;
@@ -24,6 +25,8 @@ public:
 	{
 		return this;
 	}
+	bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, 
+		CefProcessId source_process, CefRefPtr<CefProcessMessage> message) override;
 	// Step 8: Browser object and HWND created
 	// At this point:
 	// - The browser object exists

@@ -4,9 +4,8 @@
 using namespace std::string_literals;
 
 static constexpr const char* wndClassName = "$client - window$";
-static HWND g_hWndMain = nullptr;
 static CefRefPtr<MyCefClient> pClient;
-static bool g_isClosing = false;
+static bool s_isClosing = false;
 
 namespace 
 {
@@ -61,24 +60,14 @@ namespace
 			}
 			break;
 		case WM_CLOSE:
-			if (hWnd == g_hWndMain) {
-				// Close main app
-				if (!g_isClosing && pClient && pClient->GetBrowser()) {
-					g_isClosing = true;
-					pClient->GetBrowser()->GetHost()->CloseBrowser(true);
-					return 0;
-				}
-				else {
-					// Only destroy this window (DevTools), do not quit app
-					DestroyWindow(hWnd);
-					return 0;
-				}
+			if (!s_isClosing && pClient && pClient->GetBrowser()) {
+				s_isClosing = true;
+				pClient->GetBrowser()->GetHost()->CloseBrowser(true);
+				return 0;
 			}
 			break;
 		case WM_DESTROY:
-			if (hWnd == g_hWndMain) {
-				PostQuitMessage(0); // only main app quits
-			}
+			PostQuitMessage(0);
 			break;
 		}
 		return DefWindowProcA(hWnd, msg, wParam, lParam);
@@ -88,6 +77,7 @@ namespace
 // Step 4: Create Win32 window + browser
 HWND CreateMainWindow(HINSTANCE hInstance)
 {
+	HWND hWndMain = nullptr;
 	WNDCLASSEXA wcex{};
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -101,21 +91,21 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		return nullptr;
 	}
 
-	g_hWndMain = CreateWindowExA(
+	hWndMain = CreateWindowExA(
 		0, wndClassName, "CEF",
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 
 		200, 20, 1360, 1020, 
 		nullptr, nullptr, hInstance, nullptr
 	);
-	if (!g_hWndMain) {
+	if (!hWndMain) {
 		MessageBoxA(nullptr, "CreateWindowExA failed!", "Error", MB_ICONERROR);
 		return nullptr;
 	}
 
-	ShowWindow(g_hWndMain, SW_SHOWDEFAULT);    // this + 
-	UpdateWindow(g_hWndMain);                  // this -> triggers WM_CREATE
+	ShowWindow(hWndMain, SW_SHOWDEFAULT);    // this + 
+	UpdateWindow(hWndMain);                  // this -> triggers WM_CREATE
 
-	return g_hWndMain;
+	return hWndMain;
 }
 
 void CleanupMainWindow(HINSTANCE hInstance)

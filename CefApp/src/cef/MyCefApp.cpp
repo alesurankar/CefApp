@@ -32,8 +32,14 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         CefV8Value::CreateFunction("function3", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
+    global->SetValue(
+        "function4",
+        CefV8Value::CreateFunction("function4", this),
+        V8_PROPERTY_ATTRIBUTE_NONE
+    );
     //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
+    browser_ = pBrowser;
     currentFrame_ = pFrame;
 }
 
@@ -48,6 +54,10 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     }
     else if (name == "function3") {
         HandleFunction3(argPtrs);
+    }
+    else if (name == "function4") {
+        std::string action = "close";
+        HandleFunction4(action);
     }
     else {
         exception = "Unknown native function: " + name.ToString();
@@ -66,7 +76,7 @@ void MyCefApp::HandleFunction1(const CefV8ValueList& argPtrs)
     invocation.task = std::async([this, text = argPtrs[0]->GetStringValue().ToString(), id]
         {
             const auto ret = MessageBoxA(nullptr, text.c_str(),
-                "henlo", MB_SYSTEMMODAL | MB_ICONQUESTION | MB_YESNOCANCEL);
+                "hello", MB_SYSTEMMODAL | MB_ICONQUESTION | MB_YESNOCANCEL);
             CefPostTask(TID_RENDERER, base::BindOnce(&MyCefApp::ResolveJsPromise, this,
                 id, ret == IDYES, ret == IDCANCEL ? "CAN"s : ""s
             ));
@@ -99,6 +109,15 @@ void MyCefApp::HandleFunction3(const CefV8ValueList& argPtrs)
                 id, success, success ? ""s : "Text was empty"s
             ));
         });
+}
+
+void MyCefApp::HandleFunction4(const std::string& msg)
+{
+    if (!currentFrame_ || !browser_) return;
+    currentFrame_->ExecuteJavaScript("alert(\"Sending message: '" + msg + "' to Browser process\");", currentFrame_->GetURL(), 0);
+    CefRefPtr<CefProcessMessage> message = CefProcessMessage::Create("TestMessage");
+    message->GetArgumentList()->SetString(0, msg);
+    currentFrame_->SendProcessMessage(PID_BROWSER, message);
 }
 
 void MyCefApp::ResolveJsPromise(uint32_t id, bool success, std::string error)

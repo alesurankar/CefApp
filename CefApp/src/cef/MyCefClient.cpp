@@ -1,6 +1,18 @@
 #include "../platform/WinWrapper.h"
 #include "MyCefClient.h"
 
+bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, 
+	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
+{
+	UINT msgId = 0;
+	std::string received = message->GetArgumentList()->GetString(0);
+	if (received == "close") msgId = WM_CLOSE;
+	if (msgId != 0) {
+		PostMessage(hWndParent_, msgId, 0, 0);
+	}
+	return false;
+}
+
 void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 {
 	assert(pBrowser);
@@ -38,6 +50,6 @@ void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
 	if (browser == mainBrowser_) {
 		mainBrowser_ = nullptr;
-		PostMessage(hWndParent_, WM_CLOSE, 0, 0);
+		PostMessage(hWndParent_, WM_DESTROY, 0, 0);
 	}
 }
