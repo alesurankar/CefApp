@@ -1,9 +1,7 @@
 interface Props {
     type?: "button" | "submit" | "reset";
     title?: string;
-    titleClassName?: string;
-    color?: string;
-    mainClassName?: string;
+    MyClassName?: string;
     onClick?: () => void;
 }
 
@@ -12,9 +10,9 @@ const Button = (props: Props) => {
         <button
             type={props.type}
             onClick={props.onClick}
-            className={`${props.mainClassName} w-40 h-12 lg:w-52 lg:h-16 flex items-center justify-center rounded-xl cursor-pointer`}
+            className={`w-40 h-12 lg:w-52 lg:h-16 flex bg-[#7c2923] hover:bg-[#d5453a] items-center justify-center rounded-xl cursor-pointer text-[1.2rem] text-white ${props.MyClassName ?? ""}`}
             >
-            <span className={`${props.titleClassName} text-lg text-textColor`}>{props.title}</span>
+            {props.title}
         </button>
     )
 }

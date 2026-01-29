@@ -27,10 +27,7 @@ const Hero = ({ user }: Props) => {
                     </span>
                 </p>
                 
-                <Button
-                    title='Get Started'
-                    mainClassName='bg-red-500 hover:bg-red-600'
-                />
+                <Button type="button" title='Get Started'/>
             </div>
         </section>
     )

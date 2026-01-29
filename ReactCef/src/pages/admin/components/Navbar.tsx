@@ -12,12 +12,9 @@ const Navbar = () => {
             
             {/* Auth Buttons */}
             <div className='flex items-center justify-between'>     
-                <Button
-                    title='add item'
-                    mainClassName='bg-red-800 hover:bg-red-700'
-                    titleClassName='text-xl text-white'
+                <Button title='add item'
                     onClick={() => setShow(true)}
-                />
+                    MyClassName='bg-red-800 hover:bg-red-700'/>
             </div>
             {/* Modal */}
             {show && (

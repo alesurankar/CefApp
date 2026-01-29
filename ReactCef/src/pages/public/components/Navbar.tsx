@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Logo1 } from '../../../assets/images/images'
-import Button from '../../../utils/Button'
 import Modal from '../../../utils/Modal'
 import AuthForm from './AuthForm'
 import api from '../../../utils/api';
 import { useNavigate } from "react-router-dom";
+import MyLink from '../../../utils/MyLink';
+import Button from '../../../utils/Button';
 
 interface NavbarProps {
   user: any;
@@ -41,34 +42,20 @@ const Navbar = ({ user,setUser }: NavbarProps) => {
                     alt="Logo"
                 />
             </div>
-                <button className="hover:underline" onClick={() => navigate("/")}>
-                    Home
-                </button>
-                <button className="hover:underline" onClick={() => navigate("/page1")}>
-                    page1
-                </button>
-                <button className="hover:underline" onClick={() => navigate("/page2")}>
-                    page2
-                </button>
-                <button className="hover:underline" onClick={() => navigate("/page3")}>
-                    page3
-                </button>
+                <MyLink title="Home" onClick={() => navigate("/")}/>
+                <MyLink title="Page1" onClick={() => navigate("/page1")}/>
+                <MyLink title="Page2" onClick={() => navigate("/page2")}/>
+                <MyLink title="Page3" onClick={() => navigate("/page3")}/>
             {/* Auth Buttons */}
             <div className='flex items-center justify-between'>
             {user ? (
-                <Button
-                    title='Log out'
-                    mainClassName='bg-red-500 hover:bg-red-600'
-                    titleClassName='text-3xl text-white font-bold uppercase'
-                    onClick={handleLogout}
-                />
+                <Button type="button" title="Log Out" 
+                    MyClassName='text-[1.4rem] font-bold uppercase' 
+                    onClick={handleLogout}/>
             ) : (
-                <Button
-                    title='Log in'
-                    mainClassName='bg-[#7c2923] hover:bg-[#d5453a]'
-                    titleClassName='text-3xl text-white font-bold uppercase'
-                    onClick={() => setShow(true)}
-                />
+                <Button type="button" title="Log In" 
+                    MyClassName='text-[1.4rem] font-bold uppercase' 
+                    onClick={() => setShow(true)}/> 
             )}
             </div>
             {/* Modal */}

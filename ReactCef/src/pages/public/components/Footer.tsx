@@ -39,11 +39,8 @@ const Footer = () => {
                         type='email'
                         placeholder='Email Address'
                     />
-                    <Button
-                        title='Send'
-                        mainClassName='bg-blueColor w-full mt-5 hover:bg-yellowColor'
-                        titleClassName='text-whiteColor'
-                    />
+                    <Button title='Send'
+                        MyClassName='bg-blue-700 w-full mt-5 hover:bg-blue-500'/>
                 </div>
                 <div className='hidden lg:flex'>
                     <ul className='list-none flex items-center gap-7'>

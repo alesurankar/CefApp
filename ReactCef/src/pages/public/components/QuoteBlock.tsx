@@ -60,12 +60,9 @@ const QuoteIn = ({ onCommentAdded }: QuoteInProps) => {
             {/* Left side */}
             <div className="pt-4 pl-4">
                 <div className="pb-8">
-                    <Button
-                        title='Submit'
-                        mainClassName='bg-[#4a5748] hover:bg-[#283227ff]'
-                        titleClassName='text-xl text-white'
+                    <Button title='Submit' 
                         onClick={submitComment}
-                    /> 
+                        MyClassName='bg-[#4a5748] hover:bg-[#283227ff]'/> 
                 </div>
             </div> 
             {/* Right side */}
