@@ -42,7 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\WinMain.cpp">
+    <ClCompile Include="src\app\main.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="src\cef\MyCefApp.cpp">
@@ -56,6 +56,15 @@
     </ClCompile>
     <ClCompile Include="src\ui\MainWindow.cpp">
       <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debugging_project\WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debugging_project\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\debugging_project\Client.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +85,15 @@
     </ClInclude>
     <ClInclude Include="src\ui\MainWindow.h">
       <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debugging_project\App.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debugging_project\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\debugging_project\Client.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
