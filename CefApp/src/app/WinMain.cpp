@@ -46,7 +46,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		TranslateMessage(&msg);
 		DispatchMessageA(&msg);
 	}
-
+	OutputDebugStringA("CEF: Shutdown\n");
 	CleanupMainWindow(hInstance);
 	CefShutdown();
 

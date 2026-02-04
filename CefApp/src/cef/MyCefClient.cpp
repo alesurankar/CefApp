@@ -48,8 +48,9 @@ void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
+	OutputDebugStringA("CEF: OnBeforeClose called\n");
 	if (browser == mainBrowser_) {
 		mainBrowser_ = nullptr;
-		PostMessage(hWndParent_, WM_DESTROY, 0, 0);
+		DestroyWindow(hWndParent_);
 	}
 }
