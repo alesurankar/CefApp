@@ -27,19 +27,23 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 {
 	assert(pBrowser);
+	browserCount_++;
 	if (!mainBrowser_) {
 		mainBrowser_ = pBrowser;
 	}
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
 	if (hWndBrowser) {
-		RECT rect{};
-		GetClientRect(hWndParent_, &rect);
-		SetWindowPos(hWndBrowser, NULL, 0, 0,
-			rect.right - rect.left,
-			rect.bottom - rect.top, SWP_NOZORDER);
-
-		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
+		PostMessage(hWndParent_, WM_APP + 1, reinterpret_cast<WPARAM>(hWndBrowser), 0);
+		/*mainBrowser_->GetMainFrame()->ExecuteJavaScript(
 			"console.log('Step7: Browser initialized!');",
+			mainBrowser_->GetMainFrame()->GetURL(), 0
+		);*/
+		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
+			"alert('Step7: Browser initialized!');",
+			mainBrowser_->GetMainFrame()->GetURL(), 0
+		);
+		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
+			"alert('Brouser Count " + std::to_string(browserCount_) + "')",
 			mainBrowser_->GetMainFrame()->GetURL(), 0
 		);
 	}
@@ -54,38 +58,12 @@ void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
-	//if (browser == mainBrowser_) {
+	int count = --browserCount_;
+	if (count == 0) {
 		if (hWndParent_) {
 			PostMessage(hWndParent_, WM_APP + 99, 0, 0);
 			hWndParent_ = nullptr;
-			mainBrowser_ = nullptr;
 		}
-	//}
+		mainBrowser_ = nullptr;
+	}
 }
-
-//{
-//	char buffer[512];
-//
-//	sprintf_s(buffer, "OnBeforeClose called\n");
-//	OutputDebugStringA(buffer);
-//
-//	sprintf_s(buffer, "hWndParent_ = 0x%p\n", hWndParent_);
-//	OutputDebugStringA(buffer);
-//
-//	sprintf_s(buffer, "Browser HWND = 0x%p\n", browser->GetHost()->GetWindowHandle());
-//	OutputDebugStringA(buffer);
-//
-//	sprintf_s(buffer, "mainBrowser_ = 0x%p, browser == mainBrowser_? %d\n",
-//		mainBrowser_.get(), browser == mainBrowser_);
-//	OutputDebugStringA(buffer);
-//
-//	if (browser == mainBrowser_) {
-//		mainBrowser_ = nullptr;
-//		if (hWndParent_) {
-//			sprintf_s(buffer, "Destroying hWndParent_ = 0x%p\n", hWndParent_);
-//			OutputDebugStringA(buffer);
-//			DestroyWindow(hWndParent_);
-//			hWndParent_ = nullptr;
-//		}
-//	}
-//}

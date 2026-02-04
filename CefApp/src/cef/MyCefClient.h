@@ -45,5 +45,6 @@ public:
 private:
 	HWND hWndParent_;
 	CefRefPtr<CefBrowser> mainBrowser_;
+	std::atomic<int> browserCount_{ 0 };
 	IMPLEMENT_REFCOUNTING(MyCefClient);
 };

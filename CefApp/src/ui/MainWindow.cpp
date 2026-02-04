@@ -53,6 +53,15 @@ namespace
 					}
 				}
 				break;
+			case WM_APP + 1:
+			{
+				HWND hWndBrowser = reinterpret_cast<HWND>(wParam);
+				RECT rect{};
+				GetClientRect(hWnd, &rect);
+				SetWindowPos(hWndBrowser, NULL, 0, 0,
+					rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
+				return 0;
+			}
 			case WM_CLOSE:
 			{
 				if (!s_isClosing && pClient && pClient->GetBrowser()) {

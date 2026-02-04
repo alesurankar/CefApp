@@ -25,17 +25,15 @@
 //        return nullptr;
 //    }
 //    void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override;   // CEF UI Thread
-    void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
-
-
-
-
-
-
-    bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, // browser UI thread
-        CefProcessId source_process, CefRefPtr<CefProcessMessage> message) override;
-private:
-    HWND hWndParent_;              // lives on Win32 main thread
-    CefRefPtr<CefBrowser> mainBrowser_;   // thread safe pointer
-    IMPLEMENT_REFCOUNTING(Client);
-};
+//    void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
+//
+//
+//
+//    bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, // browser UI thread
+//        CefProcessId source_process, CefRefPtr<CefProcessMessage> message) override;
+//private:
+//    HWND hWndParent_;              // lives on Win32 main thread
+//    CefRefPtr<CefBrowser> mainBrowser_;   // thread safe pointer
+//    IMPLEMENT_REFCOUNTING(Client);
+//};
+//
