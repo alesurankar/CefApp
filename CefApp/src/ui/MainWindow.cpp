@@ -3,7 +3,7 @@
 
 using namespace std::string_literals;
 
-static constexpr const char* wndClassName = "$client - window$";
+static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
 static CefRefPtr<MyCefClient> pClient;
 static bool s_isClosing = false;
 
