@@ -25,9 +25,21 @@ namespace
 					nullptr,
 					nullptr
 				);
-
+				PostMessage(hWnd, WM_SIZE, 0, 0);
 				return 0;
 			}
+			case WM_SIZE:
+				if (wParam != SIZE_MINIMIZED && pClient) {
+					if (auto pBrowser = pClient->GetBrowser()) {
+						if (auto hWndBrowser = pBrowser->GetHost()->GetWindowHandle()) {
+							RECT rect{};
+							GetClientRect(hWnd, &rect);
+							SetWindowPos(hWndBrowser, NULL, rect.left, rect.top,
+								rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
+						}
+					}
+				}
+				break;
 			case WM_APP + 1:
 				HWND hWndBrowser = reinterpret_cast<HWND>(wParam);
 				RECT rect{};
@@ -37,7 +49,6 @@ namespace
 		}
 	}
 }
-
 
 HWND CreateMainWindow(HINSTANCE hInstance)
 {
@@ -74,4 +85,8 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 
 void CleanupMainWindow(HINSTANCE hInstance)
 {
+	CefRefPtr<CefBrowser> browser;
+	if (pClient) browser = pClient->GetBrowser();
+	pClient.reset();
+	UnregisterClassA(wndClassName, hInstance);
 }

@@ -11,7 +11,10 @@ public:
     explicit Client(HWND hWndParent)  // lives on Win32 main thread
         :
         hWndParent_(hWndParent)
+    {}
+    CefRefPtr<CefBrowser> GetBrowser() const
     {
+        return mainBrowser_;
     }
     CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override
     {
@@ -22,7 +25,6 @@ public:
         return nullptr;
     }
     void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override;   // CEF UI Thread
-
 
 
 

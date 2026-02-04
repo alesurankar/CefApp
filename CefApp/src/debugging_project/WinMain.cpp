@@ -1,5 +1,4 @@
-//#include "../platform/WinWrapper.h"
-
+#include "../platform/WinWrapper.h"
 #include <filesystem>
 #include "include/cef_app.h"
 #include "App.h"
@@ -37,15 +36,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		return -1;
 	}
 
-	//MSG msg;
-	//while (GetMessageA(&msg, nullptr, 0, 0))
-	//{
-	//	TranslateMessage(&msg);
-	//	DispatchMessageA(&msg);
-	//}
-	//
-	//CleanupMainWindow(hInstance);
-	//CefShutdown();
-	//
-	//return (int)msg.wParam;
+	MSG msg;
+	while (GetMessageA(&msg, nullptr, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessageA(&msg);
+	}
+	
+	CleanupMainWindow(hInstance);
+	CefShutdown();
+	
+	return (int)msg.wParam;
 }
