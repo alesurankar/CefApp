@@ -1,16 +1,27 @@
 #include "../platform/WinWrapper.h"
 #include "MyCefClient.h"
 
-bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, 
+bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
-	UINT msgId = 0;
 	std::string received = message->GetArgumentList()->GetString(0);
-	if (received == "close") msgId = WM_CLOSE;
-	if (msgId != 0) {
-		PostMessage(hWndParent_, msgId, 0, 0);
+
+	if (received == "close") {
+		PostMessage(hWndParent_, WM_CLOSE, 0, 0);
 	}
-	return false;
+	else if (received == "minimize") {
+		ShowWindow(hWndParent_, SW_MINIMIZE);
+	}
+	else if (received == "restore") {
+		ShowWindow(hWndParent_, SW_RESTORE);
+	}
+	else if (received == "maximize") {
+		ShowWindow(hWndParent_, SW_MAXIMIZE);
+	}
+	else if (received == "hide") {
+		ShowWindow(hWndParent_, SW_HIDE);
+	}
+	return true;
 }
 
 void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
@@ -27,11 +38,6 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 			rect.right - rect.left,
 			rect.bottom - rect.top, SWP_NOZORDER);
 
-		// Safe to run JS now, but page may not be fully loaded
-		//mainBrowser_->GetMainFrame()->ExecuteJavaScript(
-		//	"alert('Step7: Browser initialized!');",
-		//	mainBrowser_->GetMainFrame()->GetURL(), 0
-		//);
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
 			"console.log('Step7: Browser initialized!');",
 			mainBrowser_->GetMainFrame()->GetURL(), 0
@@ -47,10 +53,46 @@ void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 }
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
+//{
+//	OutputDebugStringA((std::string("hWndParent_ = ") + std::to_string((uintptr_t)hWndParent_) + "\n").c_str());
+//	OutputDebugStringA((std::string("Browser HWND = ") + std::to_string((uintptr_t)browser->GetHost()->GetWindowHandle()) + "\n").c_str());
+//	OutputDebugStringA("CEF: OnBeforeClose called\n");
+//	/*if (browser == mainBrowser_) {
+//		mainBrowser_ = nullptr;
+//		DestroyWindow(hWndParent_);
+//	}*/
+//	if (browser == mainBrowser_) {
+//		mainBrowser_ = nullptr;
+//		if (hWndParent_) {
+//			DestroyWindow(hWndParent_);
+//			hWndParent_ = nullptr;
+//		}
+//	}
+//}
+
 {
-	OutputDebugStringA("CEF: OnBeforeClose called\n");
+	char buffer[512];
+
+	sprintf_s(buffer, "OnBeforeClose called\n");
+	OutputDebugStringA(buffer);
+
+	sprintf_s(buffer, "hWndParent_ = 0x%p\n", hWndParent_);
+	OutputDebugStringA(buffer);
+
+	sprintf_s(buffer, "Browser HWND = 0x%p\n", browser->GetHost()->GetWindowHandle());
+	OutputDebugStringA(buffer);
+
+	sprintf_s(buffer, "mainBrowser_ = 0x%p, browser == mainBrowser_? %d\n",
+		mainBrowser_.get(), browser == mainBrowser_);
+	OutputDebugStringA(buffer);
+
 	if (browser == mainBrowser_) {
 		mainBrowser_ = nullptr;
-		DestroyWindow(hWndParent_);
+		if (hWndParent_) {
+			sprintf_s(buffer, "Destroying hWndParent_ = 0x%p\n", hWndParent_);
+			OutputDebugStringA(buffer);
+			DestroyWindow(hWndParent_);
+			hWndParent_ = nullptr;
+		}
 	}
 }
