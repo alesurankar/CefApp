@@ -112,12 +112,12 @@
   <ItemGroup>
     <ClCompile Include="src\debugging_project\Client.cpp" />
     <ClCompile Include="src\debugging_project\Window.cpp" />
-    <ClCompile Include="src\debugging_project\WinMain.cpp" />
+    <ClCompile Include="src\debugging_project\main.cpp" />
     <ClCompile Include="src\ui\MainWindow.cpp" />
     <ClCompile Include="src\cef\MyCefApp.cpp" />
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
-    <ClCompile Include="src\app\main.cpp" />
+    <ClCompile Include="src\app\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\debugging_project\App.h" />

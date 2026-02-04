@@ -42,7 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\main.cpp">
+    <ClCompile Include="src\app\WinMain.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="src\cef\MyCefApp.cpp">
@@ -57,7 +57,7 @@
     <ClCompile Include="src\ui\MainWindow.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\debugging_project\WinMain.cpp">
+    <ClCompile Include="src\debugging_project\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\debugging_project\Window.cpp">

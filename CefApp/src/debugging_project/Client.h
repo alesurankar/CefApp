@@ -1,30 +1,30 @@
-#pragma once
-#include "include/cef_client.h"
-
-// Minimal Client class definition inheriting from CefClient
-class Client 
-    : 
-    public CefClient,
-    public CefLifeSpanHandler
-{
-public:
-    explicit Client(HWND hWndParent)  // lives on Win32 main thread
-        :
-        hWndParent_(hWndParent)
-    {}
-    CefRefPtr<CefBrowser> GetBrowser() const
-    {
-        return mainBrowser_;
-    }
-    CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override
-    {
-        return this;
-    }
-    CefRefPtr<CefLoadHandler> GetLoadHandler() override
-    {
-        return nullptr;
-    }
-    void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override;   // CEF UI Thread
+//#pragma once
+//#include "include/cef_client.h"
+//
+//// Minimal Client class definition inheriting from CefClient
+//class Client 
+//    : 
+//    public CefClient,
+//    public CefLifeSpanHandler
+//{
+//public:
+//    explicit Client(HWND hWndParent)  // lives on Win32 main thread
+//        :
+//        hWndParent_(hWndParent)
+//    {}
+//    CefRefPtr<CefBrowser> GetBrowser() const
+//    {
+//        return mainBrowser_;
+//    }
+//    CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override
+//    {
+//        return this;
+//    }
+//    CefRefPtr<CefLoadHandler> GetLoadHandler() override
+//    {
+//        return nullptr;
+//    }
+//    void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override;   // CEF UI Thread
     void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
 
 
