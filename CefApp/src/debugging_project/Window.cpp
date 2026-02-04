@@ -3,6 +3,7 @@
 
 static constexpr const char* wndClassName = "$client - window$";
 static CefRefPtr<Client> pClient;
+static bool s_isClosing = false;
 
 namespace
 {
@@ -41,12 +42,32 @@ namespace
 				}
 				break;
 			case WM_APP + 1:
+			{
 				HWND hWndBrowser = reinterpret_cast<HWND>(wParam);
 				RECT rect{};
 				GetClientRect(hWnd, &rect);
 				SetWindowPos(hWndBrowser, NULL, 0, 0,
 					rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
+				return 0;
+			}
+			case WM_CLOSE:
+			{
+				if (!s_isClosing && pClient && pClient->GetBrowser()) {
+					s_isClosing = true;
+					pClient->GetBrowser()->GetHost()->CloseBrowser(true);
+					return 0;
+				}
+				DestroyWindow(hWnd);
+				return 0;
+			}
+			case WM_APP + 99:
+				DestroyWindow(hWnd);
+				return 0;
+			case WM_DESTROY:
+				PostQuitMessage(0);
+				return 0;
 		}
+		return DefWindowProcA(hWnd, msg, wParam, lParam);
 	}
 }
 

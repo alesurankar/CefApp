@@ -14,6 +14,12 @@ void Client::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 	);
 }
 
+void Client::OnBeforeClose(CefRefPtr<CefBrowser> browser)
+{
+	PostMessage(hWndParent_, WM_APP + 99, 0, 0);
+	mainBrowser_ = nullptr;
+}
+
 
 
 

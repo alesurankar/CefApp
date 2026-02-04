@@ -25,6 +25,7 @@ public:
         return nullptr;
     }
     void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override;   // CEF UI Thread
+    void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
 
 
 
