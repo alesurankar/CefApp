@@ -40,6 +40,17 @@ namespace
 				if (MainWindow* window = MainWindow::GetWindow(hWnd))
 					window->OnSize(wParam);
 				break;
+			case WM_NCHITTEST:
+			{
+				LRESULT hit = DefWindowProc(hWnd, msg, wParam, lParam);
+
+				if (hit == HTCLIENT) // If mouse is in client area
+				{
+					// Make the whole client area behave like a title bar
+					return HTCAPTION;
+				}
+				return hit;
+			}
 			case WM_CLOSE:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
@@ -88,7 +99,7 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		0,
 		wndClassName,
 		"CEF",
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		WS_POPUP | WS_CLIPCHILDREN | WS_THICKFRAME,
 		200, 20, 1360, 1020,
 		nullptr,
 		nullptr,
@@ -155,7 +166,7 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
-	SetWindowPos(hWndBrowser_, nullptr, rect.left, rect.top,
+	SetWindowPos(hWndBrowser_, nullptr, rect.left, rect.top + 40,
 		rect.right - rect.left, rect.bottom - rect.top, 
 		SWP_NOZORDER | SWP_NOACTIVATE);
 }
