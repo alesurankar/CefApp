@@ -1,5 +1,6 @@
 #include "../platform/WinWrapper.h"
 #include "MyCefClient.h"
+#include "../ui/MainWindow.h"
 
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
@@ -32,18 +33,14 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		mainBrowser_ = pBrowser;
 	}
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
-	if (hWndBrowser) {
-		PostMessage(hWndParent_, WM_APP + 1, reinterpret_cast<WPARAM>(hWndBrowser), 0);
-		/*mainBrowser_->GetMainFrame()->ExecuteJavaScript(
-			"console.log('Step7: Browser initialized!');",
-			mainBrowser_->GetMainFrame()->GetURL(), 0
-		);*/
+	if (hWndBrowser && hWndParent_) {
+		MainWindow* window = MainWindow::GetWindow(hWndParent_);
+		if (window) {
+			window->SetBrowserHWND(hWndBrowser);
+			PostMessage(hWndParent_, WM_APP + 1, 0, 0);
+		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
-			"alert('Step7: Browser initialized!');",
-			mainBrowser_->GetMainFrame()->GetURL(), 0
-		);
-		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
-			"alert('Brouser Count " + std::to_string(browserCount_) + "')",
+			"console.log('Browser Count " + std::to_string(browserCount_) + "')",
 			mainBrowser_->GetMainFrame()->GetURL(), 0
 		);
 	}

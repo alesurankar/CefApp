@@ -4,54 +4,41 @@
 using namespace std::string_literals;
 
 static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
-static CefRefPtr<MyCefClient> pClient;
-static bool s_isClosing = false;
 
 namespace 
 {
 	LRESULT CALLBACK MainWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg) {
-			// Step 5: WM_CREATE fires in window procedure
+			case WM_NCCREATE:
+			{
+				CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
+				auto* window = static_cast<MainWindow*>(cs->lpCreateParams);
+
+				window->AttachHWND(hWnd);
+				SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
+
+				return TRUE;
+			}
 			case WM_CREATE:
 			{
-				pClient = new MyCefClient{ hWnd };
-				RECT rect{};
-				GetClientRect(hWnd, &rect);
-				CefWindowInfo info;
-				info.SetAsChild(hWnd, CefRect(0, 0, rect.right - rect.left, rect.bottom - rect.top));
-				// Step 6: CEF starts renderer process (non-blocking)
-				CefBrowserHost::CreateBrowser(
-					info,
-					pClient,
-					"http://localhost:5173/"s,
-					CefBrowserSettings{},
-					nullptr,
-					nullptr
-				);
-				PostMessage(hWnd, WM_SIZE, 0, 0);
+				auto* window = reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+				if (window) {
+					window->CreateBrowser();
+					PostMessage(hWnd, WM_SIZE, 0, 0);
+				}
 				return 0;
 			}
 			case WM_SIZE:
-				if (wParam != SIZE_MINIMIZED && pClient) {
-					if (auto pBrowser = pClient->GetBrowser()) {
-						if (auto hWndBrowser = pBrowser->GetHost()->GetWindowHandle()) {
-							RECT rect{};
-							GetClientRect(hWnd, &rect);
-							SetWindowPos(hWndBrowser, NULL, rect.left, rect.top,
-								rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
-						}
-					}
-				}
+			{
+				if (MainWindow* window = MainWindow::GetWindow(hWnd))
+					window->OnSize(wParam);
 				break;
+			}
 			case WM_ERASEBKGND:
-				if (pClient) {
-					if (auto pBrowser = pClient->GetBrowser()) {
-						if (pBrowser->GetHost()->GetWindowHandle()) {
-							return 1;
-						}
-					}
-				}
+				auto* window = MainWindow::GetWindow(hWnd);
+				if (window && window->HasBrowserWindow())
+					return 1;
 				break;
 			case WM_APP + 1:
 			{
@@ -64,9 +51,10 @@ namespace
 			}
 			case WM_CLOSE:
 			{
-				if (!s_isClosing && pClient && pClient->GetBrowser()) {
-					s_isClosing = true;
-					pClient->GetBrowser()->GetHost()->CloseBrowser(true);
+				auto* window = (MainWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+				if (window) {
+					OutputDebugStringA("WM_CLOSE triggered\n");
+					window->RequestClose();
 					return 0;
 				}
 				DestroyWindow(hWnd);
@@ -76,17 +64,20 @@ namespace
 				DestroyWindow(hWnd);
 				return 0;
 			case WM_DESTROY:
+			{
+				MainWindow* window = MainWindow::GetWindow(hWnd);
+				SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
+				delete window;
 				PostQuitMessage(0);
-				break;
+				return 0;
+			}
 		}
 		return DefWindowProcA(hWnd, msg, wParam, lParam);
 	}
 }
 
-// Step 4: Create Win32 window + browser
 HWND CreateMainWindow(HINSTANCE hInstance)
 {
-	HWND hWndMain = nullptr;
 	WNDCLASSEXA wcex{};
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -95,32 +86,113 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wcex.lpszClassName = wndClassName;
+
 	if (!RegisterClassExA(&wcex)) {
 		MessageBoxA(nullptr, "RegisterClassExA failed!", "Error", MB_ICONERROR);
 		return nullptr;
 	}
 
-	hWndMain = CreateWindowExA(
-		0, wndClassName, "CEF",
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 
-		200, 20, 1360, 1020, 
-		nullptr, nullptr, hInstance, nullptr
+	auto* window = new MainWindow(nullptr);
+	HWND hWnd = CreateWindowExA(
+		0,
+		wndClassName,
+		"CEF",
+		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		200, 20, 1360, 1020,
+		nullptr,
+		nullptr,
+		hInstance,
+		window
 	);
-	if (!hWndMain) {
+
+	if (!hWnd) {
 		MessageBoxA(nullptr, "CreateWindowExA failed!", "Error", MB_ICONERROR);
+		delete window;
 		return nullptr;
 	}
+	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	UpdateWindow(hWnd);                  
 
-	ShowWindow(hWndMain, SW_SHOWDEFAULT);    // this + 
-	UpdateWindow(hWndMain);                  // this -> triggers WM_CREATE
-
-	return hWndMain;
+	return hWnd;
 }
 
 void CleanupMainWindow(HINSTANCE hInstance)
 {
-	CefRefPtr<CefBrowser> browser;
-	if (pClient) browser = pClient->GetBrowser();
-	pClient.reset();
 	UnregisterClassA(wndClassName, hInstance);
+}
+
+
+MainWindow::MainWindow(HWND hWnd)
+	:
+	hWnd_(hWnd)
+{}
+
+void MainWindow::AttachHWND(HWND hWnd)
+{
+	hWnd_ = hWnd;
+}
+
+void MainWindow::CreateBrowser()
+{
+	client_ = new MyCefClient(hWnd_);
+	RECT rect{};
+	GetClientRect(hWnd_, &rect);
+	CefWindowInfo info;
+	info.SetAsChild(hWnd_, CefRect(0, 0, rect.right - rect.left, rect.bottom - rect.top));
+
+	CefBrowserHost::CreateBrowser(
+		info,
+		client_,
+		url_,
+		CefBrowserSettings{},
+		nullptr,
+		nullptr
+	);
+}
+
+MainWindow* MainWindow::GetWindow(HWND hWnd)
+{
+	return
+		reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+}
+
+void MainWindow::OnSize(WPARAM wParam)
+{
+	if (wParam == SIZE_MINIMIZED || !hWndBrowser_) return;
+
+	RECT rect{};
+	GetClientRect(hWnd_, &rect);
+	SetWindowPos(hWndBrowser_, nullptr, 0, 0,
+		rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
+}
+
+bool MainWindow::HasBrowserWindow() const
+{
+	if (!client_) return false;
+	auto browser = client_->GetBrowser();
+	if (!browser) return false;
+	return browser->GetHost()->GetWindowHandle() != nullptr;
+}
+
+void MainWindow::SetBrowserHWND(HWND hWndBrowser)
+{
+	hWndBrowser_ = hWndBrowser;
+}
+
+void MainWindow::RequestClose()
+{
+	if (isClosing_ || !client_) {
+		DestroyWindow(hWnd_);
+		return;
+	}
+
+	isClosing_ = true;
+	auto browser = client_->GetBrowser();
+	if (browser)
+		browser->GetHost()->CloseBrowser(true);
+}
+
+CefRefPtr<MyCefClient> MainWindow::GetClient() const
+{
+	return client_;
 }
