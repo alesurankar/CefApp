@@ -18,7 +18,7 @@
 #define NOATOM
 #define NOCLIPBOARD
 #define NOCOLOR
-#define NOCTLMGR
+//#define NOCTLMGR
 #define NODRAWTEXT
 #define NOKERNEL
 #define NONLS
@@ -30,7 +30,7 @@
 #define NOSOUND
 #define NOTEXTMETRIC
 #define NOWH
-#define NOCOMM
+//#define NOCOMM
 #define NOKANJI
 #define NOHELP
 #define NOPROFILER

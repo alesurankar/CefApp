@@ -1,4 +1,15 @@
+
 #include "MainWindow.h"
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
+#include <Windowsx.h>// Remove the macros that conflict with CEF
+#ifdef GetNextSibling
+#undef GetNextSibling
+#endif
+
+#ifdef GetFirstChild
+#undef GetFirstChild
+#endif
 #include "../cef/MyCefClient.h"
 
 using namespace std::string_literals;
@@ -40,13 +51,58 @@ namespace
 				if (MainWindow* window = MainWindow::GetWindow(hWnd))
 					window->OnSize(wParam);
 				break;
+			case WM_NCCALCSIZE:
+			{
+				if (wParam)
+				{
+					// lParam is a pointer to NCCALCSIZE_PARAMS
+					NCCALCSIZE_PARAMS* pParams = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
+
+					// Keep the client rect same as original
+					pParams->rgrc[0] = pParams->rgrc[0]; // no-op, just for clarity
+					return 0; // tells Windows: we handled it
+				}
+				else
+				{
+					// lParam is a RECT*
+					RECT* pRect = reinterpret_cast<RECT*>(lParam);
+					// optionally adjust the rect if needed
+					return 0;
+				}
+			}
 			case WM_NCHITTEST:
 			{
 				LRESULT hit = DefWindowProc(hWnd, msg, wParam, lParam);
-
-				if (hit == HTCLIENT) // If mouse is in client area
+			
+				if (hit == HTCLIENT)
 				{
-					// Make the whole client area behave like a title bar
+					POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+					ScreenToClient(hWnd, &pt);
+
+					RECT rc;
+					GetClientRect(hWnd, &rc);
+					const int border = 8; // resize border thickness
+
+					// Top edge
+					if (pt.y < border)
+					{
+						if (pt.x < border) return HTTOPLEFT;
+						if (pt.x > rc.right - border) return HTTOPRIGHT;
+						return HTTOP;
+					}
+					// Bottom edge
+					if (pt.y > rc.bottom - border)
+					{
+						if (pt.x < border) return HTBOTTOMLEFT;
+						if (pt.x > rc.right - border) return HTBOTTOMRIGHT;
+						return HTBOTTOM;
+					}
+					// Left edge
+					if (pt.x < border) return HTLEFT;
+					// Right edge
+					if (pt.x > rc.right - border) return HTRIGHT;
+
+					// Everything else draggable
 					return HTCAPTION;
 				}
 				return hit;
@@ -99,13 +155,16 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		0,
 		wndClassName,
 		"CEF",
-		WS_POPUP | WS_CLIPCHILDREN | WS_THICKFRAME,
+		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		200, 20, 1360, 1020,
 		nullptr,
 		nullptr,
 		hInstance,
 		window
 	);
+
+	MARGINS margins = { -1 };
+	DwmExtendFrameIntoClientArea(hWnd, &margins);
 
 	if (!hWnd) {
 		MessageBoxA(nullptr, "CreateWindowExA failed!", "Error", MB_ICONERROR);
@@ -166,8 +225,10 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
-	SetWindowPos(hWndBrowser_, nullptr, rect.left, rect.top + 40,
-		rect.right - rect.left, rect.bottom - rect.top, 
+	int left = 20;
+	int top = 1;
+	SetWindowPos(hWndBrowser_, nullptr, left, top,
+		rect.right - left - 1, rect.bottom - top - 1,
 		SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
