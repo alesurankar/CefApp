@@ -17,11 +17,10 @@ public:
 	void OnSize(WPARAM wParam);
 	bool HasBrowserWindow() const;
 	void SetBrowserHWND(HWND hWndBrowser);
-	void RequestClose();
-	CefRefPtr<MyCefClient> GetClient() const;
+	void RequestClose(); 
 private:
 	HWND hWnd_;
-	CefRefPtr<MyCefClient> client_; 
+	MyCefClient* client_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
 	std::string url_ = "http://localhost:5173/"; 
 	bool isClosing_ = false;

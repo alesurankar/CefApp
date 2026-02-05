@@ -22,36 +22,27 @@ namespace
 			}
 			case WM_CREATE:
 			{
-				auto* window = reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+				MainWindow* window = MainWindow::GetWindow(hWnd);
 				if (window) {
 					window->CreateBrowser();
 					PostMessage(hWnd, WM_SIZE, 0, 0);
 				}
 				return 0;
 			}
-			case WM_SIZE:
-			{
-				if (MainWindow* window = MainWindow::GetWindow(hWnd))
-					window->OnSize(wParam);
-				break;
-			}
 			case WM_ERASEBKGND:
-				auto* window = MainWindow::GetWindow(hWnd);
+			{
+				MainWindow* window = MainWindow::GetWindow(hWnd);
 				if (window && window->HasBrowserWindow())
 					return 1;
 				break;
-			case WM_APP + 1:
-			{
-				HWND hWndBrowser = reinterpret_cast<HWND>(wParam);
-				RECT rect{};
-				GetClientRect(hWnd, &rect);
-				SetWindowPos(hWndBrowser, NULL, 0, 0,
-					rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
-				return 0;
 			}
+			case WM_SIZE:
+				if (MainWindow* window = MainWindow::GetWindow(hWnd))
+					window->OnSize(wParam);
+				break;
 			case WM_CLOSE:
 			{
-				auto* window = (MainWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+				MainWindow* window = MainWindow::GetWindow(hWnd);
 				if (window) {
 					OutputDebugStringA("WM_CLOSE triggered\n");
 					window->RequestClose();
@@ -138,7 +129,8 @@ void MainWindow::CreateBrowser()
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
 	CefWindowInfo info;
-	info.SetAsChild(hWnd_, CefRect(0, 0, rect.right - rect.left, rect.bottom - rect.top));
+	info.SetAsChild(hWnd_, CefRect(0, 0, 
+		rect.right - rect.left, rect.bottom - rect.top));
 
 	CefBrowserHost::CreateBrowser(
 		info,
@@ -158,12 +150,14 @@ MainWindow* MainWindow::GetWindow(HWND hWnd)
 
 void MainWindow::OnSize(WPARAM wParam)
 {
-	if (wParam == SIZE_MINIMIZED || !hWndBrowser_) return;
+	if (wParam == SIZE_MINIMIZED) return;
+	if (!hWndBrowser_) return;
 
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
-	SetWindowPos(hWndBrowser_, nullptr, 0, 0,
-		rect.right - rect.left, rect.bottom - rect.top, SWP_NOZORDER);
+	SetWindowPos(hWndBrowser_, nullptr, rect.left, rect.top,
+		rect.right - rect.left, rect.bottom - rect.top, 
+		SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 bool MainWindow::HasBrowserWindow() const
@@ -187,12 +181,7 @@ void MainWindow::RequestClose()
 	}
 
 	isClosing_ = true;
-	auto browser = client_->GetBrowser();
-	if (browser)
+	if (auto browser = client_->GetBrowser()) {
 		browser->GetHost()->CloseBrowser(true);
-}
-
-CefRefPtr<MyCefClient> MainWindow::GetClient() const
-{
-	return client_;
+	}
 }
