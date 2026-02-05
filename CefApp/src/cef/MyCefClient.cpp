@@ -13,11 +13,17 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	else if (received == "minimize") {
 		ShowWindow(hWndParent_, SW_MINIMIZE);
 	}
-	else if (received == "restore") {
-		ShowWindow(hWndParent_, SW_RESTORE);
-	}
-	else if (received == "maximize") {
-		ShowWindow(hWndParent_, SW_MAXIMIZE);
+	else if (received == "resize") {
+		WINDOWPLACEMENT wp;
+		wp.length = sizeof(WINDOWPLACEMENT);
+		if (GetWindowPlacement(hWndParent_, &wp)) {
+			if (wp.showCmd == SW_MAXIMIZE) {
+				ShowWindow(hWndParent_, SW_RESTORE);
+			}
+			else {
+				ShowWindow(hWndParent_, SW_MAXIMIZE);
+			}
+		}
 	}
 	else if (received == "hide") {
 		ShowWindow(hWndParent_, SW_HIDE);

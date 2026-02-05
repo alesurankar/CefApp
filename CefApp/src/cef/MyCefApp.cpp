@@ -42,6 +42,11 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         CefV8Value::CreateFunction("MinimizeFunc", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
+    global->SetValue(
+        "ResizeFunc",
+        CefV8Value::CreateFunction("ResizeFunc", this),
+        V8_PROPERTY_ATTRIBUTE_NONE
+    );
     //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     browser_ = pBrowser;
@@ -66,7 +71,11 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     }
     else if (name == "MinimizeFunc") {
         std::string action = "minimize";
-        HandleFunction5(action);
+        HandleFunction4(action);
+    }
+    else if (name == "ResizeFunc") {
+        std::string action = "resize";
+        HandleFunction4(action);
     }
     else {
         exception = "Unknown native function: " + name.ToString();
@@ -121,15 +130,6 @@ void MyCefApp::HandleFunction3(const CefV8ValueList& argPtrs)
 }
 
 void MyCefApp::HandleFunction4(const std::string& msg)
-{
-    if (!currentFrame_ || !browser_) return;
-    currentFrame_->ExecuteJavaScript("alert(\"Sending message: '" + msg + "' to Browser process\");", currentFrame_->GetURL(), 0);
-    CefRefPtr<CefProcessMessage> message = CefProcessMessage::Create("TestMessage");
-    message->GetArgumentList()->SetString(0, msg);
-    currentFrame_->SendProcessMessage(PID_BROWSER, message);
-}
-
-void MyCefApp::HandleFunction5(const std::string& msg)
 {
     if (!currentFrame_ || !browser_) return;
     currentFrame_->ExecuteJavaScript("alert(\"Sending message: '" + msg + "' to Browser process\");", currentFrame_->GetURL(), 0);
