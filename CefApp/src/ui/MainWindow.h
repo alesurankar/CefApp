@@ -1,5 +1,5 @@
 #pragma once
-#include "../platform/WinWrapper.h"
+#include "../platform/MyWin.h"
 #include <string>
 
 class MyCefClient;

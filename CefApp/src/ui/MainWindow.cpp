@@ -1,15 +1,7 @@
-
 #include "MainWindow.h"
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
-#include <Windowsx.h>// Remove the macros that conflict with CEF
-#ifdef GetNextSibling
-#undef GetNextSibling
-#endif
-
-#ifdef GetFirstChild
-#undef GetFirstChild
-#endif
+#include "../platform/MyWinX.h" 
 #include "../cef/MyCefClient.h"
 
 using namespace std::string_literals;

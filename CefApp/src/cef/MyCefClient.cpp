@@ -1,4 +1,4 @@
-#include "../platform/WinWrapper.h"
+#include "../platform/MyWin.h"
 #include "MyCefClient.h"
 #include "../ui/MainWindow.h"
 
