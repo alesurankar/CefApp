@@ -1,3 +1,26 @@
+
+interface CefApi {
+    CloseFunc(): void;
+    MinimizeFunc(): void;
+    ResizeFunc(): void;
+}
+const cef = window as unknown as CefApi;
+
+function myCefClose(): void
+{
+    return cef.CloseFunc();
+}
+
+function myCefMinimize(): void
+{
+    return cef.MinimizeFunc();
+}
+
+function myCefResize(): void
+{
+    return cef.ResizeFunc();
+}
+
 const TitleBar = () => {
   return (
     <div id="titlebar"
@@ -11,18 +34,21 @@ const TitleBar = () => {
       <div className="flex space-x-2 pr-11">
         <button id="minimize"
           className="w-6 h-6 flex items-center justify-center hover:bg-gray-700 rounded-sm [webkit-app-region:no-drag]"
+          onClick={() => myCefMinimize()}
         >
-          _
+          ―
         </button>
         <button id="maximize"
           className="w-6 h-6 flex items-center justify-center hover:bg-gray-700 rounded-sm [webkit-app-region:no-drag]"
+          onClick={() => myCefResize()}
         >
           ☐
         </button>
         <button id="close"
           className="w-6 h-6 flex items-center justify-center hover:bg-red-600 rounded-sm [webkit-app-region:no-drag]"
+          onClick={() => myCefClose()}
         >
-          X
+          ✕
         </button>
       </div>
     </div>

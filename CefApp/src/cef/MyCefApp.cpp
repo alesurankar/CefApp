@@ -132,7 +132,7 @@ void MyCefApp::HandleFunction3(const CefV8ValueList& argPtrs)
 void MyCefApp::HandleFunction4(const std::string& msg)
 {
     if (!currentFrame_ || !browser_) return;
-    currentFrame_->ExecuteJavaScript("alert(\"Sending message: '" + msg + "' to Browser process\");", currentFrame_->GetURL(), 0);
+    //currentFrame_->ExecuteJavaScript("alert(\"Sending message: '" + msg + "' to Browser process\");", currentFrame_->GetURL(), 0);
     CefRefPtr<CefProcessMessage> message = CefProcessMessage::Create("TestMessage");
     message->GetArgumentList()->SetString(0, msg);
     currentFrame_->SendProcessMessage(PID_BROWSER, message);
