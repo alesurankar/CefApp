@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
+//#include <commctrl.h>
+//#pragma comment(lib, "Comctl32.lib")
 #include "../platform/MyWinX.h" 
 #include "../cef/MyCefClient.h"
 
@@ -70,11 +72,11 @@ namespace
 				{
 					POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
 					ScreenToClient(hWnd, &pt);
-
+			
 					RECT rc;
 					GetClientRect(hWnd, &rc);
 					const int border = 8; // resize border thickness
-
+			
 					// Top edge
 					if (pt.y < border)
 					{
@@ -93,7 +95,7 @@ namespace
 					if (pt.x < border) return HTLEFT;
 					// Right edge
 					if (pt.x > rc.right - border) return HTRIGHT;
-
+			
 					// Everything else draggable
 					return HTCAPTION;
 				}
@@ -147,15 +149,21 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		0,
 		wndClassName,
 		"CEF",
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		//WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		WS_POPUP | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN,
+		//WS_POPUP | WS_THICKFRAME | WS_CLIPCHILDREN,
 		200, 20, 1360, 1020,
 		nullptr,
 		nullptr,
 		hInstance,
 		window
 	);
+	//SetWindowLong(hWnd, GWL_EXSTYLE,
+	//	GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
+	//SetLayeredWindowAttributes(hWnd, 0, 100, LWA_ALPHA);
 
 	MARGINS margins = { -1 };
+	//MARGINS margins = { 1, 1, 1, 1 };
 	DwmExtendFrameIntoClientArea(hWnd, &margins);
 
 	if (!hWnd) {
@@ -218,10 +226,13 @@ void MainWindow::OnSize(WPARAM wParam)
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
 	int left = 20;
-	int top = 1;
+	int top = 2;
 	SetWindowPos(hWndBrowser_, nullptr, left, top,
-		rect.right - left - 1, rect.bottom - top - 1,
+		rect.right - left - 2, rect.bottom - top - 2,
 		SWP_NOZORDER | SWP_NOACTIVATE);
+	//SetWindowPos(hWndBrowser_, nullptr, 0, 0,
+	//	rect.right - rect.left, rect.bottom - rect.top,
+	//	SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 bool MainWindow::HasBrowserWindow() const
@@ -234,7 +245,14 @@ bool MainWindow::HasBrowserWindow() const
 
 void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 {
-	hWndBrowser_ = hWndBrowser;
+	hWndBrowser_ = hWndBrowser; 
+	// Make the browser window transparent to mouse hit-testing
+	LONG exStyle = GetWindowLong(hWndBrowser_, GWL_EXSTYLE);
+	SetWindowLong(hWndBrowser_, GWL_EXSTYLE, exStyle | WS_EX_TRANSPARENT);
+
+	// Force Windows to re-evaluate styles
+	SetWindowPos(hWndBrowser_, nullptr, 0, 0, 0, 0,
+		SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 }
 
 void MainWindow::RequestClose()
