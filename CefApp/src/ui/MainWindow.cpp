@@ -1,8 +1,4 @@
 #include "MainWindow.h"
-#include <dwmapi.h>
-#pragma comment(lib, "dwmapi.lib")
-//#include <commctrl.h>
-//#pragma comment(lib, "Comctl32.lib")
 #include "../platform/MyWinX.h" 
 #include "../cef/MyCefClient.h"
 
@@ -49,57 +45,45 @@ namespace
 			{
 				if (wParam)
 				{
-					// lParam is a pointer to NCCALCSIZE_PARAMS
-					NCCALCSIZE_PARAMS* pParams = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
+					NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
 
-					// Keep the client rect same as original
-					pParams->rgrc[0] = pParams->rgrc[0]; // no-op, just for clarity
-					return 0; // tells Windows: we handled it
+					// shrink client rect by border thickness for resizing
+					const int border = 8;
+					p->rgrc[0].left += border;
+					p->rgrc[0].top += 1;    // little hack to remove white artefact on top
+					p->rgrc[0].right -= border;
+					p->rgrc[0].bottom -= border;
+
+					return 0; // handled
 				}
 				else
 				{
-					// lParam is a RECT*
 					RECT* pRect = reinterpret_cast<RECT*>(lParam);
-					// optionally adjust the rect if needed
+					// optional: shrink for border
 					return 0;
 				}
 			}
 			case WM_NCHITTEST:
 			{
-				LRESULT hit = DefWindowProc(hWnd, msg, wParam, lParam);
-			
-				if (hit == HTCLIENT)
-				{
-					POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-					ScreenToClient(hWnd, &pt);
-			
-					RECT rc;
-					GetClientRect(hWnd, &rc);
-					const int border = 8; // resize border thickness
-			
-					// Top edge
-					if (pt.y < border)
-					{
-						if (pt.x < border) return HTTOPLEFT;
-						if (pt.x > rc.right - border) return HTTOPRIGHT;
-						return HTTOP;
-					}
-					// Bottom edge
-					if (pt.y > rc.bottom - border)
-					{
-						if (pt.x < border) return HTBOTTOMLEFT;
-						if (pt.x > rc.right - border) return HTBOTTOMRIGHT;
-						return HTBOTTOM;
-					}
-					// Left edge
-					if (pt.x < border) return HTLEFT;
-					// Right edge
-					if (pt.x > rc.right - border) return HTRIGHT;
-			
-					// Everything else draggable
-					return HTCAPTION;
-				}
-				return hit;
+				POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+				ScreenToClient(hWnd, &pt);
+				RECT rc;
+				GetClientRect(hWnd, &rc);
+				const int border = 8;
+
+				// corners
+				if (pt.y < border && pt.x < border) return HTTOPLEFT;
+				if (pt.y < border && pt.x > rc.right - border) return HTTOPRIGHT;
+				if (pt.y > rc.bottom - border && pt.x < border) return HTBOTTOMLEFT;
+				if (pt.y > rc.bottom - border && pt.x > rc.right - border) return HTBOTTOMRIGHT;
+
+				// edges
+				if (pt.y < border) return HTTOP;
+				if (pt.y > rc.bottom - border) return HTBOTTOM;
+				if (pt.x < border) return HTLEFT;
+				if (pt.x > rc.right - border) return HTRIGHT;
+
+				return HTCAPTION; // everything else draggable
 			}
 			case WM_CLOSE:
 			{
@@ -135,7 +119,7 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = MainWindowWndProc;
 	wcex.hInstance = hInstance;
-	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW); 
 	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wcex.lpszClassName = wndClassName;
 
@@ -151,20 +135,12 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		"CEF",
 		//WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		WS_POPUP | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN,
-		//WS_POPUP | WS_THICKFRAME | WS_CLIPCHILDREN,
 		200, 20, 1360, 1020,
 		nullptr,
 		nullptr,
 		hInstance,
 		window
 	);
-	//SetWindowLong(hWnd, GWL_EXSTYLE,
-	//	GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
-	//SetLayeredWindowAttributes(hWnd, 0, 100, LWA_ALPHA);
-
-	MARGINS margins = { -1 };
-	//MARGINS margins = { 1, 1, 1, 1 };
-	DwmExtendFrameIntoClientArea(hWnd, &margins);
 
 	if (!hWnd) {
 		MessageBoxA(nullptr, "CreateWindowExA failed!", "Error", MB_ICONERROR);
@@ -226,13 +202,12 @@ void MainWindow::OnSize(WPARAM wParam)
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
 	int left = 20;
-	int top = 2;
-	SetWindowPos(hWndBrowser_, nullptr, left, top,
-		rect.right - left - 2, rect.bottom - top - 2,
-		SWP_NOZORDER | SWP_NOACTIVATE);
-	//SetWindowPos(hWndBrowser_, nullptr, 0, 0,
-	//	rect.right - rect.left, rect.bottom - rect.top,
+	//SetWindowPos(hWndBrowser_, nullptr, left, 0,
+	//	rect.right - left, rect.bottom - rect.top,
 	//	SWP_NOZORDER | SWP_NOACTIVATE);
+	SetWindowPos(hWndBrowser_, nullptr, 50, 0,
+		rect.right - rect.left, rect.bottom - rect.top,
+		SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 bool MainWindow::HasBrowserWindow() const
@@ -245,14 +220,7 @@ bool MainWindow::HasBrowserWindow() const
 
 void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 {
-	hWndBrowser_ = hWndBrowser; 
-	// Make the browser window transparent to mouse hit-testing
-	LONG exStyle = GetWindowLong(hWndBrowser_, GWL_EXSTYLE);
-	SetWindowLong(hWndBrowser_, GWL_EXSTYLE, exStyle | WS_EX_TRANSPARENT);
-
-	// Force Windows to re-evaluate styles
-	SetWindowPos(hWndBrowser_, nullptr, 0, 0, 0, 0,
-		SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+	hWndBrowser_ = hWndBrowser;
 }
 
 void MainWindow::RequestClose()
