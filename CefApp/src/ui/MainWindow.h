@@ -14,7 +14,9 @@ public:
 	{ 
 		None, 
 		Close, 
-		Minimize 
+		Minimize,
+		Maximize, 
+		Restore
 	};
 	explicit MainWindow(HWND hWnd);
 	void AttachHWND(HWND hWnd);
@@ -29,6 +31,8 @@ public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
 	int fadeStep = 0;
+	bool isMinimized_ = false;
+	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
 private:
 	HWND hWnd_;

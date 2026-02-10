@@ -46,36 +46,70 @@ namespace
 				if (wParam == MainWindow::TIMER_FADE) {
 					MainWindow* window = MainWindow::GetWindow(hWnd);
 					if (!window) break;
-
+				
 					if (window->fadeStep <= 0) {
 						KillTimer(hWnd, MainWindow::TIMER_FADE);
-
+				
 						switch (window->fadeAction_) {
 						case MainWindow::FadeAction::Close:
 							PostMessage(hWnd, WM_CLOSE, 0, 0);
 							break;
 						case MainWindow::FadeAction::Minimize:
 							ShowWindow(hWnd, SW_MINIMIZE);
-							SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+							break;
+						case MainWindow::FadeAction::Maximize:
+							ShowWindow(hWnd, SW_MAXIMIZE);
+							break;
+						case MainWindow::FadeAction::Restore:
+							ShowWindow(hWnd, SW_RESTORE);
 							break;
 						default:
 							break;
 						}
-
+				
 						window->fadeAction_ = MainWindow::FadeAction::None;
 					}
 					else {
 						BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
-						SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
-						window->fadeStep--;
+
+						switch (window->fadeAction_) {
+						case MainWindow::FadeAction::Close:
+						case MainWindow::FadeAction::Minimize:
+							SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+							window->fadeStep--;
+							break;
+						default:
+							window->fadeStep = 0;
+							break;
+						}
 					}
 				}
 			}
 			break;
 			case WM_SIZE:
-			if (MainWindow* window = MainWindow::GetWindow(hWnd))
-				window->OnSize(wParam);
-			break;
+				{
+					MainWindow* window = MainWindow::GetWindow(hWnd); 
+					if (!window) break;
+					
+					if (wParam == SIZE_MINIMIZED) {
+						window->isMinimized_ = true;
+						window->isMaximized_ = false;
+						SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
+					}
+					if (wParam == SIZE_MAXIMIZED) {
+						window->isMaximized_ = true;
+						window->isMinimized_ = false;
+						SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+					}
+					if (wParam == SIZE_RESTORED) {
+						window->isMinimized_ = false;
+						window->isMaximized_ = false;
+						SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+					}
+					if (MainWindow* window = MainWindow::GetWindow(hWnd))
+						window->OnSize(wParam);
+				}
+				break;
 			case WM_NCCALCSIZE:
 			{
 				if (wParam)
@@ -249,12 +283,9 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
-	int left = 20;
-	//SetWindowPos(hWndBrowser_, nullptr, left, 0,
-	//	rect.right - left, rect.bottom - rect.top,
-	//	SWP_NOZORDER | SWP_NOACTIVATE);
-	SetWindowPos(hWndBrowser_, nullptr, 50, 0,
-		rect.right - rect.left, rect.bottom - rect.top,
+	int left = 0;
+	SetWindowPos(hWndBrowser_, nullptr, left, 0,
+		rect.right - left, rect.bottom - rect.top,
 		SWP_NOZORDER | SWP_NOACTIVATE);
 }
 

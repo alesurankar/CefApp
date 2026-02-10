@@ -18,14 +18,14 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 		window->StartFade(MainWindow::FadeAction::Minimize);
 	}
 	else if (received == "resize") {
-		WINDOWPLACEMENT wp;
-		wp.length = sizeof(WINDOWPLACEMENT);
+		WINDOWPLACEMENT wp{};
+		wp.length = sizeof(wp);
 		if (GetWindowPlacement(hWndParent_, &wp)) {
 			if (wp.showCmd == SW_MAXIMIZE) {
-				ShowWindow(hWndParent_, SW_RESTORE);
+				window->StartFade(MainWindow::FadeAction::Restore);
 			}
 			else {
-				ShowWindow(hWndParent_, SW_MAXIMIZE);
+				window->StartFade(MainWindow::FadeAction::Maximize);
 			}
 		}
 	}
