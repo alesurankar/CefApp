@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "../platform/MyWinX.h" 
 #include "../cef/MyCefClient.h"
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
 
 using namespace std::string_literals;
 
@@ -21,6 +23,7 @@ namespace
 
 				return TRUE;
 			}
+			break;
 			case WM_CREATE:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
@@ -30,17 +33,36 @@ namespace
 				}
 				return 0;
 			}
+			break;
 			case WM_ERASEBKGND:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
 				if (window && window->HasBrowserWindow())
 					return 1;
-				break;
 			}
+			break;
+			case WM_TIMER:
+			{
+				if (wParam == MainWindow::TIMER_FADE) {
+					MainWindow* window = MainWindow::GetWindow(hWnd);
+					if (!window) break;
+
+					if (window->fadeStep <= 0) {
+						KillTimer(hWnd, MainWindow::TIMER_FADE);
+						PostMessage(hWnd, WM_CLOSE, 0, 0);
+					}
+					else {
+						BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
+						SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+						window->fadeStep--;
+					}
+				}
+			}
+			break;
 			case WM_SIZE:
-				if (MainWindow* window = MainWindow::GetWindow(hWnd))
-					window->OnSize(wParam);
-				break;
+			if (MainWindow* window = MainWindow::GetWindow(hWnd))
+				window->OnSize(wParam);
+			break;
 			case WM_NCCALCSIZE:
 			{
 				if (wParam)
@@ -63,6 +85,7 @@ namespace
 					return 0;
 				}
 			}
+			break;
 			case WM_NCHITTEST:
 			{
 				//POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
@@ -85,12 +108,13 @@ namespace
 
 				return HTCAPTION; // everything else draggable
 			}
+			break;
 			case WM_LBUTTONDOWN:
 			{
 				ReleaseCapture(); // Release the mouse capture
 				SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);
-				break;
 			}
+			break;
 			case WM_CLOSE:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
@@ -102,9 +126,13 @@ namespace
 				DestroyWindow(hWnd);
 				return 0;
 			}
+			break;
 			case WM_APP + 99:
+			{
 				DestroyWindow(hWnd);
 				return 0;
+			}
+			break;
 			case WM_DESTROY:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
@@ -113,6 +141,7 @@ namespace
 				PostQuitMessage(0);
 				return 0;
 			}
+			break;
 		}
 		return DefWindowProcA(hWnd, msg, wParam, lParam);
 	}
@@ -242,4 +271,9 @@ void MainWindow::RequestClose()
 	}
 }
 
+void MainWindow::StartFade() 
+{
+	fadeStep = FADE_STEPS;
+	SetTimer(hWnd_, TIMER_FADE, 10, NULL);
+}
 

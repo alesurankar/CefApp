@@ -17,7 +17,12 @@ public:
 	void OnSize(WPARAM wParam);
 	bool HasBrowserWindow() const;
 	void SetBrowserHWND(HWND hWndBrowser);
-	void RequestClose(); 
+	void RequestClose();
+	void StartFade();
+public:
+	static constexpr int FADE_STEPS = 15;
+	static constexpr int TIMER_FADE = 1;
+	int fadeStep = 0;
 private:
 	HWND hWnd_;
 	MyCefClient* client_ = nullptr;
