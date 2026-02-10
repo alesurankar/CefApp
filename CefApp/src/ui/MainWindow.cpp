@@ -65,25 +65,31 @@ namespace
 			}
 			case WM_NCHITTEST:
 			{
-				POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-				ScreenToClient(hWnd, &pt);
-				RECT rc;
-				GetClientRect(hWnd, &rc);
-				const int border = 8;
-
-				// corners
-				if (pt.y < border && pt.x < border) return HTTOPLEFT;
-				if (pt.y < border && pt.x > rc.right - border) return HTTOPRIGHT;
-				if (pt.y > rc.bottom - border && pt.x < border) return HTBOTTOMLEFT;
-				if (pt.y > rc.bottom - border && pt.x > rc.right - border) return HTBOTTOMRIGHT;
-
-				// edges
-				if (pt.y < border) return HTTOP;
-				if (pt.y > rc.bottom - border) return HTBOTTOM;
-				if (pt.x < border) return HTLEFT;
-				if (pt.x > rc.right - border) return HTRIGHT;
+				//POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+				//ScreenToClient(hWnd, &pt);
+				//RECT rc;
+				//GetClientRect(hWnd, &rc);
+				//const int border = 8;
+				//
+				//// corners
+				//if (pt.y < border && pt.x < border) return HTTOPLEFT;
+				//if (pt.y < border && pt.x > rc.right - border) return HTTOPRIGHT;
+				//if (pt.y > rc.bottom - border && pt.x < border) return HTBOTTOMLEFT;
+				//if (pt.y > rc.bottom - border && pt.x > rc.right - border) return HTBOTTOMRIGHT;
+				//
+				//// edges
+				//if (pt.y < border) return HTTOP;
+				//if (pt.y > rc.bottom - border) return HTBOTTOM;
+				//if (pt.x < border) return HTLEFT;
+				//if (pt.x > rc.right - border) return HTRIGHT;
 
 				return HTCAPTION; // everything else draggable
+			}
+			case WM_LBUTTONDOWN:
+			{
+				ReleaseCapture(); // Release the mouse capture
+				SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+				break;
 			}
 			case WM_CLOSE:
 			{
@@ -235,3 +241,5 @@ void MainWindow::RequestClose()
 		browser->GetHost()->CloseBrowser(true);
 	}
 }
+
+

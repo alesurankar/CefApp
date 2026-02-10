@@ -1,6 +1,25 @@
 #include "../platform/MyWin.h"
 #include "MyCefClient.h"
 #include "../ui/MainWindow.h"
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
+
+void MyCefClient::EnableLayered(HWND hwnd) {
+	LONG ex = GetWindowLong(hwnd, GWL_EXSTYLE);
+	SetWindowLong(hwnd, GWL_EXSTYLE, ex | WS_EX_LAYERED);
+}
+
+void MyCefClient::DwmFadeClose(HWND hwnd) {
+	const int steps = 15;
+	const int delay = 10; // ms per step (~150ms total)
+
+	for (int i = steps; i >= 0; --i) {
+		BYTE alpha = (BYTE)(255 * i / steps);
+		SetLayeredWindowAttributes(hwnd, 0, alpha, LWA_ALPHA);
+		Sleep(delay);
+	}
+	PostMessage(hwnd, WM_CLOSE, 0, 0);
+}
 
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
@@ -8,7 +27,9 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	std::string received = message->GetArgumentList()->GetString(0);
 
 	if (received == "close") {
-		PostMessage(hWndParent_, WM_CLOSE, 0, 0);
+		//PostMessage(hWndParent_, WM_CLOSE, 0, 0);
+		EnableLayered(hWndParent_);
+		DwmFadeClose(hWndParent_);
 	}
 	else if (received == "minimize") {
 		ShowWindow(hWndParent_, SW_MINIMIZE);

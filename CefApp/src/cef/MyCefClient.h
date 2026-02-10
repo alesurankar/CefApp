@@ -42,6 +42,9 @@ public:
 		CefRefPtr<CefFrame> pFrame, int httpStatusCode) override;
 	// this is the last call after Browser is destroyed
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override;
+
+	void EnableLayered(HWND hwnd);
+	void DwmFadeClose(HWND hwnd);
 private:
 	HWND hWndParent_;
 	CefRefPtr<CefBrowser> mainBrowser_;
