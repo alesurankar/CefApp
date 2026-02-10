@@ -33,19 +33,19 @@ const TitleBar = () => {
       {/* Window controls */}
       <div className="flex">
         <button id="minimize"
-          className="w-10 h-10 flex items-center justify-center hover:bg-[#373737] [webkit-app-region:no-drag]"
+          className="w-12 h-10 flex items-center justify-center hover:bg-[#373737] [webkit-app-region:no-drag]"
           onClick={() => myCefMinimize()}
         >
           ―
         </button>
         <button id="maximize"
-          className="w-10 h-10 flex items-center justify-center hover:bg-[#373737] [webkit-app-region:no-drag]"
+          className="w-12 h-10 flex items-center justify-center hover:bg-[#373737] [webkit-app-region:no-drag]"
           onClick={() => myCefResize()}
         >
           ☐
         </button>
         <button id="close"
-          className="w-10 h-10 flex items-center justify-center hover:bg-red-600 [webkit-app-region:no-drag]"
+          className="w-12 h-10 flex items-center justify-center hover:bg-red-600 [webkit-app-region:no-drag]"
           onClick={() => myCefClose()}
         >
           ✕
