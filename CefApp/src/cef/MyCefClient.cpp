@@ -8,18 +8,14 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
 	std::string received = message->GetArgumentList()->GetString(0);
+	MainWindow* window = MainWindow::GetWindow(hWndParent_);
+	if (!window) return true;
 
 	if (received == "close") {
-		LONG ex = GetWindowLong(hWndParent_, GWL_EXSTYLE);
-		SetWindowLong(hWndParent_, GWL_EXSTYLE, ex | WS_EX_LAYERED);
-
-		MainWindow* window = MainWindow::GetWindow(hWndParent_);
-		if (window) {
-			window->StartFade();
-		}
+		window->StartFade(MainWindow::FadeAction::Close);
 	}
 	else if (received == "minimize") {
-		ShowWindow(hWndParent_, SW_MINIMIZE);
+		window->StartFade(MainWindow::FadeAction::Minimize);
 	}
 	else if (received == "resize") {
 		WINDOWPLACEMENT wp;
@@ -33,6 +29,7 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 			}
 		}
 	}
+
 	return true;
 }
 

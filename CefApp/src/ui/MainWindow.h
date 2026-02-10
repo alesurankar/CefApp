@@ -10,6 +10,12 @@ void CleanupMainWindow(HINSTANCE hInstance);
 class MainWindow
 {
 public:
+	enum class FadeAction 
+	{ 
+		None, 
+		Close, 
+		Minimize 
+	};
 	explicit MainWindow(HWND hWnd);
 	void AttachHWND(HWND hWnd);
 	void CreateBrowser();
@@ -18,11 +24,12 @@ public:
 	bool HasBrowserWindow() const;
 	void SetBrowserHWND(HWND hWndBrowser);
 	void RequestClose();
-	void StartFade();
+	void StartFade(FadeAction action);
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
 	int fadeStep = 0;
+	FadeAction fadeAction_ = FadeAction::None;
 private:
 	HWND hWnd_;
 	MyCefClient* client_ = nullptr;

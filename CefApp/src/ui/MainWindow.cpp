@@ -1,8 +1,8 @@
 #include "MainWindow.h"
-#include "../platform/MyWinX.h" 
-#include "../cef/MyCefClient.h"
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
+#include "../platform/MyWinX.h" 
+#include "../cef/MyCefClient.h"
 
 using namespace std::string_literals;
 
@@ -49,7 +49,20 @@ namespace
 
 					if (window->fadeStep <= 0) {
 						KillTimer(hWnd, MainWindow::TIMER_FADE);
-						PostMessage(hWnd, WM_CLOSE, 0, 0);
+
+						switch (window->fadeAction_) {
+						case MainWindow::FadeAction::Close:
+							PostMessage(hWnd, WM_CLOSE, 0, 0);
+							break;
+						case MainWindow::FadeAction::Minimize:
+							ShowWindow(hWnd, SW_MINIMIZE);
+							SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+							break;
+						default:
+							break;
+						}
+
+						window->fadeAction_ = MainWindow::FadeAction::None;
 					}
 					else {
 						BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
@@ -271,9 +284,13 @@ void MainWindow::RequestClose()
 	}
 }
 
-void MainWindow::StartFade() 
+void MainWindow::StartFade(FadeAction action)
 {
+	LONG ex = GetWindowLong(hWnd_, GWL_EXSTYLE);
+	SetWindowLong(hWnd_, GWL_EXSTYLE, ex | WS_EX_LAYERED);
+
 	fadeStep = FADE_STEPS;
+	fadeAction_ = action;
+
 	SetTimer(hWnd_, TIMER_FADE, 10, NULL);
 }
-
