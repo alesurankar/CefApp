@@ -33,7 +33,7 @@ public:
 	int fadeStep = 0;
 	bool isMinimized_ = false;
 	bool isMaximized_ = false;
-	FadeAction fadeAction_ = FadeAction::None;
+	FadeAction fadeAction_ = FadeAction::None; 
 private:
 	HWND hWnd_;
 	MyCefClient* client_ = nullptr;

@@ -106,8 +106,8 @@ namespace
 						window->isMaximized_ = false;
 						SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
 					}
-					if (MainWindow* window = MainWindow::GetWindow(hWnd))
-						window->OnSize(wParam);
+
+					window->OnSize(wParam);
 				}
 				break;
 			case WM_NCCALCSIZE:
@@ -128,39 +128,30 @@ namespace
 				else
 				{
 					RECT* pRect = reinterpret_cast<RECT*>(lParam);
-					// optional: shrink for border
 					return 0;
 				}
 			}
 			break;
 			case WM_NCHITTEST:
 			{
-				//POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-				//ScreenToClient(hWnd, &pt);
-				//RECT rc;
-				//GetClientRect(hWnd, &rc);
-				//const int border = 8;
-				//
-				//// corners
-				//if (pt.y < border && pt.x < border) return HTTOPLEFT;
-				//if (pt.y < border && pt.x > rc.right - border) return HTTOPRIGHT;
-				//if (pt.y > rc.bottom - border && pt.x < border) return HTBOTTOMLEFT;
-				//if (pt.y > rc.bottom - border && pt.x > rc.right - border) return HTBOTTOMRIGHT;
-				//
-				//// edges
-				//if (pt.y < border) return HTTOP;
-				//if (pt.y > rc.bottom - border) return HTBOTTOM;
-				//if (pt.x < border) return HTLEFT;
-				//if (pt.x > rc.right - border) return HTRIGHT;
+				POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+				ScreenToClient(hWnd, &pt);
 
-				return HTCAPTION; // everything else draggable
+				const int DRAG_HEIGHT = 40;
+
+				if (pt.y < DRAG_HEIGHT) {
+					return HTCAPTION;
+				}
+
+				return DefWindowProc(hWnd, msg, wParam, lParam);
 			}
 			break;
-			case WM_LBUTTONDOWN:
-			{
-				ReleaseCapture(); // Release the mouse capture
-				SendMessage(hWnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);
-			}
+			//case WM_PARENTNOTIFY:
+			//{
+			//	if (LOWORD(wParam) == WM_LBUTTONDOWN) {
+			//		MessageBoxA(hWnd, "Child window clicked!", "DEBUG", MB_OK);
+			//	}
+			//}
 			break;
 			case WM_CLOSE:
 			{
@@ -283,7 +274,7 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
-	int left = 0;
+	int left = 30;
 	SetWindowPos(hWndBrowser_, nullptr, left, 0,
 		rect.right - left, rect.bottom - rect.top,
 		SWP_NOZORDER | SWP_NOACTIVATE);
