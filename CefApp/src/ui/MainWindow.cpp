@@ -25,15 +25,39 @@ namespace
 				{
 					POINT pt;
 					GetCursorPos(&pt);
+
 					HWND hParent = GetParent(hwnd);
 					if (hParent)
 					{
-						RECT rc;
-						GetWindowRect(hParent, &rc);
+						RECT rcParent;
+						GetWindowRect(hParent, &rcParent);
+
+						RECT rcHandle;
+						GetWindowRect(hwnd, &rcHandle);
+
 						int dx = pt.x - offset.x;
 						int dy = pt.y - offset.y;
-						MoveWindow(hParent, rc.left + dx, rc.top + dy,
-							rc.right - rc.left, rc.bottom - rc.top, TRUE);
+
+						// move main window
+						MoveWindow(
+							hParent,
+							rcParent.left + dx,
+							rcParent.top + dy,
+							rcParent.right - rcParent.left,
+							rcParent.bottom - rcParent.top,
+							TRUE
+						);
+
+						// move handle window too
+						MoveWindow(
+							hwnd,
+							rcHandle.left + dx,
+							rcHandle.top + dy,
+							rcHandle.right - rcHandle.left,
+							rcHandle.bottom - rcHandle.top,
+							TRUE
+						);
+
 						offset = pt;
 					}
 				}
@@ -43,15 +67,15 @@ namespace
 				ReleaseCapture();
 				return 0;
 
-			case WM_PAINT:
-			{
-				PAINTSTRUCT ps;
-				HDC hdc = BeginPaint(hwnd, &ps);
-				// Fill handle with a solid color, e.g., gray
-				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
-				EndPaint(hwnd, &ps);
-				return 0;
-			}
+			//case WM_PAINT:
+			//{
+			//	PAINTSTRUCT ps;
+			//	HDC hdc = BeginPaint(hwnd, &ps);
+			//	// Fill handle with a solid color, e.g., gray
+			//	FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
+			//	EndPaint(hwnd, &ps);
+			//	return 0;
+			//}
 		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
