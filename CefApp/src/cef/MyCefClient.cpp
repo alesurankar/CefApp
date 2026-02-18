@@ -41,6 +41,12 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		mainBrowser_ = pBrowser;
 	}
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
+
+	// make browser ignore mouse input
+	LONG exStyle = GetWindowLong(hWndBrowser, GWL_EXSTYLE);
+	SetWindowLong(hWndBrowser, GWL_EXSTYLE,
+		exStyle | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+
 	if (hWndBrowser && hWndParent_) {
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
