@@ -5,7 +5,6 @@
 
 using namespace std::string_literals;
 
-// Step 0: App is launched
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	// Step 1: Handle CEF child processes

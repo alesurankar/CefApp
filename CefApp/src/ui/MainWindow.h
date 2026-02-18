@@ -18,7 +18,7 @@ public:
 		Maximize,
 		Restore
 	};
-	explicit MainWindow(HWND hWnd);
+	MainWindow() = default;
 	void AttachHWND(HWND hWnd);
 	void CreateBrowser();
 	static MainWindow* GetWindow(HWND hWnd);
@@ -40,8 +40,8 @@ public:
 private:
 	HWND hWnd_;
 	HWND hHandle_ = nullptr;
-	MyCefClient* client_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
+	MyCefClient* client_ = nullptr;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false;
 };

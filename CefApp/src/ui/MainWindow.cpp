@@ -34,11 +34,16 @@ namespace
 
 	LRESULT CALLBACK MainWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		MainWindow* window = nullptr;
+
+		if (msg != WM_NCCREATE)
+			window = MainWindow::GetWindow(hWnd);
+
 		switch (msg) {
 		case WM_NCCREATE:
 		{
 			CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
-			auto* window = static_cast<MainWindow*>(cs->lpCreateParams);
+			window = static_cast<MainWindow*>(cs->lpCreateParams);
 
 			window->AttachHWND(hWnd);
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
@@ -49,7 +54,6 @@ namespace
 
 		case WM_CREATE:
 		{
-			MainWindow* window = MainWindow::GetWindow(hWnd);
 			if (window) {
 				window->CreateBrowser();
 				PostMessage(hWnd, WM_SIZE, 0, 0);
@@ -60,7 +64,6 @@ namespace
 
 		case WM_ERASEBKGND:
 		{
-			MainWindow* window = MainWindow::GetWindow(hWnd);
 			if (window && window->HasBrowserWindow())
 				return 1;
 		}
@@ -69,7 +72,6 @@ namespace
 		case WM_TIMER:
 		{
 			if (wParam == MainWindow::TIMER_FADE) {
-				MainWindow* window = MainWindow::GetWindow(hWnd);
 				if (!window) break;
 
 				if (window->fadeStep <= 0) {
@@ -114,7 +116,6 @@ namespace
 
 		case WM_SIZE:
 		{
-			MainWindow* window = MainWindow::GetWindow(hWnd);
 			if (!window) break;
 
 			if (wParam == SIZE_MINIMIZED) {
@@ -162,7 +163,6 @@ namespace
 
 		case WM_CLOSE:
 		{
-			MainWindow* window = MainWindow::GetWindow(hWnd);
 			if (window) {
 				OutputDebugStringA("WM_CLOSE triggered\n");
 				window->RequestClose();
@@ -182,7 +182,6 @@ namespace
 
 		case WM_DESTROY:
 		{
-			MainWindow* window = MainWindow::GetWindow(hWnd);
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
 			delete window;
 			PostQuitMessage(0);
@@ -210,7 +209,7 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		return nullptr;
 	}
 
-	auto* window = new MainWindow(nullptr);
+	auto* window = new MainWindow();
 	HWND hWnd = CreateWindowExA(
 		0,
 		wndClassName,
@@ -241,11 +240,6 @@ void CleanupMainWindow(HINSTANCE hInstance)
 	UnregisterClassA(wndClassName, hInstance);
 }
 
-
-MainWindow::MainWindow(HWND hWnd)
-	:
-	hWnd_(hWnd)
-{}
 
 void MainWindow::AttachHWND(HWND hWnd)
 {
