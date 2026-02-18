@@ -10,6 +10,55 @@ static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
 
 namespace 
 {
+	LRESULT CALLBACK HandleWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		static POINT offset{};
+		switch (msg)
+		{
+		case WM_LBUTTONDOWN:
+			SetCapture(hwnd);
+			GetCursorPos(&offset);
+			return 0;
+	
+
+		case WM_MOUSEMOVE:
+			if (wParam & MK_LBUTTON)
+			{
+				POINT pt;
+				GetCursorPos(&pt);
+				HWND hParent = GetParent(hwnd);
+				if (hParent)
+				{
+					RECT rc;
+					GetWindowRect(hParent, &rc);
+					int dx = pt.x - offset.x;
+					int dy = pt.y - offset.y;
+					MoveWindow(hParent, rc.left + dx, rc.top + dy,
+						rc.right - rc.left, rc.bottom - rc.top, TRUE);
+					offset = pt;
+				}
+			}
+			return 0;
+	
+		case WM_LBUTTONUP:
+			ReleaseCapture();
+			return 0;
+
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hwnd, &ps);
+			// Fill handle with a solid color, e.g., gray
+			FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
+			EndPaint(hwnd, &ps);
+			return 0;
+		}
+
+		}
+	
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
 	LRESULT CALLBACK MainWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg) {
@@ -133,19 +182,31 @@ namespace
 				}
 				break;
 			case WM_NCHITTEST:
-				{
-					POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-					ScreenToClient(hWnd, &pt);
-				
-					const int DRAG_HEIGHT = 60;
-				
-				    if (pt.y < DRAG_HEIGHT) {
-						return HTCAPTION;
-					}
-				
-					return DefWindowProc(hWnd, msg, wParam, lParam);
+			{
+				POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+				ScreenToClient(hWnd, &pt);
+			
+				RECT rc;
+				GetClientRect(hWnd, &rc);
+			
+				const int DRAG_HEIGHT = 60;
+				const int EDGE_MARGIN = 1;
+			
+				bool insideHorizontal =
+					pt.x > EDGE_MARGIN &&
+					pt.x < rc.right - EDGE_MARGIN;
+			
+				bool insideVertical =
+					pt.y > EDGE_MARGIN &&
+					pt.y < DRAG_HEIGHT;
+			
+				if (insideHorizontal && insideVertical) {
+					return HTCAPTION;
 				}
-				break;
+			
+				return DefWindowProc(hWnd, msg, wParam, lParam);
+			}
+			break;
 			//case WM_PARENTNOTIFY:
 			//{
 			//	if (LOWORD(wParam) == WM_LBUTTONDOWN) {
@@ -208,7 +269,7 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		"CEF",
 		//WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		WS_POPUP | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN,
-		200, 20, 1360, 1020,
+		200, 50, 1400, 900,
 		nullptr,
 		nullptr,
 		hInstance,
@@ -220,6 +281,25 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		delete window;
 		return nullptr;
 	}
+
+	// after main window is created
+	HWND hHandle = CreateWindowExA(
+		WS_EX_LAYERED | WS_EX_TOPMOST,   // layered so can be transparent
+		"STATIC",                         // simple class for handle
+		nullptr,
+		WS_POPUP,                         // popup window
+		0, 0, 40, 40,                     // size & position
+		hWnd,                              // parent = main window
+		nullptr,
+		hInstance,
+		nullptr
+	);
+
+	// optional transparency
+	SetLayeredWindowAttributes(hHandle, 0, 200, LWA_ALPHA);
+
+	SetWindowLongPtr(hHandle, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
+	ShowWindow(hHandle, SW_SHOW);
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(hWnd);                  
 

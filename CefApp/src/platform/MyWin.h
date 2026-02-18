@@ -17,7 +17,7 @@
 #define OEMRESOURCE
 #define NOATOM
 #define NOCLIPBOARD
-#define NOCOLOR
+//#define NOCOLOR
 //#define NOCTLMGR
 #define NODRAWTEXT
 #define NOKERNEL
