@@ -10,12 +10,12 @@ void CleanupMainWindow(HINSTANCE hInstance);
 class MainWindow
 {
 public:
-	enum class FadeAction 
-	{ 
-		None, 
-		Close, 
+	enum class FadeAction
+	{
+		None,
+		Close,
 		Minimize,
-		Maximize, 
+		Maximize,
 		Restore
 	};
 	explicit MainWindow(HWND hWnd);
@@ -27,18 +27,22 @@ public:
 	void SetBrowserHWND(HWND hWndBrowser);
 	void RequestClose();
 	void StartFade(FadeAction action);
+	void SetHandleHWND(HWND h) { hHandle_ = h; }
+	HWND GetHandleHWND() const { return hHandle_; }
+	void RaiseHandle();
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
 	int fadeStep = 0;
 	bool isMinimized_ = false;
 	bool isMaximized_ = false;
-	FadeAction fadeAction_ = FadeAction::None; 
+	FadeAction fadeAction_ = FadeAction::None;
 private:
 	HWND hWnd_;
+	HWND hHandle_ = nullptr;
 	MyCefClient* client_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
-	std::string url_ = "http://localhost:5173/"; 
+	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false;
 };
 
