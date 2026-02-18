@@ -15,47 +15,44 @@ namespace
 		static POINT offset{};
 		switch (msg)
 		{
-		case WM_LBUTTONDOWN:
-			SetCapture(hwnd);
-			GetCursorPos(&offset);
-			return 0;
+			case WM_LBUTTONDOWN:
+				SetCapture(hwnd);
+				GetCursorPos(&offset);
+				return 0;
 	
-
-		case WM_MOUSEMOVE:
-			if (wParam & MK_LBUTTON)
-			{
-				POINT pt;
-				GetCursorPos(&pt);
-				HWND hParent = GetParent(hwnd);
-				if (hParent)
+			case WM_MOUSEMOVE:
+				if (wParam & MK_LBUTTON)
 				{
-					RECT rc;
-					GetWindowRect(hParent, &rc);
-					int dx = pt.x - offset.x;
-					int dy = pt.y - offset.y;
-					MoveWindow(hParent, rc.left + dx, rc.top + dy,
-						rc.right - rc.left, rc.bottom - rc.top, TRUE);
-					offset = pt;
+					POINT pt;
+					GetCursorPos(&pt);
+					HWND hParent = GetParent(hwnd);
+					if (hParent)
+					{
+						RECT rc;
+						GetWindowRect(hParent, &rc);
+						int dx = pt.x - offset.x;
+						int dy = pt.y - offset.y;
+						MoveWindow(hParent, rc.left + dx, rc.top + dy,
+							rc.right - rc.left, rc.bottom - rc.top, TRUE);
+						offset = pt;
+					}
 				}
+				return 0;
+	
+			case WM_LBUTTONUP:
+				ReleaseCapture();
+				return 0;
+
+			case WM_PAINT:
+			{
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hwnd, &ps);
+				// Fill handle with a solid color, e.g., gray
+				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
+				EndPaint(hwnd, &ps);
+				return 0;
 			}
-			return 0;
-	
-		case WM_LBUTTONUP:
-			ReleaseCapture();
-			return 0;
-
-		case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint(hwnd, &ps);
-			// Fill handle with a solid color, e.g., gray
-			FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
-			EndPaint(hwnd, &ps);
-			return 0;
 		}
-
-		}
-	
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
@@ -63,157 +60,148 @@ namespace
 	{
 		switch (msg) {
 			case WM_NCCREATE:
-				{
-					CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
-					auto* window = static_cast<MainWindow*>(cs->lpCreateParams);
-
-					window->AttachHWND(hWnd);
-					SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
-
-					return TRUE;
-				}
-				break;
-			case WM_CREATE:
-				{
-					MainWindow* window = MainWindow::GetWindow(hWnd);
-					if (window) {
-						window->CreateBrowser();
-						PostMessage(hWnd, WM_SIZE, 0, 0);
-					}
-					return 0;
-				}
-				break;
-			case WM_ERASEBKGND:
-				{
-					MainWindow* window = MainWindow::GetWindow(hWnd);
-					if (window && window->HasBrowserWindow())
-						return 1;
-				}
-				break;
-			case WM_TIMER:
-				{
-					if (wParam == MainWindow::TIMER_FADE) {
-						MainWindow* window = MainWindow::GetWindow(hWnd);
-						if (!window) break;
-				
-						if (window->fadeStep <= 0) {
-							KillTimer(hWnd, MainWindow::TIMER_FADE);
-				
-							switch (window->fadeAction_) {
-							case MainWindow::FadeAction::Close:
-								PostMessage(hWnd, WM_CLOSE, 0, 0);
-								break;
-							case MainWindow::FadeAction::Minimize:
-								ShowWindow(hWnd, SW_MINIMIZE);
-								break;
-							case MainWindow::FadeAction::Maximize:
-								ShowWindow(hWnd, SW_MAXIMIZE);
-								break;
-							case MainWindow::FadeAction::Restore:
-								ShowWindow(hWnd, SW_RESTORE);
-								break;
-							default:
-								break;
-							}
-				
-							window->fadeAction_ = MainWindow::FadeAction::None;
-						}
-						else {
-							BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
-
-							switch (window->fadeAction_) {
-							case MainWindow::FadeAction::Close:
-							case MainWindow::FadeAction::Minimize:
-								SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
-								window->fadeStep--;
-								break;
-							default:
-								window->fadeStep = 0;
-								break;
-							}
-						}
-					}
-				}
-				break;
-			case WM_SIZE:
-				{
-					MainWindow* window = MainWindow::GetWindow(hWnd); 
-					if (!window) break;
-					
-					if (wParam == SIZE_MINIMIZED) {
-						window->isMinimized_ = true;
-						window->isMaximized_ = false;
-						SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
-					}
-					if (wParam == SIZE_MAXIMIZED) {
-						window->isMaximized_ = true;
-						window->isMinimized_ = false;
-						SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-					}
-					if (wParam == SIZE_RESTORED) {
-						window->isMinimized_ = false;
-						window->isMaximized_ = false;
-						SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-					}
-
-					window->OnSize(wParam);
-				}
-				break;
-			case WM_NCCALCSIZE:
-				{
-					if (wParam)
-					{
-						NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
-			
-						// shrink client rect by border thickness for resizing
-						const int border = 8;
-						p->rgrc[0].left += border;
-						p->rgrc[0].top += 1;    // little hack to remove white artefact on top
-						p->rgrc[0].right -= border;
-						p->rgrc[0].bottom -= border;
-			
-						return 0; // handled
-					}
-					else
-					{
-						RECT* pRect = reinterpret_cast<RECT*>(lParam);
-						return 0;
-					}
-				}
-				break;
-			case WM_NCHITTEST:
 			{
-				POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-				ScreenToClient(hWnd, &pt);
-			
-				RECT rc;
-				GetClientRect(hWnd, &rc);
-			
-				const int DRAG_HEIGHT = 60;
-				const int EDGE_MARGIN = 1;
-			
-				bool insideHorizontal =
-					pt.x > EDGE_MARGIN &&
-					pt.x < rc.right - EDGE_MARGIN;
-			
-				bool insideVertical =
-					pt.y > EDGE_MARGIN &&
-					pt.y < DRAG_HEIGHT;
-			
-				if (insideHorizontal && insideVertical) {
-					return HTCAPTION;
-				}
-			
-				return DefWindowProc(hWnd, msg, wParam, lParam);
+				CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
+				auto* window = static_cast<MainWindow*>(cs->lpCreateParams);
+
+				window->AttachHWND(hWnd);
+				SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
+
+				return TRUE;
 			}
 			break;
-			//case WM_PARENTNOTIFY:
-			//{
-			//	if (LOWORD(wParam) == WM_LBUTTONDOWN) {
-			//		MessageBoxA(hWnd, "Child window clicked!", "DEBUG", MB_OK);
-			//	}
-			//}
+
+			case WM_CREATE:
+			{
+				MainWindow* window = MainWindow::GetWindow(hWnd);
+				if (window) {
+					window->CreateBrowser();
+					// after main window is created
+					HWND hHandle = CreateWindowExA(
+						WS_EX_LAYERED,   // layered so can be transparent
+						"STATIC",                         // simple class for handle
+						nullptr,
+						WS_POPUP,                         // popup window
+						280, 55, 1130, 40,                     // size & position
+						hWnd,                              // parent = main window
+						nullptr,
+						((LPCREATESTRUCT)lParam)->hInstance,
+						nullptr
+					);
+
+					// optional transparency
+					SetLayeredWindowAttributes(hHandle, 0, 200, LWA_ALPHA);
+
+					SetWindowLongPtr(hHandle, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
+					ShowWindow(hHandle, SW_SHOW);
+					PostMessage(hWnd, WM_SIZE, 0, 0);
+				}
+				return 0;
+			}
 			break;
+
+			case WM_ERASEBKGND:
+			{
+				MainWindow* window = MainWindow::GetWindow(hWnd);
+				if (window && window->HasBrowserWindow())
+					return 1;
+			}
+			break;
+
+			case WM_TIMER:
+			{
+				if (wParam == MainWindow::TIMER_FADE) {
+					MainWindow* window = MainWindow::GetWindow(hWnd);
+					if (!window) break;
+				
+					if (window->fadeStep <= 0) {
+						KillTimer(hWnd, MainWindow::TIMER_FADE);
+				
+						switch (window->fadeAction_) {
+						case MainWindow::FadeAction::Close:
+							PostMessage(hWnd, WM_CLOSE, 0, 0);
+							break;
+						case MainWindow::FadeAction::Minimize:
+							ShowWindow(hWnd, SW_MINIMIZE);
+							break;
+						case MainWindow::FadeAction::Maximize:
+							ShowWindow(hWnd, SW_MAXIMIZE);
+							break;
+						case MainWindow::FadeAction::Restore:
+							ShowWindow(hWnd, SW_RESTORE);
+							break;
+						default:
+							break;
+						}
+				
+						window->fadeAction_ = MainWindow::FadeAction::None;
+					}
+					else {
+						BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
+
+						switch (window->fadeAction_) {
+						case MainWindow::FadeAction::Close:
+						case MainWindow::FadeAction::Minimize:
+							SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+							window->fadeStep--;
+							break;
+						default:
+							window->fadeStep = 0;
+							break;
+						}
+					}
+				}
+			}
+			break;
+
+			case WM_SIZE:
+			{
+				MainWindow* window = MainWindow::GetWindow(hWnd); 
+				if (!window) break;
+					
+				if (wParam == SIZE_MINIMIZED) {
+					window->isMinimized_ = true;
+					window->isMaximized_ = false;
+					SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
+				}
+				if (wParam == SIZE_MAXIMIZED) {
+					window->isMaximized_ = true;
+					window->isMinimized_ = false;
+					SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+				}
+				if (wParam == SIZE_RESTORED) {
+					window->isMinimized_ = false;
+					window->isMaximized_ = false;
+					SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+				}
+
+				window->OnSize(wParam);
+			}
+			break;
+
+			case WM_NCCALCSIZE:
+			{
+				if (wParam)
+				{
+					NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
+			
+					// shrink client rect by border thickness for resizing
+					const int border = 8;
+					p->rgrc[0].left += border;
+					p->rgrc[0].top += 1;    // little hack to remove white artefact on top
+					p->rgrc[0].right -= border;
+					p->rgrc[0].bottom -= border;
+			
+					return 0; // handled
+				}
+				else
+				{
+					RECT* pRect = reinterpret_cast<RECT*>(lParam);
+					return 0;
+				}
+			}
+			break;
+
 			case WM_CLOSE:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
@@ -226,12 +214,14 @@ namespace
 				return 0;
 			}
 			break;
+
 			case WM_APP + 99:
 			{
 				DestroyWindow(hWnd);
 				return 0;
 			}
 			break;
+
 			case WM_DESTROY:
 			{
 				MainWindow* window = MainWindow::GetWindow(hWnd);
@@ -282,24 +272,6 @@ HWND CreateMainWindow(HINSTANCE hInstance)
 		return nullptr;
 	}
 
-	// after main window is created
-	HWND hHandle = CreateWindowExA(
-		WS_EX_LAYERED | WS_EX_TOPMOST,   // layered so can be transparent
-		"STATIC",                         // simple class for handle
-		nullptr,
-		WS_POPUP,                         // popup window
-		0, 0, 40, 40,                     // size & position
-		hWnd,                              // parent = main window
-		nullptr,
-		hInstance,
-		nullptr
-	);
-
-	// optional transparency
-	SetLayeredWindowAttributes(hHandle, 0, 200, LWA_ALPHA);
-
-	SetWindowLongPtr(hHandle, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
-	ShowWindow(hHandle, SW_SHOW);
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(hWnd);                  
 
