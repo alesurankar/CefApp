@@ -29,7 +29,7 @@ public:
 		CefProcessId source_process, CefRefPtr<CefProcessMessage> message) override;
 	// Step 8: Browser object and HWND created
 	void OnAfterCreated(CefRefPtr<CefBrowser> pBrowser) override;
-	// Step 10: Page finished loading
+	// Step 10: Frame finished loading
 	void OnLoadEnd(CefRefPtr<CefBrowser> pBrowser, 
 		CefRefPtr<CefFrame> pFrame, int httpStatusCode) override;
 	// this is the last call after Browser is destroyed

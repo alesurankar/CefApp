@@ -193,16 +193,6 @@ namespace
 			}
 			break;
 
-			case WM_APP + 10:
-			{
-				if (window) {
-					window->CreateOverlayWindow();
-					PostMessage(hWnd, WM_SIZE, 0, 0);
-				}
-				return 0;
-			}
-			break;
-
 			case WM_CLOSE:
 			{
 				if (window) {
@@ -405,6 +395,11 @@ void MainWindow::RaiseHandle()
 void MainWindow::CreateOverlayWindow()
 {
 	overlay_ = std::make_unique<OverlayWindow>();
-	overlay_->CreateOverlayWindow(hWnd_);
+	overlay_->CreateOverlayWindow(hWnd_); 
+	RaiseOverlayWindow();
+}
+
+void MainWindow::RaiseOverlayWindow()
+{
 	overlay_->RaiseOverlayWindow();
 }

@@ -31,6 +31,7 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	}
 	else if (received == "mouseClick") {
 		window->RaiseHandle();
+		window->RaiseOverlayWindow();
 	}
 
 	return true;
@@ -49,7 +50,7 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
-			PostMessage(hWndParent_, WM_APP + 10, 0, 0);
+			window->CreateOverlayWindow();
 			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(

@@ -29,8 +29,9 @@ public:
 	void SetBrowserHWND(HWND hWndBrowser);
 	void RequestClose();
 	void StartFade(FadeAction action);
-	void RaiseHandle();
 	void CreateOverlayWindow();
+	void RaiseHandle();
+	void RaiseOverlayWindow();
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
