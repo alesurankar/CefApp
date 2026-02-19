@@ -21,17 +21,6 @@ namespace
 
 				return 0;
 			}
-
-			case WM_PAINT:
-			{
-				PAINTSTRUCT ps;
-				HDC hdc = BeginPaint(hwnd, &ps);
-				// Fill handle with a solid color
-				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
-				EndPaint(hwnd, &ps);
-				return 0;
-			}
-			break;
 		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
@@ -357,7 +346,8 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 
 	// create handle AFTER browser exists
 	hHandle_ = CreateWindowExA(
-		0,
+		//0,                           // change to this to show the hendleBar
+		WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
 		"STATIC",
 		nullptr,
 		WS_CHILD | WS_VISIBLE,
@@ -366,7 +356,7 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 		nullptr,
 		GetModuleHandle(nullptr),
 		nullptr
-	);
+	); 
 	SetWindowLongPtr(hHandle_, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
 	RaiseHandle();
 }
