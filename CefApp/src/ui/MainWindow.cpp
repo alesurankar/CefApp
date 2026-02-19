@@ -104,6 +104,19 @@ namespace
 				mmi->ptMinTrackSize.x = 520;
 				mmi->ptMinTrackSize.y = 360;
 
+				// Maximum size = working area
+				HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+				MONITORINFO mi{};
+				mi.cbSize = sizeof(mi);
+				if (GetMonitorInfo(hMonitor, &mi))
+				{
+					mmi->ptMaxPosition.x = mi.rcWork.left;
+					mmi->ptMaxPosition.y = mi.rcWork.top;
+
+					mmi->ptMaxTrackSize.x = mi.rcWork.right - mi.rcWork.left;
+					mmi->ptMaxTrackSize.y = mi.rcWork.bottom - mi.rcWork.top;
+				}
+
 				return 0;
 			}
 			break;
@@ -158,14 +171,30 @@ namespace
 				if (wParam)
 				{
 					NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
-
-					// shrink client rect by border thickness for resizing
-					const int border = 8;
-					p->rgrc[0].left += border;
-					p->rgrc[0].top += 1;    // little hack to remove white artefact on top
-					p->rgrc[0].right -= border;
-					p->rgrc[0].bottom -= border;
-
+					if (IsZoomed(hWnd))
+					{
+						// Get working area of the monitor
+						HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+						MONITORINFO mi{};
+						mi.cbSize = sizeof(mi);
+						if (GetMonitorInfo(hMonitor, &mi))
+						{
+							RECT& r = p->rgrc[0];
+							r.left = mi.rcWork.left;
+							r.top = mi.rcWork.top;
+							r.right = mi.rcWork.right;
+							r.bottom = mi.rcWork.bottom;
+						}
+					}
+					else
+					{
+						// shrink client rect by border thickness for resizing
+						const int border = 8;
+						p->rgrc[0].left += border;
+						p->rgrc[0].top += 1;    // little hack to remove white artefact on top
+						p->rgrc[0].right -= border;
+						p->rgrc[0].bottom -= border;
+					}
 					return 0; // handled
 				}
 				else
@@ -312,7 +341,7 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	if (hWndBrowser_)
 	{
-		SetWindowPos(hWndBrowser_, nullptr, 0, 0, 
+		SetWindowPos(hWndBrowser_, nullptr, 0, 0,
 			width, height,
 			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
