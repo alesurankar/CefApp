@@ -45,16 +45,11 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 	}
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
 
-	//// make browser ignore mouse input
-	//LONG exStyle = GetWindowLong(hWndBrowser, GWL_EXSTYLE);
-	//SetWindowLong(hWndBrowser, GWL_EXSTYLE,
-	//	exStyle | WS_EX_TRANSPARENT | WS_EX_LAYERED);
-
 	if (hWndBrowser && hWndParent_) {
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
-			PostMessage(hWndParent_, WM_SIZE, 0, 0); 
+			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
 			"console.log('Browser Count " + std::to_string(browserCount_) + "')",

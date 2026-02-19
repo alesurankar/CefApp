@@ -115,6 +115,7 @@
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
     <ClCompile Include="src\app\WinMain.cpp" />
+    <ClCompile Include="src\ui\OverlayWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="src\cef\MyCefClient.h" />
     <ClInclude Include="src\resources\FileResourceHandler.h" />
     <ClInclude Include="src\resources\FileSchemeHandlerFactory.h" />
+    <ClInclude Include="src\ui\OverlayWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest" />

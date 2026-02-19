@@ -10,6 +10,20 @@ static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
 
 namespace
 {
+	LRESULT CALLBACK OverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (msg)
+		{
+			case WM_LBUTTONDOWN:
+			{
+				ReleaseCapture();
+				PostMessage(GetParent(hwnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+
+				return 0;
+			}
+		}
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
 	LRESULT CALLBACK HandleWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
@@ -336,8 +350,16 @@ void MainWindow::OnSize(WPARAM wParam)
 			width, height,
 			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
+	
+	if (hWndOverlayWindow_)
+	{
+		SetWindowPos(hWndOverlayWindow_, nullptr, 100, 100,
+			width-200, height-140,
+			SWP_NOZORDER | SWP_NOACTIVATE);
+	}
 
 	RaiseHandle();
+	RaiseOverlayWindow();
 }
 
 void MainWindow::SetBrowserHWND(HWND hWndBrowser)
@@ -359,6 +381,20 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 	); 
 	SetWindowLongPtr(hHandle_, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
 	RaiseHandle();
+
+	hWndOverlayWindow_ = CreateWindowExA(
+		0,
+		"STATIC",
+		nullptr,
+		WS_CHILD | WS_VISIBLE,
+		0, 0, 0, 0,
+		hWnd_,
+		nullptr,
+		GetModuleHandle(nullptr),
+		nullptr
+	);
+	SetWindowLongPtr(hWndOverlayWindow_, GWLP_WNDPROC, (LONG_PTR)OverlayWindowProc);
+	RaiseOverlayWindow();
 }
 
 void MainWindow::RequestClose()
@@ -389,6 +425,14 @@ void MainWindow::RaiseHandle()
 {
 	if (hHandle_) {
 		SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0,
+			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	}
+}
+
+void MainWindow::RaiseOverlayWindow()
+{
+	if (hWndOverlayWindow_) {
+		SetWindowPos(hWndOverlayWindow_, HWND_TOP, 0, 0, 0, 0,
 			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 	}
 }

@@ -27,6 +27,7 @@ public:
 	void RequestClose();
 	void StartFade(FadeAction action);
 	void RaiseHandle();
+	void RaiseOverlayWindow();
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
@@ -38,8 +39,9 @@ private:
 	HWND hWnd_;
 	HWND hHandle_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
+	HWND hWndOverlayWindow_ = nullptr;
 	MyCefClient* client_ = nullptr;
 	std::string url_ = "http://localhost:5173/";
-	bool isClosing_ = false;
+	bool isClosing_ = false; 
 };
 
