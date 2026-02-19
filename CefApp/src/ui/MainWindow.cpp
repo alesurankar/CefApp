@@ -110,11 +110,13 @@ namespace
 				mi.cbSize = sizeof(mi);
 				if (GetMonitorInfo(hMonitor, &mi))
 				{
-					mmi->ptMaxPosition.x = mi.rcWork.left;
-					mmi->ptMaxPosition.y = mi.rcWork.top;
+					const int border = 4;
 
-					mmi->ptMaxTrackSize.x = mi.rcWork.right - mi.rcWork.left;
-					mmi->ptMaxTrackSize.y = mi.rcWork.bottom - mi.rcWork.top;
+					mmi->ptMaxPosition.x = mi.rcWork.left - border;
+					mmi->ptMaxPosition.y = mi.rcWork.top - border;
+
+					mmi->ptMaxTrackSize.x = (mi.rcWork.right - mi.rcWork.left) + border * 2;
+					mmi->ptMaxTrackSize.y = (mi.rcWork.bottom - mi.rcWork.top) + border * 2;
 				}
 
 				return 0;
