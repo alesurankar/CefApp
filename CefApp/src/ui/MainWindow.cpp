@@ -1,7 +1,7 @@
 #include "MainWindow.h"
-#include <dwmapi.h>
-#pragma comment(lib, "dwmapi.lib")
-#include "../platform/MyWinX.h" 
+//#include <dwmapi.h>
+//#pragma comment(lib, "dwmapi.lib")
+//#include "../platform/MyWinX.h" 
 #include "../cef/MyCefClient.h"
 
 using namespace std::string_literals;

@@ -40,6 +40,15 @@
     <Filter Include="manifests">
       <UniqueIdentifier>{0696173f-9e67-46be-886a-8dc27ce88e50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\cef\config">
+      <UniqueIdentifier>{924d4d6c-d40d-4e02-aaef-afba1ba8f792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cef\config\base">
+      <UniqueIdentifier>{d090b6f0-51f8-49b3-8f00-84834b94b137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cef\config\wrapper">
+      <UniqueIdentifier>{6d32392d-fcd8-4fbf-9cad-658a3aacf9da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\WinMain.cpp">
@@ -79,6 +88,27 @@
     </ClInclude>
     <ClInclude Include="src\platform\MyWinX.h">
       <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\MyCefConfig.h">
+      <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\MyCefConfig_client.h">
+      <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\MyCefConfig_app.h">
+      <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\MyCefConfig_praiser.h">
+      <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\MyCefConfig_resource_handler.h">
+      <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h">
+      <Filter>Header Files\cef\config\base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h">
+      <Filter>Header Files\cef\config\wrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

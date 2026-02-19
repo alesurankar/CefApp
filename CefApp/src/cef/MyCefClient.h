@@ -1,5 +1,5 @@
 #pragma once
-#include "include/cef_client.h"
+#include "config/MyCefConfig_client.h"
 #include <cassert>
 
 class MyCefClient

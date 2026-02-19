@@ -1,6 +1,6 @@
 #pragma once
-#include "include/cef_resource_handler.h"
-#include "include/cef_parser.h"
+#include "../cef/config/MyCefConfig_resource_handler.h"
+#include "../cef/config/MyCefConfig_praiser.h"
 #include <fstream>
 #include <string>
 #include <filesystem>

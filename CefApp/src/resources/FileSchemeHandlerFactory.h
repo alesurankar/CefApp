@@ -1,5 +1,4 @@
 #pragma once
-#include "include/cef_scheme.h"
 #include "FileResourceHandler.h"
 
 // Step 3 Global CEF phase (no browser yet)

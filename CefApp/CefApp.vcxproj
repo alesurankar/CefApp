@@ -117,6 +117,13 @@
     <ClCompile Include="src\app\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
+    <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />
+    <ClInclude Include="src\cef\config\MyCefConfig_app.h" />
+    <ClInclude Include="src\cef\config\MyCefConfig_client.h" />
+    <ClInclude Include="src\cef\config\MyCefConfig.h" />
+    <ClInclude Include="src\cef\config\MyCefConfig_praiser.h" />
+    <ClInclude Include="src\cef\config\MyCefConfig_resource_handler.h" />
     <ClInclude Include="src\platform\MyWin.h" />
     <ClInclude Include="src\platform\MyWinX.h" />
     <ClInclude Include="src\ui\MainWindow.h" />
