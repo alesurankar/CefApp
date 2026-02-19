@@ -1,7 +1,4 @@
 #include "MainWindow.h"
-//#include <dwmapi.h>
-//#pragma comment(lib, "dwmapi.lib")
-//#include "../platform/MyWinX.h" 
 #include "../cef/MyCefClient.h"
 
 using namespace std::string_literals;
@@ -10,20 +7,6 @@ static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
 
 namespace
 {
-	LRESULT CALLBACK OverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-	{
-		switch (msg)
-		{
-			case WM_LBUTTONDOWN:
-			{
-				ReleaseCapture();
-				PostMessage(GetParent(hwnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
-
-				return 0;
-			}
-		}
-		return DefWindowProc(hwnd, msg, wParam, lParam);
-	}
 	LRESULT CALLBACK HandleWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
@@ -210,6 +193,16 @@ namespace
 			}
 			break;
 
+			case WM_APP + 10:
+			{
+				if (window) {
+					window->CreateOverlayWindow();
+					PostMessage(hWnd, WM_SIZE, 0, 0);
+				}
+				return 0;
+			}
+			break;
+
 			case WM_CLOSE:
 			{
 				if (window) {
@@ -350,16 +343,10 @@ void MainWindow::OnSize(WPARAM wParam)
 			width, height,
 			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
-	
-	if (hWndOverlayWindow_)
-	{
-		SetWindowPos(hWndOverlayWindow_, nullptr, 100, 100,
-			width-200, height-140,
-			SWP_NOZORDER | SWP_NOACTIVATE);
-	}
 
+	if (overlay_)
+		overlay_->OnSize(width, height);
 	RaiseHandle();
-	RaiseOverlayWindow();
 }
 
 void MainWindow::SetBrowserHWND(HWND hWndBrowser)
@@ -381,20 +368,6 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 	); 
 	SetWindowLongPtr(hHandle_, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
 	RaiseHandle();
-
-	hWndOverlayWindow_ = CreateWindowExA(
-		0,
-		"STATIC",
-		nullptr,
-		WS_CHILD | WS_VISIBLE,
-		0, 0, 0, 0,
-		hWnd_,
-		nullptr,
-		GetModuleHandle(nullptr),
-		nullptr
-	);
-	SetWindowLongPtr(hWndOverlayWindow_, GWLP_WNDPROC, (LONG_PTR)OverlayWindowProc);
-	RaiseOverlayWindow();
 }
 
 void MainWindow::RequestClose()
@@ -429,10 +402,9 @@ void MainWindow::RaiseHandle()
 	}
 }
 
-void MainWindow::RaiseOverlayWindow()
+void MainWindow::CreateOverlayWindow()
 {
-	if (hWndOverlayWindow_) {
-		SetWindowPos(hWndOverlayWindow_, HWND_TOP, 0, 0, 0, 0,
-			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-	}
+	overlay_ = std::make_unique<OverlayWindow>();
+	overlay_->CreateOverlayWindow(hWnd_);
+	overlay_->RaiseOverlayWindow();
 }

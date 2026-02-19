@@ -49,6 +49,7 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
+			PostMessage(hWndParent_, WM_APP + 10, 0, 0);
 			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
@@ -61,7 +62,6 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
-	//pFrame->ExecuteJavaScript("alert('Step9: Page loaded!')", pFrame->GetURL(), 0);
 	pFrame->ExecuteJavaScript("console.log('Step9: Page loaded!')", pFrame->GetURL(), 0);
 }
 

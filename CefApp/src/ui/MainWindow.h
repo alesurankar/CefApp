@@ -1,6 +1,9 @@
 #pragma once
 #include "../platform/MyWin.h"
+#include "OverlayWindow.h"
 #include <string>
+#include <memory>
+
 
 class MyCefClient;
 
@@ -27,7 +30,7 @@ public:
 	void RequestClose();
 	void StartFade(FadeAction action);
 	void RaiseHandle();
-	void RaiseOverlayWindow();
+	void CreateOverlayWindow();
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
@@ -38,8 +41,8 @@ public:
 private:
 	HWND hWnd_;
 	HWND hHandle_ = nullptr;
-	HWND hWndBrowser_ = nullptr;
-	HWND hWndOverlayWindow_ = nullptr;
+	HWND hWndBrowser_ = nullptr; 
+	std::unique_ptr<OverlayWindow> overlay_;
 	MyCefClient* client_ = nullptr;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false; 
