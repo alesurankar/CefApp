@@ -97,6 +97,17 @@ namespace
 			}
 			break;
 
+			case WM_GETMINMAXINFO:
+			{
+				MINMAXINFO* mmi = reinterpret_cast<MINMAXINFO*>(lParam);
+				// Set minimum width and height
+				mmi->ptMinTrackSize.x = 520;
+				mmi->ptMinTrackSize.y = 360;
+
+				return 0;
+			}
+			break;
+
 			case WM_TIMER:
 			{
 				if (wParam == MainWindow::TIMER_FADE) {
@@ -295,7 +306,7 @@ void MainWindow::OnSize(WPARAM wParam)
 	if (hHandle_)
 	{
 		SetWindowPos(hHandle_, nullptr,
-			80, 1, width - 260, 49,
+			80, 1, width - 260, 37,
 			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 

@@ -24,7 +24,7 @@ function myCefResize(): void
 const TitleBar = () => {
   return (
     <div id="titlebar"
-        className="h-10 w-full flex items-center justify-between bg-[#202020] text-white select-none [webkit-app-region:drag]"
+        className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none [webkit-app-region:drag]"
     >
 
       {/* Left empty for spacing if needed */}

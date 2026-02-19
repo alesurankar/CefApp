@@ -71,7 +71,7 @@ const BodyFrame: React.FC<BodyFrameProps> = ({ className }) => {
     }
 
   return (
-    <div className={`bg-gray-900 text-white p-4 ${className ?? ''}`}>
+    <div className={`bg-gray-800 text-white p-4 ${className ?? ''}`}>
       <div className="text-4xl font-bold text-center my-20">
         <p>
             {inProgress ? "Test in progress..." : answer ?? "NO DATA"}
