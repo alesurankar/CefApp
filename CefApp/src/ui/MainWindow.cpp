@@ -286,15 +286,25 @@ bool MainWindow::HasBrowserWindow() const
 void MainWindow::OnSize(WPARAM wParam)
 {
 	if (wParam == SIZE_MINIMIZED) return;
-	if (!hWndBrowser_) return;
 
 	RECT rect{};
 	GetClientRect(hWnd_, &rect);
-	int left = 0;
-	int top = 0;
-	SetWindowPos(hWndBrowser_, nullptr, left, top,
-		rect.right - left, rect.bottom - top,
-		SWP_NOZORDER | SWP_NOACTIVATE);
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
+
+	if (hHandle_)
+	{
+		SetWindowPos(hHandle_, nullptr,
+			80, 1, width - 260, 49,
+			SWP_NOZORDER | SWP_NOACTIVATE);
+	}
+
+	if (hWndBrowser_)
+	{
+		SetWindowPos(hWndBrowser_, nullptr, 0, 0, 
+			width, height,
+			SWP_NOZORDER | SWP_NOACTIVATE);
+	}
 
 	RaiseHandle();
 }
@@ -309,7 +319,7 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 		"STATIC",
 		nullptr,
 		WS_CHILD | WS_VISIBLE,
-		40, 0, 800, 45,
+		0, 0, 0, 0,
 		hWnd_,
 		nullptr,
 		GetModuleHandle(nullptr),
