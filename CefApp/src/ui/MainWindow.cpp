@@ -12,12 +12,15 @@ namespace
 {
 	LRESULT CALLBACK HandleWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		static POINT offset{};
 		switch (msg)
 		{
 			case WM_LBUTTONDOWN:
-				SendMessage(GetParent(hwnd), WM_NCLBUTTONDOWN, HTCAPTION, 0);
+			{
+				ReleaseCapture();
+				PostMessage(GetParent(hwnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+
 				return 0;
+			}
 
 			case WM_PAINT:
 			{
@@ -28,6 +31,7 @@ namespace
 				EndPaint(hwnd, &ps);
 				return 0;
 			}
+			break;
 		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
@@ -305,7 +309,7 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 		"STATIC",
 		nullptr,
 		WS_CHILD | WS_VISIBLE,
-		0, 0, 200, 45,
+		40, 0, 800, 45,
 		hWnd_,
 		nullptr,
 		GetModuleHandle(nullptr),
