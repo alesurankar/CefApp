@@ -18,17 +18,14 @@ public:
 		Maximize,
 		Restore
 	};
-	MainWindow() = default;
+	static MainWindow* GetWindow(HWND hWnd);
 	void AttachHWND(HWND hWnd);
 	void CreateBrowser();
-	static MainWindow* GetWindow(HWND hWnd);
-	void OnSize(WPARAM wParam);
 	bool HasBrowserWindow() const;
+	void OnSize(WPARAM wParam);
 	void SetBrowserHWND(HWND hWndBrowser);
 	void RequestClose();
 	void StartFade(FadeAction action);
-	void SetHandleHWND(HWND h) { hHandle_ = h; }
-	HWND GetHandleHWND() const { return hHandle_; }
 	void RaiseHandle();
 public:
 	static constexpr int FADE_STEPS = 15;

@@ -15,19 +15,19 @@ namespace
 		static POINT offset{};
 		switch (msg)
 		{
-		case WM_LBUTTONDOWN:
-			SendMessage(GetParent(hwnd), WM_NCLBUTTONDOWN, HTCAPTION, 0);
-			return 0;
+			case WM_LBUTTONDOWN:
+				SendMessage(GetParent(hwnd), WM_NCLBUTTONDOWN, HTCAPTION, 0);
+				return 0;
 
-		case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint(hwnd, &ps);
-			// Fill handle with a solid color
-			FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
-			EndPaint(hwnd, &ps);
-			return 0;
-		}
+			case WM_PAINT:
+			{
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hwnd, &ps);
+				// Fill handle with a solid color
+				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
+				EndPaint(hwnd, &ps);
+				return 0;
+			}
 		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
@@ -40,154 +40,154 @@ namespace
 			window = MainWindow::GetWindow(hWnd);
 
 		switch (msg) {
-		case WM_NCCREATE:
-		{
-			CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
-			window = static_cast<MainWindow*>(cs->lpCreateParams);
+			case WM_NCCREATE:
+			{
+				CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
+				window = static_cast<MainWindow*>(cs->lpCreateParams);
 
-			window->AttachHWND(hWnd);
-			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
+				window->AttachHWND(hWnd);
+				SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
 
-			return TRUE;
-		}
-		break;
-
-		case WM_CREATE:
-		{
-			if (window) {
-				window->CreateBrowser();
-				PostMessage(hWnd, WM_SIZE, 0, 0);
+				return TRUE;
 			}
-			return 0;
-		}
-		break;
+			break;
 
-		case WM_ERASEBKGND:
-		{
-			if (window && window->HasBrowserWindow())
-				return 1;
-		}
-		break;
+			case WM_CREATE:
+			{
+				if (window) {
+					window->CreateBrowser();
+					PostMessage(hWnd, WM_SIZE, 0, 0);
+				}
+				return 0;
+			}
+			break;
 
-		case WM_TIMER:
-		{
-			if (wParam == MainWindow::TIMER_FADE) {
+			case WM_ERASEBKGND:
+			{
+				if (window && window->HasBrowserWindow())
+					return 1;
+			}
+			break;
+
+			case WM_SIZE:
+			{
 				if (!window) break;
 
-				if (window->fadeStep <= 0) {
-					KillTimer(hWnd, MainWindow::TIMER_FADE);
-
-					switch (window->fadeAction_) {
-					case MainWindow::FadeAction::Close:
-						PostMessage(hWnd, WM_CLOSE, 0, 0);
-						break;
-					case MainWindow::FadeAction::Minimize:
-						ShowWindow(hWnd, SW_MINIMIZE);
-						break;
-					case MainWindow::FadeAction::Maximize:
-						ShowWindow(hWnd, SW_MAXIMIZE);
-						break;
-					case MainWindow::FadeAction::Restore:
-						ShowWindow(hWnd, SW_RESTORE);
-						break;
-					default:
-						break;
-					}
-
-					window->fadeAction_ = MainWindow::FadeAction::None;
+				if (wParam == SIZE_MINIMIZED) {
+					window->isMinimized_ = true;
+					window->isMaximized_ = false;
+					SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
 				}
-				else {
-					BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
+				if (wParam == SIZE_MAXIMIZED) {
+					window->isMaximized_ = true;
+					window->isMinimized_ = false;
+					SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+				}
+				if (wParam == SIZE_RESTORED) {
+					window->isMinimized_ = false;
+					window->isMaximized_ = false;
+					SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+				}
 
-					switch (window->fadeAction_) {
-					case MainWindow::FadeAction::Close:
-					case MainWindow::FadeAction::Minimize:
-						SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
-						window->fadeStep--;
-						break;
-					default:
-						window->fadeStep = 0;
-						break;
+				window->OnSize(wParam);
+			}
+			break;
+
+			case WM_TIMER:
+			{
+				if (wParam == MainWindow::TIMER_FADE) {
+					if (!window) break;
+
+					if (window->fadeStep <= 0) {
+						KillTimer(hWnd, MainWindow::TIMER_FADE);
+
+						switch (window->fadeAction_) {
+						case MainWindow::FadeAction::Close:
+							PostMessage(hWnd, WM_CLOSE, 0, 0);
+							break;
+						case MainWindow::FadeAction::Minimize:
+							ShowWindow(hWnd, SW_MINIMIZE);
+							break;
+						case MainWindow::FadeAction::Maximize:
+							ShowWindow(hWnd, SW_MAXIMIZE);
+							break;
+						case MainWindow::FadeAction::Restore:
+							ShowWindow(hWnd, SW_RESTORE);
+							break;
+						default:
+							break;
+						}
+
+						window->fadeAction_ = MainWindow::FadeAction::None;
+					}
+					else {
+						BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
+
+						switch (window->fadeAction_) {
+						case MainWindow::FadeAction::Close:
+						case MainWindow::FadeAction::Minimize:
+							SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+							window->fadeStep--;
+							break;
+						default:
+							window->fadeStep = 0;
+							break;
+						}
 					}
 				}
 			}
-		}
-		break;
+			break;
 
-		case WM_SIZE:
-		{
-			if (!window) break;
-
-			if (wParam == SIZE_MINIMIZED) {
-				window->isMinimized_ = true;
-				window->isMaximized_ = false;
-				SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
-			}
-			if (wParam == SIZE_MAXIMIZED) {
-				window->isMaximized_ = true;
-				window->isMinimized_ = false;
-				SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-			}
-			if (wParam == SIZE_RESTORED) {
-				window->isMinimized_ = false;
-				window->isMaximized_ = false;
-				SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-			}
-
-			window->OnSize(wParam);
-		}
-		break;
-
-		case WM_NCCALCSIZE:
-		{
-			if (wParam)
+			case WM_NCCALCSIZE:
 			{
-				NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
+				if (wParam)
+				{
+					NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
 
-				// shrink client rect by border thickness for resizing
-				const int border = 8;
-				p->rgrc[0].left += border;
-				p->rgrc[0].top += 1;    // little hack to remove white artefact on top
-				p->rgrc[0].right -= border;
-				p->rgrc[0].bottom -= border;
+					// shrink client rect by border thickness for resizing
+					const int border = 8;
+					p->rgrc[0].left += border;
+					p->rgrc[0].top += 1;    // little hack to remove white artefact on top
+					p->rgrc[0].right -= border;
+					p->rgrc[0].bottom -= border;
 
-				return 0; // handled
+					return 0; // handled
+				}
+				else
+				{
+					RECT* pRect = reinterpret_cast<RECT*>(lParam);
+					return 0;
+				}
 			}
-			else
+			break;
+
+			case WM_CLOSE:
 			{
-				RECT* pRect = reinterpret_cast<RECT*>(lParam);
+				if (window) {
+					OutputDebugStringA("WM_CLOSE triggered\n");
+					window->RequestClose();
+					return 0;
+				}
+				DestroyWindow(hWnd);
 				return 0;
 			}
-		}
-		break;
+			break;
 
-		case WM_CLOSE:
-		{
-			if (window) {
-				OutputDebugStringA("WM_CLOSE triggered\n");
-				window->RequestClose();
+			case WM_APP + 99:
+			{
+				DestroyWindow(hWnd);
 				return 0;
 			}
-			DestroyWindow(hWnd);
-			return 0;
-		}
-		break;
+			break;
 
-		case WM_APP + 99:
-		{
-			DestroyWindow(hWnd);
-			return 0;
-		}
-		break;
-
-		case WM_DESTROY:
-		{
-			SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
-			delete window;
-			PostQuitMessage(0);
-			return 0;
-		}
-		break;
+			case WM_DESTROY:
+			{
+				SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
+				delete window;
+				PostQuitMessage(0);
+				return 0;
+			}
+			break;
 		}
 		return DefWindowProcA(hWnd, msg, wParam, lParam);
 	}
@@ -241,6 +241,12 @@ void CleanupMainWindow(HINSTANCE hInstance)
 }
 
 
+MainWindow* MainWindow::GetWindow(HWND hWnd)
+{
+	return
+		reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+}
+
 void MainWindow::AttachHWND(HWND hWnd)
 {
 	hWnd_ = hWnd;
@@ -265,10 +271,12 @@ void MainWindow::CreateBrowser()
 	);
 }
 
-MainWindow* MainWindow::GetWindow(HWND hWnd)
+bool MainWindow::HasBrowserWindow() const
 {
-	return
-		reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	if (!client_) return false;
+	auto browser = client_->GetBrowser();
+	if (!browser) return false;
+	return browser->GetHost()->GetWindowHandle() != nullptr;
 }
 
 void MainWindow::OnSize(WPARAM wParam)
@@ -285,14 +293,6 @@ void MainWindow::OnSize(WPARAM wParam)
 		SWP_NOZORDER | SWP_NOACTIVATE);
 
 	RaiseHandle();
-}
-
-bool MainWindow::HasBrowserWindow() const
-{
-	if (!client_) return false;
-	auto browser = client_->GetBrowser();
-	if (!browser) return false;
-	return browser->GetHost()->GetWindowHandle() != nullptr;
 }
 
 void MainWindow::SetBrowserHWND(HWND hWndBrowser)
@@ -341,7 +341,8 @@ void MainWindow::StartFade(FadeAction action)
 
 void MainWindow::RaiseHandle()
 {
-	if (hHandle_)
+	if (hHandle_) {
 		SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0,
 			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+	}
 }
