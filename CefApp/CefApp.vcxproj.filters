@@ -57,15 +57,6 @@
     <ClCompile Include="src\ui\MainWindow.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\debugging_project\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\debugging_project\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\debugging_project\Client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\MyWin.h">
@@ -86,17 +77,8 @@
     <ClInclude Include="src\ui\MainWindow.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
-    <ClInclude Include="src\debugging_project\App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\debugging_project\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\debugging_project\Client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\platform\MyWinX.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
