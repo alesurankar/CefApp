@@ -27,28 +27,6 @@ The application consists of three main components:
 
 ---
 
-### 📌 How They Interact
-
-- **CEF UI → C++ backend**: User interacts with React panels → messages are sent to native C++ code → renderer or other widgets respond  
-- **Renderer Widget → Main Window**: Handles GPU-intensive operations independently of CEF  
-- **CEF Panels → Main Window**: Focus, dragging, and window overlays are managed via the parent window, keeping everything synchronized  
-
-This separation allows **smooth real-time rendering** while keeping UI flexible and modern.
-
----
-
-## 🎯 Features / Goals
-
-- Modular editor-style architecture  
-- Custom window overlays and input handling  
-- Multiple interactive widgets under development  
-- Planned D3D11 renderer for 3D content  
-- Communication between CEF UI and native widgets  
-
-> Note: This is an experimental project and primarily a playground for advanced CEF + Win32 + React integration.
-
----
-
 ## ⬇️ Download / Setup
 
 CEF binaries can be downloaded from the official page:  
@@ -74,6 +52,18 @@ Setup follows a minimal distribution approach, inspired by this YouTube tutorial
 - Renderer widget scaffold implemented (no full 3D yet)  
 - Communication between UI and backend functioning  
 - Multiple widgets under development  
+
+---
+
+## 🎯 Features / Goals
+
+- Modular editor-style architecture  
+- Custom window overlays and input handling  
+- Multiple interactive widgets under development  
+- Planned D3D11 renderer for 3D content  
+- Communication between CEF UI and native widgets  
+
+> Note: This is an experimental project and primarily a playground for advanced CEF + Win32 + React integration.
 
 ---
 
