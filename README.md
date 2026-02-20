@@ -2,13 +2,13 @@
 
 A CEF-based desktop application under development.  
 
-The final goal of this project is not fully defined yet, but the idea is to create something inspired by **Unreal Engine** � not as optimized, but with a similar look and interactive behavior.  
+The final goal of this project is not fully defined yet, but the idea is to create something inspired by **Unreal Engine** � not as optimized, but with a similar look and interactive behavior.  
 
 Currently, the app includes multiple widgets, one of which will be a **D3D11 renderer**, making it possible that this could evolve into a **game engine with a CEF-based GUI**.
 
 ---
 
-## ?? Features / Goals
+## 🎯 Features / Goals
 
 - Chromium Embedded Framework (CEF) GUI integration  
 - Win32 main window with custom overlays  
@@ -20,7 +20,7 @@ Currently, the app includes multiple widgets, one of which will be a **D3D11 ren
 
 ---
 
-## ?? Download / Setup
+## ⬇️ Download / Setup
 
 CEF binaries can be downloaded from the official page:  
 [https://cef-builds.spotifycdn.com/index.html](https://cef-builds.spotifycdn.com/index.html)
@@ -34,7 +34,7 @@ The project uses a **minimal CEF distribution**. The initial setup follows this 
 
 ---
 
-## ?? Tech Stack
+## 🛠 Tech Stack
 
 - **Chromium Embedded Framework (CEF)**  
 - **C++** (Win32 API)  
@@ -44,7 +44,7 @@ The project uses a **minimal CEF distribution**. The initial setup follows this 
 
 ---
 
-## ?? Current Status
+## 🏗 Current Status
 
 - Core application structure is implemented  
 - Custom windows, overlays, and input handling working  
@@ -53,7 +53,7 @@ The project uses a **minimal CEF distribution**. The initial setup follows this 
 
 ---
 
-## ?? Future Plans
+## 📌 Future Plans
 
 - Full widget ecosystem similar to Unreal Engine  
 - Dynamic UI interactions  
@@ -63,7 +63,7 @@ The project uses a **minimal CEF distribution**. The initial setup follows this 
 
 ---
 
-## ?? Why This Project?
+## 💡 Why This Project?
 
 Creating a CEF-based desktop app with a game engine-like workflow is challenging because of:
 
