@@ -28,7 +28,7 @@ const TitleBar = () => {
     >
 
       {/* Left empty for spacing if needed */}
-      <div className="pl-2"></div>
+      <div className="pl-2">Custom Title Bar</div>
 
       {/* Window controls */}
       <div className="flex">
