@@ -2,7 +2,7 @@
 
 A CEF-based desktop application under development.  
 
-The final goal of this project is not fully defined yet, but the idea is to create something inspired by **Unreal Engine** � not as optimized, but with a similar look and interactive behavior.  
+The final goal of this project is not fully defined yet, but the idea is to create something inspired by **Unreal Engine** - not as optimized, but with a similar look and interactive behavior.  
 
 Currently, the app includes multiple widgets, one of which will be a **D3D11 renderer**, making it possible that this could evolve into a **game engine with a CEF-based GUI**.
 
