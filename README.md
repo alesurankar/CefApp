@@ -2,21 +2,50 @@
 
 A CEF-based desktop application under development.  
 
-The final goal of this project is not fully defined yet, but the idea is to create something inspired by **Unreal Engine** - not as optimized, but with a similar look and interactive behavior.  
+The final goal of this project is not fully defined yet, but the idea is to combine **modern UI with a native 3D renderer**, creating a flexible framework that could evolve into a game engine inspired by **Unreal Engine**, with a CEF-powered GUI. 
 
-Currently, the app includes multiple widgets, one of which will be a **D3D11 renderer**, making it possible that this could evolve into a **game engine with a CEF-based GUI**.
+---
+
+## 🏗 Architecture
+
+The application consists of three main components:
+
+### 1. Main Window
+- A Win32 window that serves as the parent for all other windows and widgets  
+- Manages window resizing, focus, and message routing  
+
+### 2. Renderer Widget (Independent)
+- A native child window of the main window  
+- Handles **real-time 3D rendering** (D3D11 planned)  
+- Fully independent of CEF, ensuring **native GPU performance**  
+
+### 3. CEF / React GUI Panels
+- Embedded Chromium browser for **dynamic UI**  
+- Provides **dockable panels, buttons, sliders, menus**, and other controls  
+- Overlays the renderer widget when necessary  
+- Sends events/messages to the C++ backend to control widgets, rendering, or other behaviors  
+
+---
+
+### 📌 How They Interact
+
+- **CEF UI → C++ backend**: User interacts with React panels → messages are sent to native C++ code → renderer or other widgets respond  
+- **Renderer Widget → Main Window**: Handles GPU-intensive operations independently of CEF  
+- **CEF Panels → Main Window**: Focus, dragging, and window overlays are managed via the parent window, keeping everything synchronized  
+
+This separation allows **smooth real-time rendering** while keeping UI flexible and modern.
 
 ---
 
 ## 🎯 Features / Goals
 
-- Chromium Embedded Framework (CEF) GUI integration  
-- Win32 main window with custom overlays  
-- Multiple widgets (under development)  
-- Planned D3D11 renderer for 3D graphics  
-- Dynamic window and input handling  
+- Modular editor-style architecture  
+- Custom window overlays and input handling  
+- Multiple interactive widgets under development  
+- Planned D3D11 renderer for 3D content  
+- Communication between CEF UI and native widgets  
 
-> Note: The project is experimental and primarily a playground for learning advanced CEF + Win32 + React integration.
+> Note: This is an experimental project and primarily a playground for advanced CEF + Win32 + React integration.
 
 ---
 
@@ -25,50 +54,35 @@ Currently, the app includes multiple widgets, one of which will be a **D3D11 ren
 CEF binaries can be downloaded from the official page:  
 [https://cef-builds.spotifycdn.com/index.html](https://cef-builds.spotifycdn.com/index.html)
 
-### Minimal distribution approach
-
-The project uses a **minimal CEF distribution**. The initial setup follows this YouTube tutorial:  
-[CEF C++ Minimal Setup Tutorial](https://www.youtube.com/watch?v=Enio6T3DunA&list=PLqCJpWy5Fohc_Xz5nV0efhzaVbtJu07aa)
-
-> Make sure to follow the tutorial steps to correctly link CEF with your C++ project.
+Setup follows a minimal distribution approach, inspired by this YouTube tutorial:  
+[C++ Nano CEF - ChiliTomatoNoodle](https://www.youtube.com/watch?v=Enio6T3DunA&list=PLqCJpWy5Fohc_Xz5nV0efhzaVbtJu07aa)
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Chromium Embedded Framework (CEF)**  
-- **C++** (Win32 API)  
-- **React** (frontend UI)  
-- **Tailwind CSS** (styling)  
-- **Direct3D 11** (planned 3D rendering)  
+- **Chromium Embedded Framework (CEF)** – UI panels  
+- **C++ / Win32 API** – main window & backend logic  
+- **React + Tailwind CSS** – interactive GUI  
+- **Direct3D 11** – renderer widget (planned for 3D viewport)
 
 ---
 
-## 🏗 Current Status
+## 🚧 Current Status
 
-- Core application structure is implemented  
-- Custom windows, overlays, and input handling working  
+- Main window and CEF panels working  
+- Renderer widget scaffold implemented (no full 3D yet)  
+- Communication between UI and backend functioning  
 - Multiple widgets under development  
-- Planning to integrate D3D11 renderer for 3D content  
 
 ---
 
 ## 📌 Future Plans
 
-- Full widget ecosystem similar to Unreal Engine  
-- Dynamic UI interactions  
-- 3D rendering integration with D3D11  
-- Modular architecture for future engine-like capabilities  
-- Optimization and cross-platform considerations  
+- Complete D3D11 renderer widget  
+- Add more interactive widgets (properties, panels, inspectors)  
+- Modular architecture for engine-like flexibility  
+- Dynamic UI and animations  
+- Optimization and possible cross-platform considerations  
 
 ---
-
-## 💡 Why This Project?
-
-Creating a CEF-based desktop app with a game engine-like workflow is challenging because of:
-
-- Window layering and input forwarding  
-- Integration of C++ backend with React frontend  
-- Rendering pipeline for real-time 3D content  
-
-This project explores solutions for these problems while experimenting with modern UI and rendering techniques.
