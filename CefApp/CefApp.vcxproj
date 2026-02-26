@@ -111,6 +111,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
+    <ClCompile Include="src\renderer\RendererApp.cpp" />
+    <ClCompile Include="src\renderer\Graphics.cpp" />
+    <ClCompile Include="src\renderer\input\Keyboard.cpp" />
+    <ClCompile Include="src\renderer\input\Mouse.cpp" />
     <ClCompile Include="src\ui\MainWindow.cpp" />
     <ClCompile Include="src\cef\MyCefApp.cpp" />
     <ClCompile Include="src\cef\MyCefClient.cpp" />
@@ -130,6 +134,10 @@
     <ClInclude Include="src\cef\config\MyCefConfig_resource_handler.h" />
     <ClInclude Include="src\platform\MyWin.h" />
     <ClInclude Include="src\platform\MyWinX.h" />
+    <ClInclude Include="src\renderer\RendererApp.h" />
+    <ClInclude Include="src\renderer\Graphics.h" />
+    <ClInclude Include="src\renderer\input\Keyboard.h" />
+    <ClInclude Include="src\renderer\input\Mouse.h" />
     <ClInclude Include="src\ui\MainWindow.h" />
     <ClInclude Include="src\cef\MyCefApp.h" />
     <ClInclude Include="src\cef\MyCefClient.h" />

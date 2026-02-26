@@ -52,6 +52,18 @@
     <Filter Include="Header Files\app">
       <UniqueIdentifier>{40d28f09-7c74-4283-882b-0018d32d075c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\renderer">
+      <UniqueIdentifier>{e71e3005-b3fe-47f6-b305-90a9a12429be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderer">
+      <UniqueIdentifier>{c957137e-be11-47b1-b7fd-dd2af327c6e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\input">
+      <UniqueIdentifier>{d54b1f3e-dee8-40aa-967f-1f11f33a6951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderer\input">
+      <UniqueIdentifier>{c8197509-5f95-4e18-8cad-b560b8902b76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -74,6 +86,18 @@
     </ClCompile>
     <ClCompile Include="src\app\Application.cpp">
       <Filter>Source Files\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Graphics.cpp">
+      <Filter>Source Files\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\RendererApp.cpp">
+      <Filter>Source Files\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\input\Keyboard.cpp">
+      <Filter>Source Files\renderer\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\input\Mouse.cpp">
+      <Filter>Source Files\renderer\input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +151,18 @@
     </ClInclude>
     <ClInclude Include="src\cef\config\MyCefConfig_base.h">
       <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Graphics.h">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\RendererApp.h">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\input\Keyboard.h">
+      <Filter>Header Files\renderer\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\input\Mouse.h">
+      <Filter>Header Files\renderer\input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
