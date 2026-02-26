@@ -62,33 +62,45 @@ bool Application::Initialize(HINSTANCE hInstance)
 
 int Application::RunMessageLoop()
 {
-    MSG msg{};
+    if (useRealTimeLoop_)
+        return RunRealTimeLoop();
+    else
+        return RunBlockingLoop();
+}
 
-    /////////////////////////////////////////////////////////////////
-    // Future: non-blocking engine loop (for real-time rendering)
-    //while (running_)
-    //{
-    //
-    //    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-    //    {
-    //        if (msg.message == WM_QUIT)
-    //            running_ = false;
-    //
-    //        TranslateMessage(&msg);
-    //        DispatchMessage(&msg);
-    //    }
-    //
-    //    // Future:
-    //    // EngineCore::Get().Tick();
-    //}
-    //////////////////////////////////////////////////////////////// 
-    // Current: traditional blocking Win32 message loop
+int Application::RunRealTimeLoop()
+{
+    MSG msg;
+    bool running = true;
+
+    while (running)
+    {
+        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        {
+            if (msg.message == WM_QUIT)
+                running = false;
+
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+        // Engine tick goes here
+        // EngineCore::Get().Tick();
+
+        Sleep(1); // prevent 100% CPU in early phase
+    }
+
+    return static_cast<int>(msg.wParam);
+}
+
+int Application::RunBlockingLoop()
+{
+    MSG msg{};
     while (GetMessageA(&msg, nullptr, 0, 0) > 0)
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    //////////////////////////////////////////////////////////////// 
 
     return static_cast<int>(msg.wParam);
 }

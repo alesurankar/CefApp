@@ -6,7 +6,9 @@ int APIENTRY WinMain(
     LPSTR,
     int)
 {
-    Application app;
+    Application app; 
+    // blocking mode by default
+    app.EnableRealTimeLoop(false);
     return app.Run(hInstance);
 }
 
