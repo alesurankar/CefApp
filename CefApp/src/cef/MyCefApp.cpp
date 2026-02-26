@@ -52,6 +52,11 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         CefV8Value::CreateFunction("MouseClickFunc", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
+    global->SetValue(
+        "OverlayWindowFunc",
+        CefV8Value::CreateFunction("OverlayWindowFunc", this),
+        V8_PROPERTY_ATTRIBUTE_NONE
+    );
     //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     browser_ = pBrowser;
@@ -84,6 +89,10 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     }
     else if (name == "MouseClickFunc") {
         std::string action = "mouseClick";
+        HandleFunction4(action);
+    }
+    else if (name == "OverlayWindowFunc") {
+        std::string action = "overlayWindow";
         HandleFunction4(action);
     }
     else {

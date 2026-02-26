@@ -3,7 +3,6 @@
 #include "../ui/MainWindow.h"
 
 
-
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
@@ -32,7 +31,9 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	else if (received == "mouseClick") {
 		window->RaiseHandle();
 	}
-
+	else if (received == "overlayWindow") {
+		frame->ExecuteJavaScript("alert('overlayWindow message received')", frame->GetURL(), 0);
+	}
 	return true;
 }
 
