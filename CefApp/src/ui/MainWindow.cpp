@@ -214,8 +214,8 @@ namespace
 
 			case WM_DESTROY:
 			{
+				// Clear the window pointer from GWLP_USERDATA
 				SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
-				delete window;
 				PostQuitMessage(0);
 				return 0;
 			}
@@ -305,10 +305,15 @@ void MainWindow::CreateBrowser()
 
 bool MainWindow::HasBrowserWindow() const
 {
-	if (!client_) return false;
-	auto browser = client_->GetBrowser();
-	if (!browser) return false;
-	return browser->GetHost()->GetWindowHandle() != nullptr;
+	// Return true only if client exists and its browser window is valid
+	if (!client_)
+		return false;
+
+	if (auto browser = client_->GetBrowser())  // safe null check
+		if (auto host = browser->GetHost())   // safe host check
+			return host->GetWindowHandle() != nullptr;
+
+	return false;
 }
 
 void MainWindow::OnSize(WPARAM wParam)

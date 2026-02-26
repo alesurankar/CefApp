@@ -3,7 +3,7 @@
 ```text
 CefApp/
 ├─ bin/            # Compiled binaries and runtime output
-├─ cef/            # CEF distribution binaries and third-party dependencies
+├─ cef_lib/        # CEF distribution binaries and third-party dependencies
 └─ src/
    ├─ app/         # Application lifecycle layer (bootstrap, initialization, shutdown)
    │  ├─ Application.cpp

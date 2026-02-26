@@ -3,6 +3,7 @@
 #include "OverlayWindow.h"
 #include <string>
 #include <memory>
+#include "../cef/config/MyCefConfig_base.h"
 
 
 class MyCefClient;
@@ -40,11 +41,11 @@ public:
 	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
 private:
-	HWND hWnd_;
+	HWND hWnd_ = nullptr;
 	HWND hHandle_ = nullptr;
 	HWND hWndBrowser_ = nullptr; 
 	std::unique_ptr<OverlayWindow> overlay_;
-	MyCefClient* client_ = nullptr;
+	CefRefPtr<MyCefClient> client_;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false; 
 };

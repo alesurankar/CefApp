@@ -125,6 +125,9 @@
     <ClInclude Include="src\app\Application.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\cef\config\MyCefConfig_base.h">
+      <Filter>Header Files\cef\config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest">

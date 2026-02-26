@@ -59,13 +59,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/cef</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/cef_lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libcef_dll_wrapper.lib;libcef.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)/CefApp/cef/lib/dbg</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/CefApp/cef_lib/lib/dbg</AdditionalLibraryDirectories>
       <AdditionalManifestDependencies>
       </AdditionalManifestDependencies>
     </Link>
@@ -87,13 +87,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/cef</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/cef_lib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libcef_dll_wrapper.lib;libcef.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)/CefApp/cef/lib/rel</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/CefApp/cef_lib/lib/rel</AdditionalLibraryDirectories>
       <AdditionalManifestDependencies>
       </AdditionalManifestDependencies>
     </Link>
@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
+    <ClInclude Include="src\cef\config\MyCefConfig_base.h" />
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_app.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_client.h" />
