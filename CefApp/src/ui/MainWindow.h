@@ -33,7 +33,7 @@ public:
 			SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE); 
 	}
 	inline OverlayWindow* GetOverlay() const { return overlay_.get(); }
-	inline void DestroyOverlayWindow() { overlay_.reset(); }
+	inline void DestroyOverlayWindow() { if (overlay_) overlay_.reset(); }
 
 	void CreateBrowser();
 	bool HasBrowserWindow() const;

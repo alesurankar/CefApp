@@ -172,7 +172,6 @@ namespace
 					NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
 					if (IsZoomed(hWnd))
 					{
-						// Get working area of the monitor
 						HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 						MONITORINFO mi{};
 						mi.cbSize = sizeof(mi);
@@ -194,7 +193,7 @@ namespace
 						p->rgrc[0].right -= border;
 						p->rgrc[0].bottom -= border;
 					}
-					return 0; // handled
+					return 0;
 				}
 				else
 				{
@@ -206,12 +205,8 @@ namespace
 
 			case WM_CLOSE:
 			{
-				if (window) {
-					OutputDebugStringA("WM_CLOSE triggered\n");
-					window->RequestClose();
-					return 0;
-				}
-				DestroyWindow(hWnd);
+				if (!window) break;
+				window->RequestClose();
 				return 0;
 			}
 			break;
