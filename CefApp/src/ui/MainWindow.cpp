@@ -390,6 +390,10 @@ void MainWindow::StartFade(FadeAction action)
 
 void MainWindow::CreateOverlayWindow()
 {
-	overlay_ = std::make_unique<OverlayWindow>();
-	overlay_->CreateOverlayWindow(hWnd_); 
+	if (!overlay_)  // only create if it doesn’t exist
+	{
+		overlay_ = std::make_unique<OverlayWindow>();
+		overlay_->CreateOverlayWindow(hWnd_);
+		PostMessage(hWnd_, WM_SIZE, 0, 0);
+	}
 }

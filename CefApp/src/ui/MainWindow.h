@@ -26,15 +26,14 @@ public:
 	{ 
 		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA)); 
 	}
-	inline void AttachHWND(HWND hWnd) 
-	{ 
-		hWnd_ = hWnd; 
-	}
+	inline void AttachHWND(HWND hWnd) { hWnd_ = hWnd; }
 	inline void RaiseHandle() noexcept
 	{ 
 		if (hHandle_) 
 			SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE); 
 	}
+	inline OverlayWindow* GetOverlay() const { return overlay_.get(); }
+	inline void DestroyOverlayWindow() { overlay_.reset(); }
 
 	void CreateBrowser();
 	bool HasBrowserWindow() const;

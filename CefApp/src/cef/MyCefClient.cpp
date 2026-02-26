@@ -32,7 +32,12 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 		window->RaiseHandle();
 	}
 	else if (received == "overlayWindow") {
-		frame->ExecuteJavaScript("alert('overlayWindow message received')", frame->GetURL(), 0);
+		if (!window->GetOverlay()) {
+			window->CreateOverlayWindow();
+		}
+		else {
+			window->DestroyOverlayWindow();
+		}
 	}
 	return true;
 }
@@ -50,7 +55,6 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
-			window->CreateOverlayWindow();
 			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
