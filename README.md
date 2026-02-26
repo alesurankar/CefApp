@@ -76,3 +76,8 @@ Setup follows a minimal distribution approach, inspired by this YouTube tutorial
 - Optimization and possible cross-platform considerations  
 
 ---
+
+## Links
+
+- [CefApp](./CefApp/README.md) – Cef Backend
+- [ReactCef](./ReactCef/README.md) – React + Vite Frontend
