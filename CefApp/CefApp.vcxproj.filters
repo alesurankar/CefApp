@@ -49,9 +49,12 @@
     <Filter Include="Header Files\cef\config\wrapper">
       <UniqueIdentifier>{6d32392d-fcd8-4fbf-9cad-658a3aacf9da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\app">
+      <UniqueIdentifier>{40d28f09-7c74-4283-882b-0018d32d075c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\WinMain.cpp">
+    <ClCompile Include="src\app\EntryPoint.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="src\cef\MyCefApp.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="src\ui\OverlayWindow.cpp">
       <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\Application.cpp">
+      <Filter>Source Files\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,10 +122,18 @@
     <ClInclude Include="src\ui\OverlayWindow.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
+    <ClInclude Include="src\app\Application.h">
+      <Filter>Header Files\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest">
       <Filter>manifests</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

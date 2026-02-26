@@ -110,14 +110,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\ui\MainWindow.cpp" />
     <ClCompile Include="src\cef\MyCefApp.cpp" />
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
-    <ClCompile Include="src\app\WinMain.cpp" />
+    <ClCompile Include="src\app\EntryPoint.cpp" />
     <ClCompile Include="src\ui\OverlayWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_app.h" />
@@ -136,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
