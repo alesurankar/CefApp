@@ -64,6 +64,12 @@
     <Filter Include="Source Files\renderer\input">
       <UniqueIdentifier>{c8197509-5f95-4e18-8cad-b560b8902b76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\renderer\helpers">
+      <UniqueIdentifier>{34b33a08-7302-4c95-ab40-18f2a8faa70b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\helpers">
+      <UniqueIdentifier>{4736d17b-f292-4e27-829f-47f06fac3b10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -98,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="src\renderer\input\Mouse.cpp">
       <Filter>Source Files\renderer\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\helpers\DxgiInfoManager.cpp">
+      <Filter>Source Files\renderer\helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="src\renderer\input\Mouse.h">
       <Filter>Header Files\renderer\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\helpers\DxgiInfoManager.h">
+      <Filter>Header Files\renderer\helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

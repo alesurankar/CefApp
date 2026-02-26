@@ -111,6 +111,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
+    <ClCompile Include="src\renderer\helpers\DxgiInfoManager.cpp" />
     <ClCompile Include="src\renderer\RendererApp.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="src\cef\config\MyCefConfig_resource_handler.h" />
     <ClInclude Include="src\platform\MyWin.h" />
     <ClInclude Include="src\platform\MyWinX.h" />
+    <ClInclude Include="src\renderer\helpers\DxgiInfoManager.h" />
     <ClInclude Include="src\renderer\RendererApp.h" />
     <ClInclude Include="src\renderer\Graphics.h" />
     <ClInclude Include="src\renderer\input\Keyboard.h" />

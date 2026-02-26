@@ -10,6 +10,8 @@ CefApp/
    │  └─ EntryPoint.cpp      # Win32 entry point (WinMain), delegates to Application
    ├─ cef/          # CEF integration layer
    ├─ platform/
+   ├─ helpers/
+   │  └─ DxgiInfoManager
    ├─ renderer/
    │  ├─ input/
    │  │   ├─ Keyboard
