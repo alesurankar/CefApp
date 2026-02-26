@@ -272,18 +272,6 @@ void CleanupMainWindow(HINSTANCE hInstance)
 	UnregisterClassA(wndClassName, hInstance);
 }
 
-
-MainWindow* MainWindow::GetWindow(HWND hWnd)
-{
-	return
-		reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-}
-
-void MainWindow::AttachHWND(HWND hWnd)
-{
-	hWnd_ = hWnd;
-}
-
 void MainWindow::CreateBrowser()
 {
 	client_ = new MyCefClient(hWnd_);
@@ -389,22 +377,9 @@ void MainWindow::StartFade(FadeAction action)
 	SetTimer(hWnd_, TIMER_FADE, 10, NULL);
 }
 
-void MainWindow::RaiseHandle()
-{
-	if (hHandle_) {
-		SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0,
-			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-	}
-}
-
 void MainWindow::CreateOverlayWindow()
 {
 	overlay_ = std::make_unique<OverlayWindow>();
 	overlay_->CreateOverlayWindow(hWnd_); 
 	RaiseOverlayWindow();
-}
-
-void MainWindow::RaiseOverlayWindow()
-{
-	overlay_->RaiseOverlayWindow();
 }

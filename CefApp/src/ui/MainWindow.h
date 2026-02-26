@@ -22,8 +22,24 @@ public:
 		Maximize,
 		Restore
 	};
-	static MainWindow* GetWindow(HWND hWnd);
-	void AttachHWND(HWND hWnd);
+	inline static MainWindow* GetWindow(HWND hWnd) 
+	{ 
+		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA)); 
+	}
+	inline void AttachHWND(HWND hWnd) 
+	{ 
+		hWnd_ = hWnd; 
+	}
+	inline void RaiseHandle() noexcept
+	{ 
+		if (hHandle_) 
+			SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE); 
+	}
+	inline void RaiseOverlayWindow() 
+	{
+		overlay_->RaiseOverlayWindow(); 
+	}
+
 	void CreateBrowser();
 	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
@@ -31,8 +47,6 @@ public:
 	void RequestClose();
 	void StartFade(FadeAction action);
 	void CreateOverlayWindow();
-	void RaiseHandle();
-	void RaiseOverlayWindow();
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
