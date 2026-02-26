@@ -7,19 +7,19 @@ static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
 
 namespace
 {
-	LRESULT CALLBACK HandleWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT CALLBACK HandleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
 			case WM_LBUTTONDOWN:
 			{
 				ReleaseCapture();
-				PostMessage(GetParent(hwnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+				PostMessage(GetParent(hWnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
 
 				return 0;
 			}
 		}
-		return DefWindowProc(hwnd, msg, wParam, lParam);
+		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
 	LRESULT CALLBACK MainWindowWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -56,6 +56,17 @@ namespace
 			{
 				if (window && window->HasBrowserWindow())
 					return 1;
+			}
+			break;
+
+			case WM_MOVE:
+			{
+				if (!window) break;
+
+				RECT rect{};
+				GetClientRect(hWnd, &rect);
+
+				window->OnSize(SIZE_RESTORED);
 			}
 			break;
 
@@ -381,5 +392,4 @@ void MainWindow::CreateOverlayWindow()
 {
 	overlay_ = std::make_unique<OverlayWindow>();
 	overlay_->CreateOverlayWindow(hWnd_); 
-	RaiseOverlayWindow();
 }

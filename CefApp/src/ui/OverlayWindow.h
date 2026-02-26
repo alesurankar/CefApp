@@ -7,8 +7,8 @@ public:
 	OverlayWindow() = default;
 	~OverlayWindow();
 	void CreateOverlayWindow(HWND hwnd);
-	void OnSize(int width, int hight);
-	void RaiseOverlayWindow();
+	void OnSize(int parentWidth, int parentHeight);
 private:
-	HWND hWnd_ = nullptr;
+	HWND hWnd_ = nullptr; 
+	HWND hwndParent_ = nullptr;
 };

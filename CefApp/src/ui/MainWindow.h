@@ -35,10 +35,6 @@ public:
 		if (hHandle_) 
 			SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE); 
 	}
-	inline void RaiseOverlayWindow() 
-	{
-		overlay_->RaiseOverlayWindow(); 
-	}
 
 	void CreateBrowser();
 	bool HasBrowserWindow() const;

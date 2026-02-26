@@ -8,6 +8,15 @@ namespace
 	{
 		switch (msg)
 		{
+			case WM_PAINT:
+			{
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hwnd, &ps);
+				// Fill with semi-transparent gray
+				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
+				EndPaint(hwnd, &ps);
+				return 0;
+			}
 			case WM_LBUTTONDOWN:
 			{
 				ReleaseCapture();
@@ -28,38 +37,47 @@ OverlayWindow::~OverlayWindow()
 	}
 }
 
-void OverlayWindow::CreateOverlayWindow(HWND hwnd)
+void OverlayWindow::CreateOverlayWindow(HWND hwndParent)
 {
+	hwndParent_ = hwndParent;
+
 	hWnd_ = CreateWindowExA(
-		0,
+		WS_EX_LAYERED | WS_EX_NOACTIVATE,
 		"STATIC",
 		nullptr,
-		WS_CHILD | WS_VISIBLE,
+		WS_POPUP,
 		0, 0, 0, 0,
-		hwnd,
+		hwndParent,
 		nullptr,
 		GetModuleHandle(nullptr),
 		nullptr
 	);
+	if (!hWnd_) return;
 	SetWindowLongPtr(hWnd_, GWLP_WNDPROC, (LONG_PTR)OverlayWindowProc);
-	RaiseOverlayWindow();
+	SetLayeredWindowAttributes(hWnd_, 0, 200, LWA_ALPHA);
+
+	ShowWindow(hWnd_, SW_SHOW);
 }
 
-void OverlayWindow::OnSize(int width, int height)
+void OverlayWindow::OnSize(int parentWidth, int parentHeight)
 {
-	if (hWnd_)
-	{
-		SetWindowPos(hWnd_, nullptr, 100, 100,
-			width - 200, height - 140,
-			SWP_NOZORDER | SWP_NOACTIVATE);
-	}
-	RaiseOverlayWindow();
-}
+	if (!hWnd_ || !hwndParent_) return;
+	// adjust with margins if needed
+	int x = 100;
+	int y = 100;
+	int width = parentWidth - 200;
+	int height = parentHeight - 140;
 
-void OverlayWindow::RaiseOverlayWindow()
-{
-	if (hWnd_) {
-		SetWindowPos(hWnd_, HWND_TOP, 0, 0, 0, 0,
-			SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-	}
+	POINT pt{ x, y };
+	ClientToScreen(hwndParent_, &pt);
+
+	SetWindowPos(
+		hWnd_,
+		HWND_TOP,
+		pt.x,
+		pt.y,
+		width,
+		height,
+		SWP_NOACTIVATE
+	);
 }

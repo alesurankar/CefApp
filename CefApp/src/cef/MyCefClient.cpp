@@ -31,7 +31,6 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	}
 	else if (received == "mouseClick") {
 		window->RaiseHandle();
-		window->RaiseOverlayWindow();
 	}
 
 	return true;
