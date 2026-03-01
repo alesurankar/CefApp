@@ -1,12 +1,18 @@
 
 interface CefApi {
     OverlayWindowFunc(): void;
+    ShrinkHandleFunc(): void;
 }
 const cef = window as unknown as CefApi;
 
 function myCefOverlayWindow(): void
 {
     return cef.OverlayWindowFunc();
+}
+
+function myCefShrinkHandle(): void
+{
+    return cef.ShrinkHandleFunc();
 }
 
 interface BodyFrameProps {
@@ -26,7 +32,19 @@ const Body: React.FC<BodyFrameProps> = ({ className }) => {
           transition-colors duration-80 ease-in-out
           hover:bg-[#333333]
           active:bg-[#555555]"
-        onClick={() => myCefOverlayWindow()}
+        onClick={myCefOverlayWindow}
+        >
+        ☐
+        </button>
+        <button className="
+          w-12 h-10 
+          bg-[#111111] text-white 
+          border border-gray-700
+          rounded
+          transition-colors duration-80 ease-in-out
+          hover:bg-[#333333]
+          active:bg-[#555555]"
+        onClick={myCefShrinkHandle}
         >
         ☐
         </button>

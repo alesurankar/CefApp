@@ -13,6 +13,7 @@ CefApp/
    ├─ helpers/
    │  └─ DxgiInfoManager
    ├─ renderer/
+   │  ├─ helpers/
    │  ├─ input/
    │  │   ├─ Keyboard
    │  │   └─ Mouse

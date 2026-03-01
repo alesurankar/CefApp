@@ -6,38 +6,50 @@
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
-	std::string received = message->GetArgumentList()->GetString(0);
 	MainWindow* window = MainWindow::GetWindow(hWndParent_);
 	if (!window) return true;
+	std::string msgName = message->GetName();
 
-	if (received == "close") {
-		window->StartFade(MainWindow::FadeAction::Close);
+	if (msgName == "ShrinkHandle")
+	{
+		window->handleX += 10;
+		PostMessage(hWndParent_, WM_SIZE, 0, 0);
+		return true;
 	}
-	else if (received == "minimize") {
-		window->StartFade(MainWindow::FadeAction::Minimize);
-	}
-	else if (received == "resize") {
-		WINDOWPLACEMENT wp{};
-		wp.length = sizeof(wp);
-		if (GetWindowPlacement(hWndParent_, &wp)) {
-			if (wp.showCmd == SW_MAXIMIZE) {
-				window->StartFade(MainWindow::FadeAction::Restore);
+
+	if (msgName == "TestMessage")
+	{
+		std::string received = message->GetArgumentList()->GetString(0);
+		if (received == "close") {
+			window->StartFade(MainWindow::FadeAction::Close);
+		}
+		else if (received == "minimize") {
+			window->StartFade(MainWindow::FadeAction::Minimize);
+		}
+		else if (received == "resize") {
+			WINDOWPLACEMENT wp{};
+			wp.length = sizeof(wp);
+			if (GetWindowPlacement(hWndParent_, &wp)) {
+				if (wp.showCmd == SW_MAXIMIZE) {
+					window->StartFade(MainWindow::FadeAction::Restore);
+				}
+				else {
+					window->StartFade(MainWindow::FadeAction::Maximize);
+				}
+			}
+		}
+		else if (received == "mouseClick") {
+			window->RaiseHandle();
+		}
+		else if (received == "overlayWindow") {
+			if (!window->GetOverlay()) {
+				window->CreateOverlayWindow();
 			}
 			else {
-				window->StartFade(MainWindow::FadeAction::Maximize);
+				window->DestroyOverlayWindow();
 			}
 		}
-	}
-	else if (received == "mouseClick") {
-		window->RaiseHandle();
-	}
-	else if (received == "overlayWindow") {
-		if (!window->GetOverlay()) {
-			window->CreateOverlayWindow();
-		}
-		else {
-			window->DestroyOverlayWindow();
-		}
+		return true;
 	}
 	return true;
 }

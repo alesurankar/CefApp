@@ -49,6 +49,7 @@ public:
 	bool isMinimized_ = false;
 	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
+	int handleX = 1;
 private:
 	HWND hWnd_ = nullptr;
 	HWND hHandle_ = nullptr;

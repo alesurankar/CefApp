@@ -321,9 +321,12 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	if (hHandle_)
 	{
-		SetWindowPos(hHandle_, nullptr,
-			80, 1, width - 260, 37,
-			SWP_NOZORDER | SWP_NOACTIVATE);
+		const int buttonAreaWidth = 3 * 60;
+		const int titleHeight = 40;
+		int y = 1;
+		int w = width - buttonAreaWidth - handleX;
+		int h = titleHeight - y;
+		SetWindowPos(hHandle_, HWND_TOP, handleX, y, w, h, SWP_NOACTIVATE);
 	}
 
 	if (hWndBrowser_)
@@ -344,8 +347,8 @@ void MainWindow::SetBrowserHWND(HWND hWndBrowser)
 
 	// create handle AFTER browser exists
 	hHandle_ = CreateWindowExA(
-		//0,                           // change to this to show the hendleBar
-		WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
+		0,                           // change to this to show the hendleBar
+		//WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
 		"STATIC",
 		nullptr,
 		WS_CHILD | WS_VISIBLE,

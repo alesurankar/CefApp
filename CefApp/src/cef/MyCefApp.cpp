@@ -57,6 +57,11 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         CefV8Value::CreateFunction("OverlayWindowFunc", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
+    global->SetValue(
+        "ShrinkHandleFunc",
+        CefV8Value::CreateFunction("ShrinkHandleFunc", this),
+        V8_PROPERTY_ATTRIBUTE_NONE
+    );
     //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     pFrame->ExecuteJavaScript("console.log('Step8: ContextCreated!')", pFrame->GetURL(), 0);
     browser_ = pBrowser;
@@ -94,6 +99,10 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     else if (name == "OverlayWindowFunc") {
         std::string action = "overlayWindow";
         HandleFunction4(action);
+    }
+    else if (name == "ShrinkHandleFunc") {
+        CefRefPtr<CefProcessMessage> message = CefProcessMessage::Create("ShrinkHandle");
+        currentFrame_->SendProcessMessage(PID_BROWSER, message);
     }
     else {
         exception = "Unknown native function: " + name.ToString();
