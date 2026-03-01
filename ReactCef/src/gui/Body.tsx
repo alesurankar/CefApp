@@ -13,8 +13,7 @@ function myCefOverlayWindow(): void
 
 function myCefSetHandleX(x: number): void
 {
-    const clamped = Math.max(0, Math.min(1000, x));
-    cef.SetHandleXFunc(clamped);
+    cef.SetHandleXFunc(x);
 }
 
 interface BodyFrameProps {
@@ -44,7 +43,6 @@ const Body: React.FC<BodyFrameProps> = ({ className }) => {
             value={handleX}
             onChange={(e) => setHandleX(parseInt(e.target.value, 10))}
             min={0}
-            max={1000}
         />
         <button
           className="w-12 h-10 bg-[#111111] rounded border border-gray-700 hover:bg-[#333333] active:bg-[#555555]"

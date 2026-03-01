@@ -323,9 +323,11 @@ void MainWindow::OnSize(WPARAM wParam)
 	{
 		const int buttonAreaWidth = 3 * 60;
 		const int titleHeight = 40;
-		int w = width - buttonAreaWidth - handleX;
-		int h = titleHeight;
-		SetWindowPos(hHandle_, HWND_TOP, handleX, 0, w, h, SWP_NOACTIVATE);
+		const int minWidth = 40;
+		int clampedHandleX = std::min(width - buttonAreaWidth - minWidth, handleX);
+		int w = width - buttonAreaWidth - clampedHandleX;
+
+		SetWindowPos(hHandle_, HWND_TOP, clampedHandleX, 0, w, titleHeight, SWP_NOACTIVATE);
 	}
 
 	if (hWndBrowser_)
