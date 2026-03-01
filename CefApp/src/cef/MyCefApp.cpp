@@ -58,8 +58,8 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         V8_PROPERTY_ATTRIBUTE_NONE
     );
     global->SetValue(
-        "ShrinkHandleFunc",
-        CefV8Value::CreateFunction("ShrinkHandleFunc", this),
+        "SetHandleXFunc",
+        CefV8Value::CreateFunction("SetHandleXFunc", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
     //pFrame->ExecuteJavaScript("alert('Step8: ContextCreated!')", pFrame->GetURL(), 0);
@@ -100,9 +100,16 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
         std::string action = "overlayWindow";
         HandleFunction4(action);
     }
-    else if (name == "ShrinkHandleFunc") {
-        CefRefPtr<CefProcessMessage> message = CefProcessMessage::Create("ShrinkHandle");
+    else if (name == "SetHandleXFunc") {
+        if (argPtrs.size() < 1 || !argPtrs[0]->IsInt()) {
+            exception = "SetHandleXFunc expects 1 integer argument";
+            return false;
+        }
+        int x = argPtrs[0]->GetIntValue();  // <- get number from JS
+        CefRefPtr<CefProcessMessage> message = CefProcessMessage::Create("SetHandleX");
+        message->GetArgumentList()->SetInt(0, x); // send number to browser process
         currentFrame_->SendProcessMessage(PID_BROWSER, message);
+        return true;
     }
     else {
         exception = "Unknown native function: " + name.ToString();

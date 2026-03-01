@@ -10,9 +10,11 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	if (!window) return true;
 	std::string msgName = message->GetName();
 
-	if (msgName == "ShrinkHandle")
+	if (msgName == "SetHandleX")
 	{
-		window->handleX += 10;
+		auto args = message->GetArgumentList();
+		int newX = args->GetInt(0);
+		window->handleX = newX;
 		PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		return true;
 	}
