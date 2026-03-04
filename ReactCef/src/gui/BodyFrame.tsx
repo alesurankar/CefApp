@@ -1,29 +1,25 @@
 import { useState } from "react";
+import { myCefCreateD3DRenderer, myCefSetHandleX, myCefSpawnTabWindow } from "../cef/cefInterface.ts"
 
-interface CefApi {
-    CreateD3DRendererFunc(): void;
-    SetHandleXFunc(x: number): void;
-}
-const cef = window as unknown as CefApi;
-
-function myCefCreateD3DRenderer(): void
-{
-    cef.CreateD3DRendererFunc();
-}
-
-function myCefSetHandleX(x: number): void
-{
-    cef.SetHandleXFunc(x);
-}
 
 interface BodyFrameProps {
     className?: string;
+    spawnTab: () => void;
 }
 
-const BodyFrame: React.FC<BodyFrameProps> = ({ className }) => {
+const BodyFrame: React.FC<BodyFrameProps> = ({ className, spawnTab }) => {
   const [handleX, setHandleX] = useState(0);
+
   return (
     <div className={`bg-gray-800 text-white p-4 ${className ?? ''}`}>
+      <div>
+        <button
+          className="w-28 h-16 bg-[#111111] rounded border border-gray-700 hover:bg-[#333333] active:bg-[#555555]"
+          onClick={spawnTab}
+        >
+          Spawn Tab
+        </button>
+      </div>
       <div>
         <button className="
           w-12 h-10 
@@ -49,6 +45,12 @@ const BodyFrame: React.FC<BodyFrameProps> = ({ className }) => {
           onClick={() => myCefSetHandleX(handleX)}
         >
           Set X
+        </button>
+        <button
+          className="w-28 h-16 bg-[#111111] rounded border border-gray-700 hover:bg-[#333333] active:bg-[#555555]"
+          onClick={() => myCefSpawnTabWindow()}
+        >
+          Spawn Tab
         </button>
       </div>
       <div className="text-4xl font-bold text-center my-20">

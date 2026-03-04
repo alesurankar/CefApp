@@ -1,28 +1,32 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import TitleBar from './gui/TitleBar.tsx';
 import FooterBar from './gui/FooterBar.tsx';
 import BodyFrame from './gui/BodyFrame.tsx';
+import { myCefMouseClick } from "./cef/cefInterface.ts"
 
 
-interface CefApi {
-  MouseClickFunc(): void;
-}
-
-const cef = window as unknown as CefApi;
-
-function myCefMouseClick(): void {
-  cef.MouseClickFunc();
+interface Tab {
+  id: number;
+  title: string;
 }
 
 const App = () => {
+  const [tabs, setTabs] = useState<Tab[]>([]);
+
+  const spawnTab = () => {
+    const newTab: Tab = { id: Date.now(), title: `Tab ${tabs.length + 1}` };
+    setTabs([...tabs, newTab]);
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", myCefMouseClick);
     return () => document.removeEventListener("mousedown", myCefMouseClick);
   }, []);
+
   return (
     <div id="window-container" className="flex flex-col h-screen">
-      <TitleBar />
-      <BodyFrame className="flex-1 overflow-auto" />
+      <TitleBar tabs={tabs} closeTab={(id) => setTabs(tabs.filter(t => t.id !== id))} />
+      <BodyFrame className="flex-1 overflow-auto" spawnTab={spawnTab} />
       <FooterBar />
     </div>
   );

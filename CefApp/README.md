@@ -10,16 +10,15 @@ CefApp/
    │  └─ EntryPoint.cpp      # Win32 entry point (WinMain), delegates to Application
    ├─ cef/          # CEF integration layer
    ├─ platform/
-   ├─ helpers/
-   │  └─ DxgiInfoManager
    ├─ renderer/
    │  ├─ helpers/
+   │  │   └─ DxgiInfoManager
    │  ├─ input/
    │  │   ├─ Keyboard
    │  │   └─ Mouse
-   │  ├─ RendererApp
    │  ├─ Graphics
-   │  └─ OverlayWindow   # Native renderer viewport container (D3D target)
+   │  ├─ OverlayWindow   # Native renderer viewport container (D3D target)
+   │  └─ Renderer
    ├─ resources/
    └─ ui/           # Native window composition layer
       └─ MainWindow      # Top-level window, layout & child window orchestration

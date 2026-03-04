@@ -1,32 +1,34 @@
-interface CefApi {
-    CloseFunc(): void;
-    MinimizeFunc(): void;
-    ResizeFunc(): void;
-}
-const cef = window as unknown as CefApi;
+import { myCefMinimize, myCefResize, myCefClose } from "../cef/cefInterface.ts"
 
-function myCefClose(): void
-{
-    return cef.CloseFunc();
-}
 
-function myCefMinimize(): void
-{
-    return cef.MinimizeFunc();
+interface Tab {
+    id: number;
+    title: string;
+}
+interface TitleBarProps {
+    tabs: Tab[];
+    closeTab: (id: number) => void;
 }
 
-function myCefResize(): void
-{
-    return cef.ResizeFunc();
-}
+const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
 
-const TitleBar = () => {
   return (
     <div id="titlebar"
       className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none"
     >
-      <div className="flex-1 h-8 bg-[#373737]">
-        Custom Title Bar
+      {/* Tabs container */}
+      <div className="flex-1 flex items-center overflow-x-auto space-x-1 px-2">
+          {tabs.map(tab => (
+              <div key={tab.id} className="flex items-center bg-[#373737] px-2 rounded">
+                  <span className="text-sm">{tab.title}</span>
+                  <button
+                      className="ml-1 text-red-500 hover:text-red-700"
+                      onClick={() => closeTab(tab.id)}
+                  >
+                      ✕
+                  </button>
+              </div>
+          ))}
       </div>
 
       {/* Window controls */}
