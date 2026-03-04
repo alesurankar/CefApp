@@ -15,9 +15,9 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
 
   useEffect(() => {
     const handle = requestAnimationFrame(() => {
-      let width = 2;
+      let width = 5;
       tabRefs.current.forEach(tab => {
-        if (tab) width += tab.offsetWidth + 21;
+        if (tab) width += tab.offsetWidth + 20;
       });
       myCefSetHandleX(width);
     });
@@ -35,11 +35,11 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
             <div
               key={tab.id}
               ref={el => { tabRefs.current[idx] = el; }}
-              className="flex items-center bg-[#373737] px-2 rounded"
+              className="flex items-center text-[#a8a8a8] hover:text-[#ffffff] bg-[#373737] hover:bg-[#202020] px-1 rounded"
             >
               <span className="text-sm">{tab.title}</span>
               <button
-                className="ml-1 text-red-500 hover:text-red-700"
+                className="hover:bg-[#1177bb] space-x-1 px-1 my-1"
                 onClick={() => closeTab(tab.id)}
               >
                 ✕
@@ -50,7 +50,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
 
       {/* Window controls */}
       <div className="flex">
-        <div className="w-12 h-8 flex items-center justify-center"></div>
+        <div id="minimumHandleSpace" className="w-12 h-8 flex items-center justify-center"></div>
         <button
           className="w-12 h-8 flex items-center justify-center hover:bg-[#373737]"
           onClick={myCefMinimize}
