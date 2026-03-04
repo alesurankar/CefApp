@@ -1,4 +1,4 @@
-import { myCefCreateD3DRenderer, myCefSpawnTabWindow } from "../cef/cefInterface.ts"
+import { myCefCreateD3DWindow, myCefSpawnTabWindow } from "../cef/cefInterface.ts"
 
 
 interface BodyFrameProps {
@@ -27,7 +27,7 @@ const BodyFrame: React.FC<BodyFrameProps> = ({ className, spawnTab }) => {
           transition-colors duration-80 ease-in-out
           hover:bg-[#333333]
           active:bg-[#555555]"
-        onClick={myCefCreateD3DRenderer}
+        onClick={myCefCreateD3DWindow}
         >
         ☐
         </button>

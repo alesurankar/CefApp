@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "../util/AppException.h"
+
 
 int APIENTRY WinMain(
 	HINSTANCE hInstance,

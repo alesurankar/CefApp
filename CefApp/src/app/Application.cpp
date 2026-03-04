@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "../cef/MyCefApp.h"
 #include "../ui/MainWindow.h"
+#include "../util/AppException.h"
 #include <filesystem>
 
 

@@ -115,7 +115,7 @@
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\Renderer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,10 +189,10 @@
       <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\Renderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\util\AppException.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

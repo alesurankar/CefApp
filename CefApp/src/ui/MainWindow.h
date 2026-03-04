@@ -28,7 +28,7 @@ public:
 	void SetBrowserHWND(HWND hWndBrowser);
 	void RequestClose();
 	void StartFade(FadeAction action);
-	void CreateD3DRenderer();
+	void CreateD3DWindow();
 public:
 	inline static MainWindow* GetWindow(HWND hWnd)
 	{
@@ -40,7 +40,7 @@ public:
 		if (hHandle_) SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 	}
 	inline OverlayWindow* GetOverlay() const { return overlay_.get(); }
-	inline void DestroyD3DRenderer() { if (overlay_) overlay_.reset(); }
+	inline void DestroyD3DWindow() { if (overlay_) overlay_.reset(); }
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;

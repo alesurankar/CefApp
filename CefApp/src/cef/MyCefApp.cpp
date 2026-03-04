@@ -53,8 +53,8 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
         V8_PROPERTY_ATTRIBUTE_NONE
     );
     global->SetValue(
-        "CreateD3DRendererFunc",
-        CefV8Value::CreateFunction("CreateD3DRendererFunc", this),
+        "CreateD3DWindowFunc",
+        CefV8Value::CreateFunction("CreateD3DWindowFunc", this),
         V8_PROPERTY_ATTRIBUTE_NONE
     );
     global->SetValue(
@@ -96,8 +96,8 @@ bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
         std::string action = "mouseClick";
         HandleFunction4(action);
     }
-    else if (name == "CreateD3DRendererFunc") {
-        std::string action = "createD3DRenderer";
+    else if (name == "CreateD3DWindowFunc") {
+        std::string action = "createD3DWindow";
         HandleFunction4(action);
     }
     else if (name == "SetHandleXFunc") {

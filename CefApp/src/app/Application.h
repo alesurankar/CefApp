@@ -1,6 +1,5 @@
 #pragma once
 #include "../platform/MyWin.h"
-#include "../util/AppException.h"
 
 
 class Application 
