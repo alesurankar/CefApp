@@ -1,5 +1,6 @@
 #pragma once
 #include "../platform/MyWin.h"
+#include "../renderer/Renderer.h"
 
 class OverlayWindow
 {
@@ -8,8 +9,9 @@ public:
 	~OverlayWindow();
 	void CreateOverlayWindow(HWND hwnd);
 	void OnSize(int parentWidth, int parentHeight);
-	HWND GetHWND() const { return hWnd_; }
+	void CreateRenderer();
 private:
 	HWND hWnd_ = nullptr; 
 	HWND hwndParent_ = nullptr;
+	std::unique_ptr<Renderer> renderer_;
 };

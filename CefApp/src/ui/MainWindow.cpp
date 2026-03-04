@@ -396,8 +396,4 @@ void MainWindow::CreateD3DRenderer()
 		overlay_->CreateOverlayWindow(hWnd_);
 		PostMessage(hWnd_, WM_SIZE, 0, 0);
 	}
-	if (!renderer_)
-	{
-		renderer_ = std::make_unique<Renderer>(overlay_->GetHWND());
-	}
 }
