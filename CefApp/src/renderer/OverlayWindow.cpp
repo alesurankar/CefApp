@@ -49,7 +49,6 @@ void OverlayWindow::CreateOverlayWindow(HWND hwndParent)
 	SetLayeredWindowAttributes(hWnd_, 0, 200, LWA_ALPHA);
 
 	ShowWindow(hWnd_, SW_SHOW);
-	CreateRenderer();
 }
 
 void OverlayWindow::OnSize(int parentWidth, int parentHeight)
@@ -73,12 +72,4 @@ void OverlayWindow::OnSize(int parentWidth, int parentHeight)
 		height,
 		SWP_NOACTIVATE
 	);
-}
-
-void OverlayWindow::CreateRenderer()
-{
-	if (!renderer_)
-	{
-		renderer_ = std::make_unique<Renderer>(hWnd_);
-	}
 }

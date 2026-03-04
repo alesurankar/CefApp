@@ -1,6 +1,9 @@
 #pragma once
 #include "../platform/MyWin.h"
-#include "../renderer/Renderer.h"
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
+#include "../renderer/Graphics.h"
+#include <memory>
 
 class OverlayWindow
 {
@@ -9,9 +12,11 @@ public:
 	~OverlayWindow();
 	void CreateOverlayWindow(HWND hwnd);
 	void OnSize(int parentWidth, int parentHeight);
-	void CreateRenderer();
+public:
+	Keyboard kbd;
+	Mouse mouse;
 private:
 	HWND hWnd_ = nullptr; 
 	HWND hwndParent_ = nullptr;
-	std::unique_ptr<Renderer> renderer_;
+	std::unique_ptr<Graphics> pGfx;
 };

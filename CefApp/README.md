@@ -20,7 +20,9 @@ CefApp/
    │  ├─ OverlayWindow   # Native renderer viewport container (D3D target)
    │  └─ Renderer
    ├─ resources/
-   └─ ui/           # Native window composition layer
-      └─ MainWindow      # Top-level window, layout & child window orchestration
+   ├─ ui/           # Native window composition layer
+   │   └─ MainWindow      # Top-level window, layout & child window orchestration
+   └─ util/
+       └─ MyException
        
  ```

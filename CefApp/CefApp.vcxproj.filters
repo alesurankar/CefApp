@@ -70,6 +70,12 @@
     <Filter Include="Header Files\renderer\helpers">
       <UniqueIdentifier>{4736d17b-f292-4e27-829f-47f06fac3b10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{62b9bb21-640e-4c0c-9dc0-3a3cccc2f966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{71fdf73e-24d3-4dc0-9b9b-741ec7ac2240}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -93,9 +99,6 @@
     <ClCompile Include="src\renderer\Graphics.cpp">
       <Filter>Source Files\renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\Renderer.cpp">
-      <Filter>Source Files\renderer</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderer\input\Keyboard.cpp">
       <Filter>Source Files\renderer\input</Filter>
     </ClCompile>
@@ -107,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="src\renderer\OverlayWindow.cpp">
       <Filter>Source Files\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\MyException.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\Renderer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +170,6 @@
     <ClInclude Include="src\renderer\Graphics.h">
       <Filter>Header Files\renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\Renderer.h">
-      <Filter>Header Files\renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\input\Keyboard.h">
       <Filter>Header Files\renderer\input</Filter>
     </ClInclude>
@@ -178,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="src\platform\MyTimer.h">
       <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\MyException.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\Renderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
