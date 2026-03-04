@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import TitleBar from './gui/TitleBar.tsx';
 import FooterBar from './gui/FooterBar.tsx';
-//import BodyFrame from './gui/BodyFrame.tsx';
-import Body from './gui/Body.tsx';
+import BodyFrame from './gui/BodyFrame.tsx';
 
 
 interface CefApi {
@@ -23,8 +22,7 @@ const App = () => {
   return (
     <div id="window-container" className="flex flex-col h-screen">
       <TitleBar />
-      {/* <BodyFrame className="flex-1 overflow-auto" /> */}
-      <Body className="flex-1 overflow-auto"/>
+      <BodyFrame className="flex-1 overflow-auto" />
       <FooterBar />
     </div>
   );
