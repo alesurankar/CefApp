@@ -7,12 +7,18 @@
 
 int Application::Run(HINSTANCE hInstance)
 {
-    if (!Initialize(hInstance))
-        return -1;
-    int exitCode = RunMessageLoop();
-    Shutdown();
-
-    return exitCode;
+    Initialize(hInstance);
+    try
+    {
+        int exitCode = RunMessageLoop();
+        Shutdown();
+        return exitCode;
+    }
+    catch (...)
+    {
+        Shutdown();
+        throw;  // rethrow to WinMain
+    }
 }
 
 bool Application::Initialize(HINSTANCE hInstance)
@@ -27,7 +33,7 @@ bool Application::Initialize(HINSTANCE hInstance)
 
     int exitCode = CefExecuteProcess(mainArgs, cefApp, nullptr);
     if (exitCode >= 0)
-        return false; // child process exits here
+        throw AppException(__LINE__, __FILE__, "CEF child process exited unexpectedly");
 
     // ---------------------------
     // 2. Initialize CEF
@@ -42,8 +48,7 @@ bool Application::Initialize(HINSTANCE hInstance)
 
     if (!CefInitialize(mainArgs, settings, cefApp, nullptr))
     {
-        MessageBoxA(nullptr, "CEF Initialization failed", "Error", MB_ICONERROR);
-        return false;
+        throw AppException(__LINE__, __FILE__, "CEF Initialization failed");
     }
 
     // ---------------------------
@@ -52,11 +57,9 @@ bool Application::Initialize(HINSTANCE hInstance)
     mainWindow_ = CreateMainWindow(hInstance_);
     if (!mainWindow_)
     {
-        MessageBoxA(nullptr, "Failed to create main window", "Error", MB_ICONERROR);
-        return false;
+        throw MyException(__LINE__, "Failed to create main window");
     }
     running_ = true;
-
     return true;
 }
 

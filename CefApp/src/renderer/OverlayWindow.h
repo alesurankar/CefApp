@@ -1,8 +1,7 @@
 #pragma once
-#include "../platform/MyWin.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
-#include "../renderer/Graphics.h"
+#include "Renderer.h"
 #include <memory>
 
 class OverlayWindow
@@ -18,5 +17,5 @@ public:
 private:
 	HWND hWnd_ = nullptr; 
 	HWND hwndParent_ = nullptr;
-	std::unique_ptr<Graphics> pGfx;
+	std::unique_ptr<Renderer> renderer_;
 };
