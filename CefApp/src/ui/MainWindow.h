@@ -1,6 +1,7 @@
 #pragma once
 #include "../platform/MyWin.h"
-#include "OverlayWindow.h"
+#include "../renderer/OverlayWindow.h"
+#include "../renderer/Renderer.h"
 #include <string>
 #include <memory>
 #include "../cef/config/MyCefConfig_base.h"
@@ -33,15 +34,17 @@ public:
 			SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE); 
 	}
 	inline OverlayWindow* GetOverlay() const { return overlay_.get(); }
-	inline void DestroyOverlayWindow() { if (overlay_) overlay_.reset(); }
-
+	inline void DestroyD3DRenderer() {
+		if (renderer_) renderer_.reset();
+		if (overlay_) overlay_.reset(); 
+	}
 	void CreateBrowser();
 	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
 	void SetBrowserHWND(HWND hWndBrowser);
 	void RequestClose();
 	void StartFade(FadeAction action);
-	void CreateOverlayWindow();
+	void CreateD3DRenderer();
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
@@ -55,6 +58,7 @@ private:
 	HWND hHandle_ = nullptr;
 	HWND hWndBrowser_ = nullptr; 
 	std::unique_ptr<OverlayWindow> overlay_;
+	std::unique_ptr<Renderer> renderer_;
 	CefRefPtr<MyCefClient> client_;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false; 

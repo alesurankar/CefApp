@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 interface CefApi {
-    OverlayWindowFunc(): void;
+    CreateD3DRendererFunc(): void;
     SetHandleXFunc(x: number): void;
 }
 const cef = window as unknown as CefApi;
 
-function myCefOverlayWindow(): void
+function myCefCreateD3DRenderer(): void
 {
-    cef.OverlayWindowFunc();
+    cef.CreateD3DRendererFunc();
 }
 
 function myCefSetHandleX(x: number): void
@@ -33,7 +33,7 @@ const BodyFrame: React.FC<BodyFrameProps> = ({ className }) => {
           transition-colors duration-80 ease-in-out
           hover:bg-[#333333]
           active:bg-[#555555]"
-        onClick={myCefOverlayWindow}
+        onClick={myCefCreateD3DRenderer}
         >
         ☐
         </button>

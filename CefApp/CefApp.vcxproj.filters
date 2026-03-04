@@ -87,16 +87,13 @@
     <ClCompile Include="src\ui\MainWindow.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\OverlayWindow.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\Application.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\Graphics.cpp">
       <Filter>Source Files\renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\RendererApp.cpp">
+    <ClCompile Include="src\renderer\Renderer.cpp">
       <Filter>Source Files\renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\input\Keyboard.cpp">
@@ -107,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="src\renderer\helpers\DxgiInfoManager.cpp">
       <Filter>Source Files\renderer\helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\OverlayWindow.cpp">
+      <Filter>Source Files\renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +152,6 @@
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h">
       <Filter>Header Files\cef\config\wrapper</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\OverlayWindow.h">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="src\app\Application.h">
       <Filter>Header Files\app</Filter>
     </ClInclude>
@@ -164,7 +161,7 @@
     <ClInclude Include="src\renderer\Graphics.h">
       <Filter>Header Files\renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\RendererApp.h">
+    <ClInclude Include="src\renderer\Renderer.h">
       <Filter>Header Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\input\Keyboard.h">
@@ -175,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="src\renderer\helpers\DxgiInfoManager.h">
       <Filter>Header Files\renderer\helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\OverlayWindow.h">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\MyTimer.h">
+      <Filter>Header Files\platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

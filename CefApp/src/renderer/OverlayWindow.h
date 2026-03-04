@@ -8,6 +8,7 @@ public:
 	~OverlayWindow();
 	void CreateOverlayWindow(HWND hwnd);
 	void OnSize(int parentWidth, int parentHeight);
+	HWND GetHWND() const { return hWnd_; }
 private:
 	HWND hWnd_ = nullptr; 
 	HWND hwndParent_ = nullptr;

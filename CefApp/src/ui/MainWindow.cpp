@@ -387,12 +387,16 @@ void MainWindow::StartFade(FadeAction action)
 	SetTimer(hWnd_, TIMER_FADE, 10, NULL);
 }
 
-void MainWindow::CreateOverlayWindow()
+void MainWindow::CreateD3DRenderer()
 {
 	if (!overlay_)  // only create if it doesn’t exist
 	{
 		overlay_ = std::make_unique<OverlayWindow>();
 		overlay_->CreateOverlayWindow(hWnd_);
 		PostMessage(hWnd_, WM_SIZE, 0, 0);
+	}
+	if (!renderer_)
+	{
+		renderer_ = std::make_unique<Renderer>(overlay_->GetHWND());
 	}
 }

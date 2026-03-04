@@ -112,7 +112,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\renderer\helpers\DxgiInfoManager.cpp" />
-    <ClCompile Include="src\renderer\RendererApp.cpp" />
+    <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
     <ClCompile Include="src\renderer\input\Mouse.cpp" />
@@ -121,7 +121,7 @@
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
     <ClCompile Include="src\app\EntryPoint.cpp" />
-    <ClCompile Include="src\ui\OverlayWindow.cpp" />
+    <ClCompile Include="src\renderer\OverlayWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
@@ -136,7 +136,8 @@
     <ClInclude Include="src\platform\MyWin.h" />
     <ClInclude Include="src\platform\MyWinX.h" />
     <ClInclude Include="src\renderer\helpers\DxgiInfoManager.h" />
-    <ClInclude Include="src\renderer\RendererApp.h" />
+    <ClInclude Include="src\platform\MyTimer.h" />
+    <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\renderer\Graphics.h" />
     <ClInclude Include="src\renderer\input\Keyboard.h" />
     <ClInclude Include="src\renderer\input\Mouse.h" />
@@ -145,7 +146,7 @@
     <ClInclude Include="src\cef\MyCefClient.h" />
     <ClInclude Include="src\resources\FileResourceHandler.h" />
     <ClInclude Include="src\resources\FileSchemeHandlerFactory.h" />
-    <ClInclude Include="src\ui\OverlayWindow.h" />
+    <ClInclude Include="src\renderer\OverlayWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest" />

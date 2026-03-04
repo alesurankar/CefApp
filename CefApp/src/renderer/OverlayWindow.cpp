@@ -1,7 +1,6 @@
 #include "OverlayWindow.h"
 
 
-
 namespace 
 {
 	LRESULT CALLBACK OverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -15,13 +14,6 @@ namespace
 				// Fill with semi-transparent gray
 				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
 				EndPaint(hwnd, &ps);
-				return 0;
-			}
-			case WM_LBUTTONDOWN:
-			{
-				ReleaseCapture();
-				PostMessage(GetParent(hwnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
-
 				return 0;
 			}
 		}

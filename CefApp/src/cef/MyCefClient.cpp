@@ -43,12 +43,12 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 		else if (received == "mouseClick") {
 			window->RaiseHandle();
 		}
-		else if (received == "overlayWindow") {
+		else if (received == "createD3DRenderer") {
 			if (!window->GetOverlay()) {
-				window->CreateOverlayWindow();
+				window->CreateD3DRenderer();
 			}
 			else {
-				window->DestroyOverlayWindow();
+				window->DestroyD3DRenderer();
 			}
 		}
 		return true;
