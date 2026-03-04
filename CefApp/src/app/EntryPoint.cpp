@@ -6,23 +6,19 @@ int APIENTRY WinMain(
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 {
-	try
-	{
+	try {
 		Application app;
 		// blocking mode by default
 		app.EnableRealTimeLoop(false);
 		return app.Run(hInstance);
 	}
-	catch (const MyException& e)
-	{
+	catch (const MyException& e) {
 		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
 	}
-	catch (const std::exception& e)
-	{
+	catch (const std::exception& e) {
 		MessageBox(nullptr, e.what(), "Standard Exception", MB_OK | MB_ICONEXCLAMATION);
 	}
-	catch (...)
-	{
+	catch (...) {
 		MessageBox(nullptr, "No details available", "Unknown Exception", MB_OK | MB_ICONEXCLAMATION);
 	}
 	return -1;

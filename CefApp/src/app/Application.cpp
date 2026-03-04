@@ -1,43 +1,37 @@
 #include "Application.h"
-
 #include "../cef/MyCefApp.h"
 #include "../ui/MainWindow.h"
-
 #include <filesystem>
+
 
 int Application::Run(HINSTANCE hInstance)
 {
-    Initialize(hInstance);
-    try
-    {
+    hInstance_ = hInstance;
+
+    // 1. Handle CEF child process
+    const CefMainArgs mainArgs(hInstance_);
+    CefRefPtr<CefApp> cefApp = new MyCefApp();
+
+    int exitCode = CefExecuteProcess(mainArgs, cefApp, nullptr);
+    if (exitCode >= 0) {
+        return exitCode;
+    }
+
+    Initialize();
+    try {
         int exitCode = RunMessageLoop();
         Shutdown();
         return exitCode;
     }
-    catch (...)
-    {
+    catch (...) {
         Shutdown();
         throw;  // rethrow to WinMain
     }
 }
 
-bool Application::Initialize(HINSTANCE hInstance)
+void Application::Initialize()
 {
-    hInstance_ = hInstance;
-
-    // ---------------------------
-    // 1. Handle CEF child process
-    // ---------------------------
-    const CefMainArgs mainArgs(hInstance_);
-    CefRefPtr<CefApp> cefApp = new MyCefApp();
-
-    int exitCode = CefExecuteProcess(mainArgs, cefApp, nullptr);
-    if (exitCode >= 0)
-        throw AppException(__LINE__, __FILE__, "CEF child process exited unexpectedly");
-
-    // ---------------------------
     // 2. Initialize CEF
-    // ---------------------------
     CefSettings settings;
     settings.multi_threaded_message_loop = true;
     settings.no_sandbox = true;
@@ -46,29 +40,26 @@ bool Application::Initialize(HINSTANCE hInstance)
         (std::filesystem::current_path() / "cef_cache").string()
     );
 
-    if (!CefInitialize(mainArgs, settings, cefApp, nullptr))
-    {
+    if (!CefInitialize(CefMainArgs(hInstance_), settings, new MyCefApp(), nullptr)) {
         throw AppException(__LINE__, __FILE__, "CEF Initialization failed");
     }
 
-    // ---------------------------
     // 3. Create Main Window
-    // ---------------------------
     mainWindow_ = CreateMainWindow(hInstance_);
-    if (!mainWindow_)
-    {
-        throw MyException(__LINE__, "Failed to create main window");
+    if (!mainWindow_) {
+        throw AppException(__LINE__, __FILE__, "Failed to create main window");
     }
     running_ = true;
-    return true;
 }
 
 int Application::RunMessageLoop()
 {
-    if (useRealTimeLoop_)
+    if (useRealTimeLoop_) {
         return RunRealTimeLoop();
-    else
+    }
+    else {
         return RunBlockingLoop();
+    }
 }
 
 int Application::RunRealTimeLoop()
@@ -76,12 +67,11 @@ int Application::RunRealTimeLoop()
     MSG msg;
     bool running = true;
 
-    while (running)
-    {
-        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-        {
-            if (msg.message == WM_QUIT)
+    while (running) {
+        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            if (msg.message == WM_QUIT) {
                 running = false;
+            }
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -99,8 +89,7 @@ int Application::RunRealTimeLoop()
 int Application::RunBlockingLoop()
 {
     MSG msg{};
-    while (GetMessageA(&msg, nullptr, 0, 0) > 0)
-    {
+    while (GetMessageA(&msg, nullptr, 0, 0) > 0) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }

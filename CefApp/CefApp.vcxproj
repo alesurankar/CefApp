@@ -148,6 +148,7 @@
     <ClInclude Include="src\resources\FileResourceHandler.h" />
     <ClInclude Include="src\resources\FileSchemeHandlerFactory.h" />
     <ClInclude Include="src\renderer\OverlayWindow.h" />
+    <ClInclude Include="src\util\AppException.h" />
     <ClInclude Include="src\util\MyException.h" />
   </ItemGroup>
   <ItemGroup>
