@@ -321,9 +321,10 @@ void MainWindow::OnSize(WPARAM wParam)
 
 	if (hHandle_)
 	{
-		const int buttonAreaWidth = 3 * 60;
+		const int buttonWidth = 60;
+		const int buttonAreaWidth = 3 * buttonWidth;
 		const int titleHeight = 40;
-		const int minWidth = 40;
+		const int minWidth = buttonWidth;
 		int clampedHandleX = std::min(width - buttonAreaWidth - minWidth, handleX);
 		int w = width - buttonAreaWidth - clampedHandleX;
 
