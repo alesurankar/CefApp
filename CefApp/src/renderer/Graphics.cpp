@@ -1,5 +1,5 @@
 #include "Graphics.h"
-#include "../platform/MyWin.h"
+#include <platform/MyWin.h>
 #include <d3d11.h>
 #include <wrl.h>
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../platform/MyWin.h"
+#include <platform/MyWin.h>
 
 
 class Application 
@@ -7,7 +7,7 @@ class Application
 public:
 	Application() = default;
 	~Application() = default;
-	int Run(HINSTANCE hInstance);
+	int Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow);
 	void EnableRealTimeLoop(bool enable) { useRealTimeLoop_ = enable; }
 private:
 	void Initialize();

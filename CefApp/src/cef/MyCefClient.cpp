@@ -1,6 +1,6 @@
-#include "../platform/MyWin.h"
+#include <platform/MyWin.h>
 #include "MyCefClient.h"
-#include "../ui/MainWindow.h"
+#include <ui/MainWindow.h>
 
 
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,

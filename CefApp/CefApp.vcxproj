@@ -59,7 +59,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/cef_lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/cef_lib;$(ProjectDir)/src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,7 +87,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)/cef_lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)/cef_lib;$(ProjectDir)/src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

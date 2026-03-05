@@ -1,6 +1,6 @@
 #pragma once
 #include "config/MyCefConfig_app.h"
-#include "../resources/FileSchemeHandlerFactory.h"
+#include <resources/FileSchemeHandlerFactory.h>
 #include <future>
 #include <unordered_map>
 

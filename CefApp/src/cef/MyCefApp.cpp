@@ -1,4 +1,4 @@
-#include "../platform/MyWin.h"
+#include <platform/MyWin.h>
 #include "MyCefApp.h"
 #include "config/wrapper/MyCefConfig_closure_task.h"
 #include "config/base/MyCefConfig_callback.h"

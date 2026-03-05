@@ -1,5 +1,5 @@
 #pragma once
-#include "../util/MyException.h"
+#include "MyException.h"
 #include <string>
 #include <sstream>
 

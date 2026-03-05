@@ -1,11 +1,11 @@
 #include "Application.h"
-#include "../cef/MyCefApp.h"
-#include "../ui/MainWindow.h"
-#include "../util/AppException.h"
+#include <cef/MyCefApp.h>
+#include <ui/MainWindow.h>
+#include <util/AppException.h>
 #include <filesystem>
 
 
-int Application::Run(HINSTANCE hInstance)
+int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     hInstance_ = hInstance;
 

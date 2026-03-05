@@ -1,5 +1,5 @@
 #pragma once
-#include "../../platform/MyWin.h"
+#include <platform/MyWin.h>
 #include <wrl.h>
 #include <vector>
 #include <string>

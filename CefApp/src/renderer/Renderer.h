@@ -1,6 +1,6 @@
 #pragma once
-#include "../platform/MyTimer.h"
-#include "../renderer/Graphics.h"
+#include <platform/MyTimer.h>
+#include <renderer/Graphics.h>
 #include <memory>
 
 

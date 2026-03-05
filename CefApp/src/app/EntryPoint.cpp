@@ -1,5 +1,5 @@
-#include "Application.h"
-#include "../util/AppException.h"
+#include <app/Application.h>
+#include <util/AppException.h>
 
 
 int APIENTRY WinMain(
@@ -12,7 +12,7 @@ int APIENTRY WinMain(
 		Application app;
 		// blocking mode by default
 		app.EnableRealTimeLoop(false);
-		return app.Run(hInstance);
+		return app.Run(hInstance, lpCmdLine, nCmdShow);
 	}
 	catch (const MyException& e) {
 		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);

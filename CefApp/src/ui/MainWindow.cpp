@@ -1,6 +1,6 @@
 #include "MainWindow.h"
-#include "../cef/MyCefClient.h"
-#include "../util/AppException.h"
+#include <cef/MyCefClient.h>
+#include <util/AppException.h>
 
 
 using namespace std::string_literals;
