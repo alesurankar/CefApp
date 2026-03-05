@@ -20,8 +20,8 @@ private:
 	void Shutdown();
 private:
 	std::unique_ptr<MainWindow> mainWnd_;
+	CefRefPtr<MyCefApp> cefApp_;
 	HINSTANCE hInstance_ = nullptr;
 	bool running_ = false;
 	bool useRealTimeLoop_ = false; 
-	CefRefPtr<MyCefApp> cefApp_;
 };

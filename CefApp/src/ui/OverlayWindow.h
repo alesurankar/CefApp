@@ -1,7 +1,7 @@
 #pragma once
-#include "input/Keyboard.h"
-#include "input/Mouse.h"
-#include "Renderer.h"
+#include <renderer/input/Keyboard.h>
+#include <renderer/input/Mouse.h>
+#include <renderer/Renderer.h>
 #include <memory>
 
 class OverlayWindow

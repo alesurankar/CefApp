@@ -17,11 +17,12 @@ CefApp/
    │  │   ├─ Keyboard
    │  │   └─ Mouse
    │  ├─ Graphics
-   │  ├─ OverlayWindow   # Native renderer viewport container (D3D target)
    │  └─ Renderer
    ├─ resources/
    ├─ ui/           # Native window composition layer
-   │   └─ MainWindow      # Top-level window, layout & child window orchestration
+   │   ├─ BrowserView     # Cef Browser
+   │   ├─ MainWindow      # Top-level window
+   │   └─ OverlayWindow   # Native renderer viewport container (D3D target)
    └─ util/
        └─ MyException
        
