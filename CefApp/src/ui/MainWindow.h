@@ -1,6 +1,6 @@
 #pragma once
 #include <platform/MyWin.h>
-#include <ui/OverlayWindow.h>
+#include <ui/D3DOverlayWindow.h>
 #include <string>
 #include <memory>
 #include <cef/config/MyCefConfig_base.h>
@@ -56,7 +56,7 @@ public:
 	{
 		if (hHandle_) SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 	}
-	inline OverlayWindow* GetOverlay() const { return d3dWindow_.get(); }
+	inline D3DOverlayWindow* GetOverlay() const { return d3dWindow_.get(); }
 	inline void DestroyD3DWindow() { if (d3dWindow_) d3dWindow_.reset(); }
 public:
 	static constexpr int FADE_STEPS = 15;
@@ -70,7 +70,7 @@ private:
 	HWND hWnd_ = nullptr;
 	HWND hHandle_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
-	std::unique_ptr<OverlayWindow> d3dWindow_;
+	std::unique_ptr<D3DOverlayWindow> d3dWindow_;
 	CefRefPtr<MyCefClient> client_;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false;

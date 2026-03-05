@@ -117,7 +117,7 @@
     <ClCompile Include="src\ui\BrowserView.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\OverlayWindow.cpp">
+    <ClCompile Include="src\ui\D3DOverlayWindow.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,7 +197,7 @@
     <ClInclude Include="src\ui\BrowserView.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\OverlayWindow.h">
+    <ClInclude Include="src\ui\D3DOverlayWindow.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>

@@ -122,7 +122,7 @@
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
     <ClCompile Include="src\app\EntryPoint.cpp" />
-    <ClCompile Include="src\ui\OverlayWindow.cpp" />
+    <ClCompile Include="src\ui\D3DOverlayWindow.cpp" />
     <ClCompile Include="src\util\MyException.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,7 +149,7 @@
     <ClInclude Include="src\cef\MyCefClient.h" />
     <ClInclude Include="src\resources\FileResourceHandler.h" />
     <ClInclude Include="src\resources\FileSchemeHandlerFactory.h" />
-    <ClInclude Include="src\ui\OverlayWindow.h" />
+    <ClInclude Include="src\ui\D3DOverlayWindow.h" />
     <ClInclude Include="src\util\AppException.h" />
     <ClInclude Include="src\util\MyException.h" />
   </ItemGroup>

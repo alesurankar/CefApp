@@ -364,8 +364,7 @@ void MainWindow::CreateHandle()
 
 void MainWindow::CreateD3DWindow()
 {
-	d3dWindow_ = std::make_unique<OverlayWindow>();
-	d3dWindow_->CreateOverlayWindow(hWnd_);
+	d3dWindow_ = std::make_unique<D3DOverlayWindow>(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }
 

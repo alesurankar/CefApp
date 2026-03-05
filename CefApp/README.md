@@ -21,9 +21,8 @@ CefApp/
    ├─ resources/
    ├─ ui/           # Native window composition layer
    │   ├─ BrowserView     # Cef Browser
-   │   ├─ MainWindow      # Top-level window
-   │   └─ OverlayWindow   # Native renderer viewport container (D3D target)
+   │   ├─ D3DOverlayWindow   # Native renderer viewport container (D3D target)
+   │   └─ MainWindow      # Top-level window
    └─ util/
        └─ MyException
-       
  ```

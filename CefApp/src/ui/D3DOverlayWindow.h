@@ -4,12 +4,11 @@
 #include <renderer/Renderer.h>
 #include <memory>
 
-class OverlayWindow
+class D3DOverlayWindow
 {
 public:
-	OverlayWindow() = default;
-	~OverlayWindow();
-	void CreateOverlayWindow(HWND hwnd);
+	D3DOverlayWindow(HWND hwndParent);
+	~D3DOverlayWindow();
 	void OnSize(int parentWidth, int parentHeight);
 public:
 	Keyboard kbd;

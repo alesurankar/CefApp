@@ -1,9 +1,9 @@
-#include "OverlayWindow.h"
+#include "D3DOverlayWindow.h"
 
 
 namespace 
 {
-	LRESULT CALLBACK OverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT CALLBACK D3DOverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
@@ -21,15 +21,7 @@ namespace
 	}
 }
 
-OverlayWindow::~OverlayWindow()
-{
-	if (hWnd_) {
-		DestroyWindow(hWnd_);
-		hWnd_ = nullptr;
-	}
-}
-
-void OverlayWindow::CreateOverlayWindow(HWND hwndParent)
+D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
 {
 	hwndParent_ = hwndParent;
 
@@ -45,13 +37,21 @@ void OverlayWindow::CreateOverlayWindow(HWND hwndParent)
 		nullptr
 	);
 	if (!hWnd_) return;
-	SetWindowLongPtr(hWnd_, GWLP_WNDPROC, (LONG_PTR)OverlayWindowProc);
+	SetWindowLongPtr(hWnd_, GWLP_WNDPROC, (LONG_PTR)D3DOverlayWindowProc);
 	SetLayeredWindowAttributes(hWnd_, 0, 200, LWA_ALPHA);
 
 	ShowWindow(hWnd_, SW_SHOW);
 }
 
-void OverlayWindow::OnSize(int parentWidth, int parentHeight)
+D3DOverlayWindow::~D3DOverlayWindow()
+{
+	if (hWnd_) {
+		DestroyWindow(hWnd_);
+		hWnd_ = nullptr;
+	}
+}
+
+void D3DOverlayWindow::OnSize(int parentWidth, int parentHeight)
 {
 	if (!hWnd_ || !hwndParent_) return;
 	// adjust with margins if needed
