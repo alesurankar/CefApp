@@ -1,5 +1,6 @@
 #pragma once
 #include <platform/MyWin.h>
+#include <ui/WindowTitleBar.h>
 #include <ui/D3DOverlayWindow.h>
 #include <string>
 #include <memory>
@@ -40,7 +41,7 @@ public:
 	~MainWindow();
 	void CreateBrowserView();
 	void SetBrowserHWND(HWND hWndBrowser);
-	void CreateHandle();
+	void CreateWindowTitleBar();
 	void CreateD3DWindow();
 	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
@@ -52,10 +53,6 @@ public:
 		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 	inline void AttachHWND(HWND hWnd) { hWnd_ = hWnd; }
-	inline void RaiseHandle() noexcept
-	{
-		if (hHandle_) SetWindowPos(hHandle_, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-	}
 	inline D3DOverlayWindow* GetOverlay() const { return d3dWindow_.get(); }
 	inline void DestroyD3DWindow() { if (d3dWindow_) d3dWindow_.reset(); }
 public:
@@ -65,10 +62,9 @@ public:
 	bool isMinimized_ = false;
 	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
-	int handleX = 0;
+	std::unique_ptr<WindowTitleBar> titleBar_;
 private:
 	HWND hWnd_ = nullptr;
-	HWND hHandle_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
 	std::unique_ptr<D3DOverlayWindow> d3dWindow_;
 	CefRefPtr<MyCefClient> client_;

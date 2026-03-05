@@ -14,7 +14,7 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 	{
 		auto args = message->GetArgumentList();
 		int newX = args->GetInt(0);
-		window->handleX = newX;
+		window->titleBar_->handleX = newX;
 		PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		return true;
 	}
@@ -41,7 +41,7 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 			}
 		}
 		else if (received == "mouseClick") {
-			window->RaiseHandle();
+			window->titleBar_->RaiseHandle();
 		}
 		else if (received == "createD3DWindow") {
 			if (!window->GetOverlay()) {
@@ -69,7 +69,6 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
-			window->CreateHandle();
 			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(

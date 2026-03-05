@@ -1,14 +1,13 @@
 #include "D3DOverlayWindow.h"
+#include <util/AppException.h>
 
 
 namespace 
 {
 	LRESULT CALLBACK D3DOverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		switch (msg)
-		{
-			case WM_PAINT:
-			{
+		switch (msg) {
+			case WM_PAINT: {
 				PAINTSTRUCT ps;
 				HDC hdc = BeginPaint(hwnd, &ps);
 				// Fill with semi-transparent gray
@@ -36,7 +35,9 @@ D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
 		GetModuleHandle(nullptr),
 		nullptr
 	);
-	if (!hWnd_) return;
+	if (hWnd_ == nullptr) {
+		throw AppException(__LINE__, __FILE__, "CreateWindowExA in D3DOverlayWindow failed!");
+	}
 	SetWindowLongPtr(hWnd_, GWLP_WNDPROC, (LONG_PTR)D3DOverlayWindowProc);
 	SetLayeredWindowAttributes(hWnd_, 0, 200, LWA_ALPHA);
 
@@ -54,7 +55,7 @@ D3DOverlayWindow::~D3DOverlayWindow()
 void D3DOverlayWindow::OnSize(int parentWidth, int parentHeight)
 {
 	if (!hWnd_ || !hwndParent_) return;
-	// adjust with margins if needed
+
 	int x = 100;
 	int y = 100;
 	int width = parentWidth - 200;

@@ -31,12 +31,6 @@
     <Filter Include="Header Files\resources">
       <UniqueIdentifier>{8ee9f37f-b3b6-4f01-98d0-ccf0dd86ca63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ui">
-      <UniqueIdentifier>{be07a8d0-4758-43e7-ab53-2f588ba3dfb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ui">
-      <UniqueIdentifier>{25953b43-695b-4322-b47f-db7526c96397}</UniqueIdentifier>
-    </Filter>
     <Filter Include="manifests">
       <UniqueIdentifier>{0696173f-9e67-46be-886a-8dc27ce88e50}</UniqueIdentifier>
     </Filter>
@@ -76,6 +70,12 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{71fdf73e-24d3-4dc0-9b9b-741ec7ac2240}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{dac7f117-1045-4a45-813b-0c27fccb2a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{438bb881-0813-4277-9c1a-ffc2ca76894c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -89,9 +89,6 @@
     </ClCompile>
     <ClCompile Include="src\resources\FileResourceHandler.cpp">
       <Filter>Source Files\resources</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\MainWindow.cpp">
-      <Filter>Source Files\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\app\Application.cpp">
       <Filter>Source Files\app</Filter>
@@ -117,6 +114,12 @@
     <ClCompile Include="src\ui\BrowserView.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
+    <ClCompile Include="src\ui\WindowTitleBar.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\MainWindow.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
     <ClCompile Include="src\ui\D3DOverlayWindow.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
@@ -136,9 +139,6 @@
     </ClInclude>
     <ClInclude Include="src\resources\FileResourceHandler.h">
       <Filter>Header Files\resources</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ui\MainWindow.h">
-      <Filter>Header Files\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\MyWinX.h">
       <Filter>Header Files\platform</Filter>
@@ -194,10 +194,16 @@
     <ClInclude Include="src\util\AppException.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\ui\WindowTitleBar.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
     <ClInclude Include="src\ui\BrowserView.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\D3DOverlayWindow.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\MainWindow.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
