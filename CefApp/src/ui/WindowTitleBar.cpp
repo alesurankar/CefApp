@@ -7,11 +7,11 @@ namespace
 	LRESULT CALLBACK HandleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg) {
-			case WM_LBUTTONDOWN: {
-				ReleaseCapture();
-				PostMessage(GetParent(hWnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
-				return 0;
-			}
+		case WM_LBUTTONDOWN: {
+			ReleaseCapture();
+			PostMessage(GetParent(hWnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+			return 0;
+		}
 		}
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
