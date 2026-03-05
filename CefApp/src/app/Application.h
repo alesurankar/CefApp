@@ -2,8 +2,11 @@
 #include <platform/MyWin.h>
 #include <memory>
 #include <ui/MainWindow.h>
+//#include <cef/config/MyCefConfig_base.h>
 #include <cef/MyCefApp.h>
 
+
+//class MyCefApp;
 
 class Application 
 {

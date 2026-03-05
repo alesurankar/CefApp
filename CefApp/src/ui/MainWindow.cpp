@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include <cef/MyCefClient.h>
 #include <util/AppException.h>
 
 
@@ -46,7 +45,7 @@ namespace
 		case WM_CREATE:
 		{
 			if (window) {
-				window->CreateBrowser();
+				window->CreateBrowserView();
 				PostMessage(hWnd, WM_SIZE, 0, 0);
 			}
 			return 0;
@@ -55,7 +54,8 @@ namespace
 
 		case WM_ERASEBKGND:
 		{
-			if (window && window->HasBrowserWindow())
+			//if (window && window->HasBrowserWindow())
+			if (window)
 				return 1;
 		}
 		break;
@@ -307,45 +307,64 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	DestroyWindow(hWnd_);
-}
-
-void MainWindow::CreateBrowser()
-{
-	client_ = new MyCefClient(hWnd_);
-	RECT rect{};
-	GetClientRect(hWnd_, &rect);
-	CefWindowInfo info;
-	info.SetAsChild(hWnd_, CefRect(0, 0,
-		rect.right - rect.left, rect.bottom - rect.top));
-
-	try {
-		CefBrowserHost::CreateBrowser(
-			info,
-			client_,
-			url_,
-			CefBrowserSettings{},
-			nullptr,
-			nullptr
-		);
-	}
-	catch (...) {
-		throw AppException(__LINE__, __FILE__, "Failed to create browser");
+	if (hWnd_) {
+		DestroyWindow(hWnd_);
 	}
 }
 
-bool MainWindow::HasBrowserWindow() const
+void MainWindow::CreateBrowserView()
 {
-	// Return true only if client exists and its browser window is valid
-	if (!client_)
-		return false;
-
-	if (auto browser = client_->GetBrowser())  // safe null check
-		if (auto host = browser->GetHost())   // safe host check
-			return host->GetWindowHandle() != nullptr;
-
-	return false;
+	browser_ = std::make_unique<BrowserView>();
+	browser_->CreateBrowserView(hWnd_);
 }
+
+void MainWindow::CreateHandle()
+{
+	// create handle AFTER browser exists
+	hHandle_ = CreateWindowExA(
+		0,                           // change to this to show the hendleBar
+		//WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
+		"STATIC",
+		nullptr,
+		WS_CHILD | WS_VISIBLE,
+		0, 0, 0, 0,
+		hWnd_,
+		nullptr,
+		MainWindowClass::GetInstance(),
+		nullptr
+	);
+	if (!hHandle_) {
+		throw AppException(__LINE__, __FILE__, "Failed to create Handle");
+	}
+
+	SetWindowLongPtr(hHandle_, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
+	RaiseHandle();
+}
+
+void MainWindow::CreateD3DWindow()
+{
+	d3dWindow_ = std::make_unique<OverlayWindow>();
+	d3dWindow_->CreateOverlayWindow(hWnd_);
+	PostMessage(hWnd_, WM_SIZE, 0, 0);
+}
+
+void MainWindow::SetBrowserHWND(HWND hWndBrowser)
+{
+	browser_->SetBrowserHWND(hWndBrowser);
+}
+
+//bool MainWindow::HasBrowserWindow() const
+//{
+//	// Return true only if client exists and its browser window is valid
+//	if (!client_)
+//		return false;
+//
+//	if (auto browser = client_->GetBrowser())  // safe null check
+//		if (auto host = browser->GetHost())   // safe host check
+//			return host->GetWindowHandle() != nullptr;
+//
+//	return false;
+//}
 
 void MainWindow::OnSize(WPARAM wParam)
 {
@@ -369,11 +388,8 @@ void MainWindow::OnSize(WPARAM wParam)
 		SetWindowPos(hHandle_, HWND_TOP, clampedHandleX, 0, w, titleHeight, SWP_NOACTIVATE);
 	}
 
-	if (hWndBrowser_)
-	{
-		SetWindowPos(hWndBrowser_, nullptr, 0, 0,
-			width, height,
-			SWP_NOZORDER | SWP_NOACTIVATE);
+	if (browser_) {
+		browser_->OnSize(width, height);
 	}
 
 	if (d3dWindow_) {
@@ -382,43 +398,15 @@ void MainWindow::OnSize(WPARAM wParam)
 	RaiseHandle();
 }
 
-void MainWindow::SetBrowserHWND(HWND hWndBrowser)
-{
-	hWndBrowser_ = hWndBrowser;
-
-	// create handle AFTER browser exists
-	hHandle_ = CreateWindowExA(
-		0,                           // change to this to show the hendleBar
-		//WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
-		"STATIC",
-		nullptr,
-		WS_CHILD | WS_VISIBLE,
-		0, 0, 0, 0,
-		hWnd_,
-		nullptr,
-		GetModuleHandle(nullptr),
-		nullptr
-	); 
-	if (!hHandle_) {
-		throw AppException(__LINE__, __FILE__, "Failed to create handle bar window");
-	}
-
-	SetWindowLongPtr(hHandle_, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);
-	RaiseHandle();
-}
-
 void MainWindow::RequestClose()
 {
-	if (isClosing_ || !client_) {
+	if (isClosing_ || !browser_) {
 		DestroyWindow(hWnd_);
 		return;
 	}
-	assert(client_ && "RequestClose called but client_ is null");
 
 	isClosing_ = true;
-	if (auto browser = client_->GetBrowser()) {
-		browser->GetHost()->CloseBrowser(true);
-	}
+	browser_->CloseBrowser();
 }
 
 void MainWindow::StartFade(FadeAction action)
@@ -430,16 +418,4 @@ void MainWindow::StartFade(FadeAction action)
 	fadeAction_ = action;
 
 	SetTimer(hWnd_, TIMER_FADE, 10, NULL);
-}
-
-void MainWindow::CreateD3DWindow()
-{
-	d3dWindow_ = std::make_unique<OverlayWindow>();
-
-	if (!d3dWindow_) {
-		throw AppException(__LINE__, __FILE__, "Failed to allocate OverlayWindow");
-	}
-
-	d3dWindow_->CreateOverlayWindow(hWnd_);
-	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }

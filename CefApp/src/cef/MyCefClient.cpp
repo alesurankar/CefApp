@@ -69,6 +69,7 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
+			window->CreateHandle();
 			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
 		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
