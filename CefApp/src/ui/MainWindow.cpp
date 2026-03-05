@@ -5,21 +5,20 @@
 
 using namespace std::string_literals;
 
-static constexpr const char* wndClassName = "CefApp.MainWindow.Win32";
-
+// Wnd Procedure stuff
 namespace
 {
 	LRESULT CALLBACK HandleWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
-			case WM_LBUTTONDOWN:
-			{
-				ReleaseCapture();
-				PostMessage(GetParent(hWnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+		case WM_LBUTTONDOWN:
+		{
+			ReleaseCapture();
+			PostMessage(GetParent(hWnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
 
-				return 0;
-			}
+			return 0;
+		}
 		}
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
@@ -32,250 +31,283 @@ namespace
 			window = MainWindow::GetWindow(hWnd);
 
 		switch (msg) {
-			case WM_NCCREATE:
-			{
-				CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
-				window = static_cast<MainWindow*>(cs->lpCreateParams);
+		case WM_NCCREATE:
+		{
+			CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
+			window = static_cast<MainWindow*>(cs->lpCreateParams);
 
-				window->AttachHWND(hWnd);
-				SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
+			window->AttachHWND(hWnd);
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
 
-				return TRUE;
+			return TRUE;
+		}
+		break;
+
+		case WM_CREATE:
+		{
+			if (window) {
+				window->CreateBrowser();
+				PostMessage(hWnd, WM_SIZE, 0, 0);
 			}
-			break;
+			return 0;
+		}
+		break;
 
-			case WM_CREATE:
-			{
-				if (window) {
-					window->CreateBrowser();
-					PostMessage(hWnd, WM_SIZE, 0, 0);
-				}
-				return 0;
+		case WM_ERASEBKGND:
+		{
+			if (window && window->HasBrowserWindow())
+				return 1;
+		}
+		break;
+
+		case WM_MOVE:
+		{
+			if (!window) break;
+
+			RECT rect{};
+			GetClientRect(hWnd, &rect);
+
+			window->OnSize(SIZE_RESTORED);
+		}
+		break;
+
+		case WM_SIZE:
+		{
+			if (!window) break;
+
+			if (wParam == SIZE_MINIMIZED) {
+				window->isMinimized_ = true;
+				window->isMaximized_ = false;
+				SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
 			}
-			break;
-
-			case WM_ERASEBKGND:
-			{
-				if (window && window->HasBrowserWindow())
-					return 1;
+			if (wParam == SIZE_MAXIMIZED) {
+				window->isMaximized_ = true;
+				window->isMinimized_ = false;
+				SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
 			}
-			break;
+			if (wParam == SIZE_RESTORED) {
+				window->isMinimized_ = false;
+				window->isMaximized_ = false;
+				SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
+			}
 
-			case WM_MOVE:
+			window->OnSize(wParam);
+		}
+		break;
+
+		case WM_GETMINMAXINFO:
+		{
+			MINMAXINFO* mmi = reinterpret_cast<MINMAXINFO*>(lParam);
+			// Set minimum width and height
+			mmi->ptMinTrackSize.x = 520;
+			mmi->ptMinTrackSize.y = 360;
+
+			// Maximum size = working area
+			HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+			MONITORINFO mi{};
+			mi.cbSize = sizeof(mi);
+			if (GetMonitorInfo(hMonitor, &mi))
 			{
+				const int border = 4;
+
+				mmi->ptMaxPosition.x = mi.rcWork.left - border;
+				mmi->ptMaxPosition.y = mi.rcWork.top - border;
+
+				mmi->ptMaxTrackSize.x = (mi.rcWork.right - mi.rcWork.left) + border * 2;
+				mmi->ptMaxTrackSize.y = (mi.rcWork.bottom - mi.rcWork.top) + border * 2;
+			}
+
+			return 0;
+		}
+		break;
+
+		case WM_TIMER:
+		{
+			if (wParam == MainWindow::TIMER_FADE) {
 				if (!window) break;
 
-				RECT rect{};
-				GetClientRect(hWnd, &rect);
+				if (window->fadeStep <= 0) {
+					KillTimer(hWnd, MainWindow::TIMER_FADE);
 
-				window->OnSize(SIZE_RESTORED);
+					switch (window->fadeAction_) {
+					case MainWindow::FadeAction::Close:
+						PostMessage(hWnd, WM_CLOSE, 0, 0);
+						break;
+					case MainWindow::FadeAction::Minimize:
+						ShowWindow(hWnd, SW_MINIMIZE);
+						break;
+					case MainWindow::FadeAction::Maximize:
+						ShowWindow(hWnd, SW_MAXIMIZE);
+						break;
+					case MainWindow::FadeAction::Restore:
+						ShowWindow(hWnd, SW_RESTORE);
+						break;
+					default:
+						break;
+					}
+
+					window->fadeAction_ = MainWindow::FadeAction::None;
+				}
+				else {
+					BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
+
+					switch (window->fadeAction_) {
+					case MainWindow::FadeAction::Close:
+					case MainWindow::FadeAction::Minimize:
+						SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
+						window->fadeStep--;
+						break;
+					default:
+						window->fadeStep = 0;
+						break;
+					}
+				}
 			}
-			break;
+		}
+		break;
 
-			case WM_SIZE:
+		case WM_NCCALCSIZE:
+		{
+			if (wParam)
 			{
-				if (!window) break;
-
-				if (wParam == SIZE_MINIMIZED) {
-					window->isMinimized_ = true;
-					window->isMaximized_ = false;
-					SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
-				}
-				if (wParam == SIZE_MAXIMIZED) {
-					window->isMaximized_ = true;
-					window->isMinimized_ = false;
-					SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-				}
-				if (wParam == SIZE_RESTORED) {
-					window->isMinimized_ = false;
-					window->isMaximized_ = false;
-					SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-				}
-
-				window->OnSize(wParam);
-			}
-			break;
-
-			case WM_GETMINMAXINFO:
-			{
-				MINMAXINFO* mmi = reinterpret_cast<MINMAXINFO*>(lParam);
-				// Set minimum width and height
-				mmi->ptMinTrackSize.x = 520;
-				mmi->ptMinTrackSize.y = 360;
-
-				// Maximum size = working area
-				HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-				MONITORINFO mi{};
-				mi.cbSize = sizeof(mi);
-				if (GetMonitorInfo(hMonitor, &mi))
+				NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
+				if (IsZoomed(hWnd))
 				{
-					const int border = 4;
-
-					mmi->ptMaxPosition.x = mi.rcWork.left - border;
-					mmi->ptMaxPosition.y = mi.rcWork.top - border;
-
-					mmi->ptMaxTrackSize.x = (mi.rcWork.right - mi.rcWork.left) + border * 2;
-					mmi->ptMaxTrackSize.y = (mi.rcWork.bottom - mi.rcWork.top) + border * 2;
-				}
-
-				return 0;
-			}
-			break;
-
-			case WM_TIMER:
-			{
-				if (wParam == MainWindow::TIMER_FADE) {
-					if (!window) break;
-
-					if (window->fadeStep <= 0) {
-						KillTimer(hWnd, MainWindow::TIMER_FADE);
-
-						switch (window->fadeAction_) {
-						case MainWindow::FadeAction::Close:
-							PostMessage(hWnd, WM_CLOSE, 0, 0);
-							break;
-						case MainWindow::FadeAction::Minimize:
-							ShowWindow(hWnd, SW_MINIMIZE);
-							break;
-						case MainWindow::FadeAction::Maximize:
-							ShowWindow(hWnd, SW_MAXIMIZE);
-							break;
-						case MainWindow::FadeAction::Restore:
-							ShowWindow(hWnd, SW_RESTORE);
-							break;
-						default:
-							break;
-						}
-
-						window->fadeAction_ = MainWindow::FadeAction::None;
-					}
-					else {
-						BYTE alpha = (BYTE)(255 * window->fadeStep / MainWindow::FADE_STEPS);
-
-						switch (window->fadeAction_) {
-						case MainWindow::FadeAction::Close:
-						case MainWindow::FadeAction::Minimize:
-							SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
-							window->fadeStep--;
-							break;
-						default:
-							window->fadeStep = 0;
-							break;
-						}
-					}
-				}
-			}
-			break;
-
-			case WM_NCCALCSIZE:
-			{
-				if (wParam)
-				{
-					NCCALCSIZE_PARAMS* p = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
-					if (IsZoomed(hWnd))
+					HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+					MONITORINFO mi{};
+					mi.cbSize = sizeof(mi);
+					if (GetMonitorInfo(hMonitor, &mi))
 					{
-						HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-						MONITORINFO mi{};
-						mi.cbSize = sizeof(mi);
-						if (GetMonitorInfo(hMonitor, &mi))
-						{
-							RECT& r = p->rgrc[0];
-							r.left = mi.rcWork.left;
-							r.top = mi.rcWork.top;
-							r.right = mi.rcWork.right;
-							r.bottom = mi.rcWork.bottom;
-						}
+						RECT& r = p->rgrc[0];
+						r.left = mi.rcWork.left;
+						r.top = mi.rcWork.top;
+						r.right = mi.rcWork.right;
+						r.bottom = mi.rcWork.bottom;
 					}
-					else
-					{
-						// shrink client rect by border thickness for resizing
-						const int border = 8;
-						p->rgrc[0].left += border;
-						p->rgrc[0].top += 1;    // little hack to remove white artefact on top
-						p->rgrc[0].right -= border;
-						p->rgrc[0].bottom -= border;
-					}
-					return 0;
 				}
 				else
 				{
-					RECT* pRect = reinterpret_cast<RECT*>(lParam);
-					return 0;
+					// shrink client rect by border thickness for resizing
+					const int border = 8;
+					p->rgrc[0].left += border;
+					p->rgrc[0].top += 1;    // little hack to remove white artefact on top
+					p->rgrc[0].right -= border;
+					p->rgrc[0].bottom -= border;
 				}
-			}
-			break;
-
-			case WM_CLOSE:
-			{
-				if (!window) break;
-				window->RequestClose();
 				return 0;
 			}
-			break;
-
-			case WM_APP + 99:
+			else
 			{
-				DestroyWindow(hWnd);
+				RECT* pRect = reinterpret_cast<RECT*>(lParam);
 				return 0;
 			}
-			break;
+		}
+		break;
 
-			case WM_DESTROY:
-			{
-				// Clear the window pointer from GWLP_USERDATA
-				SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
-				PostQuitMessage(0);
-				return 0;
-			}
-			break;
+		case WM_CLOSE:
+		{
+			if (!window) break;
+			window->RequestClose();
+			return 0;
+		}
+		break;
+
+		case WM_APP + 99:
+		{
+			DestroyWindow(hWnd);
+			return 0;
+		}
+		break;
+
+		case WM_DESTROY:
+		{
+			// Clear the window pointer from GWLP_USERDATA
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
+			PostQuitMessage(0);
+			return 0;
+		}
+		break;
 		}
 		return DefWindowProcA(hWnd, msg, wParam, lParam);
 	}
 }
 
-HWND CreateMainWindow(HINSTANCE hInstance)
+
+// MainWindow Class Stuff
+MainWindow::MainWindowClass MainWindow::MainWindowClass::wndClass;
+
+MainWindow::MainWindowClass::MainWindowClass()
+	:
+	hInst(GetModuleHandle(nullptr))
 {
 	WNDCLASSEXA wcex{};
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = MainWindowWndProc;
-	wcex.hInstance = hInstance;
+	
+	//wc.cbClsExtra = 0;
+	//wc.cbWndExtra = 0;
+	wcex.hInstance = GetInstance();
+	//wcex.hIcon = static_cast<HICON>(LoadImage(
+	//	GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
+	//	IMAGE_ICON, 32, 32, 0
+	//));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wcex.lpszClassName = wndClassName;
-
-	if (!RegisterClassExA(&wcex)) {
+	//wcex.lpszMenuName = nullptr;
+	wcex.lpszClassName = GetName();
+	//wcex.hIconSm = static_cast<HICON>(LoadImage(
+	//	GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
+	//	IMAGE_ICON, 16, 16, 0
+	//));
+	if (!RegisterClassEx(&wcex)) {
 		throw AppException(__LINE__, __FILE__, "RegisterClassExA failed!");
 	}
+}
 
-	auto window = std::make_unique<MainWindow>();
-	HWND hWnd = CreateWindowExA(
+MainWindow::MainWindowClass::~MainWindowClass()
+{
+	UnregisterClass(wndClassName, GetInstance());
+}
+
+const char* MainWindow::MainWindowClass::GetName() noexcept
+{
+	return wndClassName;
+}
+
+HINSTANCE MainWindow::MainWindowClass::GetInstance() noexcept
+{
+	return wndClass.hInst;
+}
+
+
+// MainWindow Stuff
+MainWindow::MainWindow()
+{
+	hWnd_ = CreateWindowEx(
 		0,
-		wndClassName,
+		MainWindowClass::GetName(),
 		"CEF",
 		//WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		WS_POPUP | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN,
 		200, 50, 1400, 900,
 		nullptr,
 		nullptr,
-		hInstance,
-		window.get()
+		MainWindowClass::GetInstance(),
+		this
 	);
 
-	if (!hWnd) {
+	if (hWnd_ == nullptr) {
 		throw AppException(__LINE__, __FILE__, "CreateWindowExA failed!");
 	}
-	window.release();
 
-	ShowWindow(hWnd, SW_SHOWDEFAULT);
-	UpdateWindow(hWnd);
-
-	return hWnd;
+	ShowWindow(hWnd_, SW_SHOWDEFAULT);
+	UpdateWindow(hWnd_);
 }
 
-void CleanupMainWindow(HINSTANCE hInstance)
+MainWindow::~MainWindow()
 {
-	UnregisterClassA(wndClassName, hInstance);
+	DestroyWindow(hWnd_);
 }
 
 void MainWindow::CreateBrowser()
@@ -344,8 +376,8 @@ void MainWindow::OnSize(WPARAM wParam)
 			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 
-	if (overlay_) {
-		overlay_->OnSize(width, height);
+	if (d3dWindow_) {
+		d3dWindow_->OnSize(width, height);
 	}
 	RaiseHandle();
 }
@@ -402,12 +434,12 @@ void MainWindow::StartFade(FadeAction action)
 
 void MainWindow::CreateD3DWindow()
 {
-	overlay_ = std::make_unique<OverlayWindow>();
+	d3dWindow_ = std::make_unique<OverlayWindow>();
 
-	if (!overlay_) {
+	if (!d3dWindow_) {
 		throw AppException(__LINE__, __FILE__, "Failed to allocate OverlayWindow");
 	}
 
-	overlay_->CreateOverlayWindow(hWnd_);
+	d3dWindow_->CreateOverlayWindow(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }

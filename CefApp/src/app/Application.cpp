@@ -1,6 +1,5 @@
 #include "Application.h"
 #include <cef/MyCefApp.h>
-#include <ui/MainWindow.h>
 #include <util/AppException.h>
 #include <filesystem>
 
@@ -9,30 +8,28 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     hInstance_ = hInstance;
 
-    // 1. Handle CEF child process
     const CefMainArgs mainArgs(hInstance_);
-    CefRefPtr<CefApp> cefApp = new MyCefApp();
+    cefApp_ = new MyCefApp();
 
-    int exitCode = CefExecuteProcess(mainArgs, cefApp, nullptr);
+    int exitCode = CefExecuteProcess(mainArgs, cefApp_, nullptr);
     if (exitCode >= 0) {
         return exitCode;
     }
 
-    Initialize();
     try {
-        int exitCode = RunMessageLoop();
+        Initialize();
+        int code = RunMessageLoop();
         Shutdown();
-        return exitCode;
+        return code;
     }
     catch (...) {
         Shutdown();
-        throw;  // rethrow to WinMain
+        throw;
     }
 }
 
 void Application::Initialize()
 {
-    // 2. Initialize CEF
     CefSettings settings;
     settings.multi_threaded_message_loop = true;
     settings.no_sandbox = true;
@@ -41,13 +38,12 @@ void Application::Initialize()
         (std::filesystem::current_path() / "cef_cache").string()
     );
 
-    if (!CefInitialize(CefMainArgs(hInstance_), settings, new MyCefApp(), nullptr)) {
+    if (!CefInitialize(CefMainArgs(hInstance_), settings, cefApp_, nullptr)) {
         throw AppException(__LINE__, __FILE__, "CEF Initialization failed");
     }
 
-    // 3. Create Main Window
-    mainWindow_ = CreateMainWindow(hInstance_);
-    if (!mainWindow_) {
+    mainWnd_ = std::make_unique<MainWindow>();
+    if (!mainWnd_) {
         throw AppException(__LINE__, __FILE__, "Failed to create main window");
     }
     running_ = true;
@@ -55,23 +51,18 @@ void Application::Initialize()
 
 int Application::RunMessageLoop()
 {
-    if (useRealTimeLoop_) {
-        return RunRealTimeLoop();
-    }
-    else {
-        return RunBlockingLoop();
-    }
+    return useRealTimeLoop_ ? RunRealTimeLoop() : RunBlockingLoop();
 }
 
 int Application::RunRealTimeLoop()
 {
-    MSG msg;
-    bool running = true;
+    MSG msg{};
 
-    while (running) {
+    while (running_) {
         while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
-                running = false;
+                running_ = false; 
+                break;
             }
 
             TranslateMessage(&msg);
@@ -90,7 +81,7 @@ int Application::RunRealTimeLoop()
 int Application::RunBlockingLoop()
 {
     MSG msg{};
-    while (GetMessageA(&msg, nullptr, 0, 0) > 0) {
+    while (GetMessage(&msg, nullptr, 0, 0) > 0) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
@@ -101,6 +92,6 @@ int Application::RunBlockingLoop()
 void Application::Shutdown()
 {
     running_ = false;
-    CleanupMainWindow(hInstance_);
+    mainWnd_.reset();
     CefShutdown();
 }
