@@ -1,10 +1,12 @@
 #pragma once
 #include <platform/MyWin.h>
-#include <ui/BrowserView.h>
 #include <ui/OverlayWindow.h>
 #include <string>
 #include <memory>
+#include <cef/config/MyCefConfig_base.h>
 
+
+class MyCefClient;
 
 class MainWindow
 {
@@ -37,9 +39,9 @@ public:
 	MainWindow();
 	~MainWindow();
 	void CreateBrowserView();
+	void SetBrowserHWND(HWND hWndBrowser);
 	void CreateHandle();
 	void CreateD3DWindow();
-	void SetBrowserHWND(HWND hWndBrowser);
 	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
 	void RequestClose();
@@ -67,7 +69,9 @@ public:
 private:
 	HWND hWnd_ = nullptr;
 	HWND hHandle_ = nullptr;
-	std::unique_ptr<BrowserView> browser_;
+	HWND hWndBrowser_ = nullptr;
 	std::unique_ptr<OverlayWindow> d3dWindow_;
-	bool isClosing_ = false; 
+	CefRefPtr<MyCefClient> client_;
+	std::string url_ = "http://localhost:5173/";
+	bool isClosing_ = false;
 };

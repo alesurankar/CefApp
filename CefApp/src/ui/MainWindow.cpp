@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include <cef/MyCefClient.h>
 #include <util/AppException.h>
 
 
@@ -54,8 +55,7 @@ namespace
 
 		case WM_ERASEBKGND:
 		{
-			//if (window && window->HasBrowserWindow())
-			if (window)
+			if (window && window->HasBrowserWindow())
 				return 1;
 		}
 		break;
@@ -244,7 +244,7 @@ MainWindow::MainWindowClass::MainWindowClass()
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = MainWindowWndProc;
-	
+
 	//wc.cbClsExtra = 0;
 	//wc.cbWndExtra = 0;
 	wcex.hInstance = GetInstance();
@@ -307,15 +307,36 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	if (hWnd_) {
-		DestroyWindow(hWnd_);
-	}
+	DestroyWindow(hWnd_);
 }
 
 void MainWindow::CreateBrowserView()
 {
-	browser_ = std::make_unique<BrowserView>();
-	browser_->CreateBrowserView(hWnd_);
+	client_ = new MyCefClient(hWnd_);
+	RECT rect{};
+	GetClientRect(hWnd_, &rect);
+	CefWindowInfo info;
+	info.SetAsChild(hWnd_, CefRect(0, 0,
+		rect.right - rect.left, rect.bottom - rect.top));
+
+	try {
+		CefBrowserHost::CreateBrowser(
+			info,
+			client_,
+			url_,
+			CefBrowserSettings{},
+			nullptr,
+			nullptr
+		);
+	}
+	catch (...) {
+		throw AppException(__LINE__, __FILE__, "Failed to create browser");
+	}
+}
+
+void MainWindow::SetBrowserHWND(HWND hWndBrowser)
+{
+	hWndBrowser_ = hWndBrowser;
 }
 
 void MainWindow::CreateHandle()
@@ -348,23 +369,18 @@ void MainWindow::CreateD3DWindow()
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }
 
-void MainWindow::SetBrowserHWND(HWND hWndBrowser)
+bool MainWindow::HasBrowserWindow() const
 {
-	browser_->SetBrowserHWND(hWndBrowser);
-}
+	// Return true only if client exists and its browser window is valid
+	if (!client_)
+		return false;
 
-//bool MainWindow::HasBrowserWindow() const
-//{
-//	// Return true only if client exists and its browser window is valid
-//	if (!client_)
-//		return false;
-//
-//	if (auto browser = client_->GetBrowser())  // safe null check
-//		if (auto host = browser->GetHost())   // safe host check
-//			return host->GetWindowHandle() != nullptr;
-//
-//	return false;
-//}
+	if (auto browser = client_->GetBrowser())  // safe null check
+		if (auto host = browser->GetHost())   // safe host check
+			return host->GetWindowHandle() != nullptr;
+
+	return false;
+}
 
 void MainWindow::OnSize(WPARAM wParam)
 {
@@ -388,8 +404,11 @@ void MainWindow::OnSize(WPARAM wParam)
 		SetWindowPos(hHandle_, HWND_TOP, clampedHandleX, 0, w, titleHeight, SWP_NOACTIVATE);
 	}
 
-	if (browser_) {
-		browser_->OnSize(width, height);
+	if (hWndBrowser_)
+	{
+		SetWindowPos(hWndBrowser_, nullptr, 0, 0,
+			width, height,
+			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 
 	if (d3dWindow_) {
@@ -400,13 +419,16 @@ void MainWindow::OnSize(WPARAM wParam)
 
 void MainWindow::RequestClose()
 {
-	if (isClosing_ || !browser_) {
+	if (isClosing_ || !client_) {
 		DestroyWindow(hWnd_);
 		return;
 	}
+	assert(client_ && "RequestClose called but client_ is null");
 
 	isClosing_ = true;
-	browser_->CloseBrowser();
+	if (auto browser = client_->GetBrowser()) {
+		browser->GetHost()->CloseBrowser(true);
+	}
 }
 
 void MainWindow::StartFade(FadeAction action)
