@@ -23,6 +23,10 @@ ReactCef/
 │  │  └─ FooterBar.tsx
 │  ├─ hooks/
 │  │  └─ tabManager.ts
+│  ├─ icons/
+│  │  ├─ svg/
+│  │  ├─ Icon.tsx
+│  │  └─ IconPaths.ts
 │  ├─ utils/
 │  ├─ App.tsx
 │  ├─ index.css
