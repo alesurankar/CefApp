@@ -9,7 +9,17 @@ namespace
 		switch (msg) {
 		case WM_LBUTTONDOWN: {
 			ReleaseCapture();
-			PostMessage(GetParent(hWnd), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
+			SendMessage(GetParent(hWnd), WM_NCLBUTTONDOWN, HTCAPTION, 0);
+			return 0;
+		}
+		case WM_LBUTTONDBLCLK: {
+			HWND parent = GetParent(hWnd);
+
+			if (IsZoomed(parent))
+				ShowWindow(parent, SW_RESTORE);
+			else
+				ShowWindow(parent, SW_MAXIMIZE);
+
 			return 0;
 		}
 		}
@@ -26,7 +36,7 @@ WindowTitleBar::WindowTitleBar(HWND hwndParent)
 		//WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
 		"STATIC",
 		nullptr,
-		WS_CHILD | WS_VISIBLE,
+		WS_CHILD | WS_VISIBLE | SS_NOTIFY,
 		0, 0, 0, 0,
 		hwndParent_,
 		nullptr,
