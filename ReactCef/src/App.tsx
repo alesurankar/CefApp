@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import TitleBar from './gui/TitleBar.tsx';
 import FooterBar from './gui/FooterBar.tsx';
-import BodyFrame from './gui/BodyFrame.tsx';
+import BodyContainer from './gui/BodyContainer.tsx';
 import { myCefMouseClick } from "./cef/cefInterface.ts"
 
 
@@ -26,7 +26,7 @@ const App = () => {
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
       <TitleBar tabs={tabs} closeTab={(id) => setTabs(tabs.filter(t => t.id !== id))} />
-      <BodyFrame className="flex-1 overflow-auto" spawnTab={spawnTab} />
+      <BodyContainer spawnTab={spawnTab} />
       <FooterBar />
     </div>
   );
