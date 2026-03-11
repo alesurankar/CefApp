@@ -24,7 +24,7 @@ const App = () => {
   }, []);
 
   return (
-    <div id="window-container" className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen w-screen overflow-hidden">
       <TitleBar tabs={tabs} closeTab={(id) => setTabs(tabs.filter(t => t.id !== id))} />
       <BodyFrame className="flex-1 overflow-auto" spawnTab={spawnTab} />
       <FooterBar />
