@@ -1,5 +1,5 @@
 import { myCefCreateD3DWindow } from "../cef/cefInterface.ts"
-import BaseFrame from "../frames/BaseFrame";
+import BaseFrame from "./frames/BaseFrame";
 
 
 interface Tab {
@@ -21,7 +21,7 @@ const BodyContainer: React.FC<BodyContainerProps> = ({ tabs, spawnTab }) => {
         <button 
           className="w-12 h-12 hover:text-[#ffffff] hover:font-bold"
           onClick={spawnTab}
-          >Tab
+        >Tab
         </button>
         <button 
           className="w-12 h-12 hover:text-[#ffffff] hover:font-bold"
@@ -37,6 +37,7 @@ const BodyContainer: React.FC<BodyContainerProps> = ({ tabs, spawnTab }) => {
         {tabs.map(tab => (
           <BaseFrame
             key={tab.id}
+            title={tab.title}
           />
         ))}
       </div>
