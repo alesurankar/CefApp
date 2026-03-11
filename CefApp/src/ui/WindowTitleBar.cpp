@@ -51,16 +51,17 @@ WindowTitleBar::~WindowTitleBar()
 void WindowTitleBar::OnSize(int parentWidth)
 {
 	const int buttonWidth = 60;
-	const int buttonAreaWidth = 3 * buttonWidth;
+	const int buttonAreaWidth = 4 * buttonWidth;
 	const int titleHeight = 40;
 	const int minWidth = buttonWidth;
 	int clampedHandleX = std::min(parentWidth - buttonAreaWidth - minWidth, handleX);
+	int startHandleX = buttonWidth + clampedHandleX;
 	int w = parentWidth - buttonAreaWidth - clampedHandleX;
 
 	SetWindowPos(
 		hWnd_,
 		HWND_TOP, 
-		clampedHandleX,
+		startHandleX,
 		0, 
 		w, 
 		titleHeight, 

@@ -16,7 +16,7 @@ const TabContainer: React.FC<TabContainerProps> = ({ tabs, closeTab }) => {
 
   useEffect(() => {
     const handle = requestAnimationFrame(() => {
-      let width = 5;
+      let width = 0;
       tabRefs.current.forEach(tab => {
         if (tab) width += tab.offsetWidth + 20;
       });

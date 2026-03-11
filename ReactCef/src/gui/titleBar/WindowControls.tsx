@@ -4,6 +4,9 @@ import { myCefMinimize, myCefResize, myCefClose } from "../../cef/cefInterface.t
 const WindowControls = () => {
   return (
     <div className="flex h-full">
+      {/* space for dragbar */}
+      <div className="w-12 h-8 flex items-center justify-center"></div>
+      {/* buttons */}
       <button
         className="w-12 h-full flex items-center justify-center hover:bg-[#373737]"
         onClick={myCefMinimize}
