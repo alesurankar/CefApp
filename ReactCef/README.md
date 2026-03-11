@@ -21,6 +21,8 @@ ReactCef/
 │  │  │  ├─ TitleBar.tsx
 │  │  │  └─ WindowControls.tsx
 │  │  └─ FooterBar.tsx
+│  ├─ hooks/
+│  │  └─ tabManager.ts
 │  ├─ utils/
 │  ├─ App.tsx
 │  ├─ index.css

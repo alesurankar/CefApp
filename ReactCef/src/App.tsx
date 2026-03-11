@@ -1,26 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { tabManager } from './hooks/tabManager';
+import { myCefMouseClick } from "./cef/cefInterface"
 import TitleBar from './gui/titleBar/TitleBar.tsx';
-import FooterBar from './gui/FooterBar.tsx';
 import BodyContainer from './gui/bodyContainer/BodyContainer.tsx';
-import { myCefMouseClick } from "./cef/cefInterface.ts"
+import FooterBar from './gui/FooterBar.tsx';
 
-
-interface Tab {
-  id: number;
-  title: string;
-}
 
 const App = () => {
-  const [tabs, setTabs] = useState<Tab[]>([]);
-
-  const spawnTab = () => {
-    const newTab: Tab = { id: Date.now(), title: `Tab ${tabs.length + 1}` };
-    setTabs([...tabs, newTab]);
-  };
-
-  const closeTab = (id: number) => {
-    setTabs(tabs.filter(tab => tab.id !== id));
-  };
+  const { tabs, spawnTab, closeTab } = tabManager();
 
   useEffect(() => {
     document.addEventListener("mousedown", myCefMouseClick);
