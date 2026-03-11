@@ -33,6 +33,14 @@ const BodyFrame: React.FC<BodyFrameProps> = ({ className, spawnTab }) => {
         <p className="text-red-500">React Frontend</p>
         <br /><br /><br />
         <p>BodyFrame</p>
+        <h1 className="text-blue-300">this is title1</h1>
+        <h1>this is title1</h1>
+        <h2>this is title2</h2>
+        <h3>this is title3</h3>
+        <h4>this is title4</h4>
+        <h5>this is title5</h5>
+        <h6>this is title6</h6>
+        <p>this is p container</p>
         </div>
     </div>
   );
