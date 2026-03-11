@@ -18,6 +18,10 @@ const App = () => {
     setTabs([...tabs, newTab]);
   };
 
+  const closeTab = (id: number) => {
+    setTabs(tabs.filter(tab => tab.id !== id));
+  };
+
   useEffect(() => {
     document.addEventListener("mousedown", myCefMouseClick);
     return () => document.removeEventListener("mousedown", myCefMouseClick);
@@ -25,8 +29,8 @@ const App = () => {
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
-      <TitleBar tabs={tabs} closeTab={(id) => setTabs(tabs.filter(t => t.id !== id))} />
-      <BodyContainer spawnTab={spawnTab} />
+      <TitleBar tabs={tabs} closeTab={closeTab} />
+      <BodyContainer tabs={tabs} spawnTab={spawnTab} />
       <FooterBar />
     </div>
   );

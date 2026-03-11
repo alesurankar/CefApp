@@ -1,11 +1,18 @@
 import { myCefCreateD3DWindow } from "../cef/cefInterface.ts"
+import BaseFrame from "../frames/BaseFrame";
 
+
+interface Tab {
+  id: number;
+  title: string;
+}
 
 interface BodyContainerProps {
+  tabs: Tab[];
   spawnTab: () => void;
 }
 
-const BodyContainer: React.FC<BodyContainerProps> = ({ spawnTab }) => {
+const BodyContainer: React.FC<BodyContainerProps> = ({ tabs, spawnTab }) => {
 
   return (
     <div className="flex flex-1 overflow-auto">
@@ -25,7 +32,13 @@ const BodyContainer: React.FC<BodyContainerProps> = ({ spawnTab }) => {
 
       {/* Main Frames Area */}
       <div className="flex-1">
-
+        
+        {/* Here lets create one BaseFrame */}
+        {tabs.map(tab => (
+          <BaseFrame
+            key={tab.id}
+          />
+        ))}
       </div>
     </div>
   );

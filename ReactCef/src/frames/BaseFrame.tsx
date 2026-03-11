@@ -1,14 +1,12 @@
 
-// interface BaseFrameProps {
-//   title: string;
-//   onClose: () => void;
-// }
 
-// const BaseFrame: React.FC<BaseFrameProps> = ({ title, onClose }) => {
+const BaseFrame: React.FC = () => {
 
-//   return (
-//     <div></div>
-//   );
-// };
+  return (
+    <div className="flex-1 bg-white text-black">
+      This is BaseFrame content
+    </div>
+  );
+};
 
-// export default BaseFrame;
+export default BaseFrame;
