@@ -1,11 +1,11 @@
 import { myCefSetHandleX, } from "../../cef/cefInterface.ts"
 import { useEffect, useRef } from "react";
 
+
 interface Tab {
   id: number;
   title: string;
 }
-
 interface TabContainerProps {
   tabs: Tab[];
   closeTab: (id: number) => void;

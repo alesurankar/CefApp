@@ -9,14 +9,17 @@ ReactCef/
 ├─ src/
 │  ├─ cef/
 │  │  └─ cefInterface.ts
+│  ├─ frames/
+│  │  └─ BaseFrame.tsx
 │  ├─ gui/
-│  │  ├─ frames/
-│  │  │  └─ BaseFrame.tsx
+│  │  ├─ bodyContainer/
+│  │  │  ├─ BodyContainer.tsx
+│  │  │  ├─ MainFrameArea.tsx
+│  │  │  └─ NavigationBar.tsx
 │  │  ├─ titleBar/
 │  │  │  ├─ TabContainer.tsx
 │  │  │  ├─ TitleBar.tsx
 │  │  │  └─ WindowControls.tsx
-│  │  ├─ BodyContainer.tsx
 │  │  └─ FooterBar.tsx
 │  ├─ utils/
 │  ├─ App.tsx

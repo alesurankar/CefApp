@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import TitleBar from './gui/titleBar/TitleBar.tsx';
 import FooterBar from './gui/FooterBar.tsx';
-import BodyContainer from './gui/BodyContainer.tsx';
+import BodyContainer from './gui/bodyContainer/BodyContainer.tsx';
 import { myCefMouseClick } from "./cef/cefInterface.ts"
 
 
