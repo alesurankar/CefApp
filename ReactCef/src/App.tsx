@@ -4,6 +4,7 @@ import { myCefMouseClick } from "./cef/cefInterface"
 import TitleBar from './gui/titleBar/TitleBar.tsx';
 import BodyContainer from './gui/bodyContainer/BodyContainer.tsx';
 import FooterBar from './gui/FooterBar.tsx';
+import OverlayLayer from "./gui/overlays/OverlayLayer.tsx";
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
       <TitleBar tabs={tabs} closeTab={closeTab} />
       <BodyContainer tabs={tabs} spawnTab={spawnTab} />
       <FooterBar />
+      <OverlayLayer />
     </div>
   );
 };

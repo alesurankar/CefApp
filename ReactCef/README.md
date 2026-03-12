@@ -16,6 +16,10 @@ ReactCef/
 │  │  │  ├─ BodyContainer.tsx
 │  │  │  ├─ MainFrameArea.tsx
 │  │  │  └─ NavigationBar.tsx
+│  │  ├─ dropdown/
+│  │  │  └─ DropdownWindow.tsx
+│  │  ├─ overlays/
+│  │  │  └─ OverlayLayer.tsx
 │  │  ├─ titleBar/
 │  │  │  ├─ TabContainer.tsx
 │  │  │  ├─ TitleBar.tsx

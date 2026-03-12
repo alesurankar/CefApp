@@ -1,0 +1,20 @@
+
+interface DropdownProps {
+  x: number;
+  y: number;
+}
+
+const DropdownWindow: React.FC<DropdownProps> = ({ x, y }) => {
+  return (
+    <div
+      className="pointer-events-auto absolute top-10 left-10 bg-gray-800 text-white p-3 rounded shadow-lg"
+      style={{ top: y, left: x }}
+    >
+      <div>This is Dropdown Window</div>
+      <br />
+      <div>Second Line</div>
+    </div>
+  );
+};
+
+export default DropdownWindow;
