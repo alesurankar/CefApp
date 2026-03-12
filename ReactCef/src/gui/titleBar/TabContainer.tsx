@@ -36,6 +36,7 @@ const TabContainer: React.FC<TabContainerProps> = ({ tabs, closeTab }) => {
         >
           <span className="text-sm">{tab.title}</span>
           <button
+            title="close"
             className="hover:bg-[#1177bb] space-x-1 px-1 my-1"
             onClick={() => closeTab(tab.id)}
           >✕

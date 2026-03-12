@@ -18,6 +18,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
     <div className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none">
       {/* Navigation Toggle Button */}
       <button
+        title="Properties"
         className="w-12 h-full flex items-center justify-center hover:bg-[#373737] text-[#a8a8a8]"
       ><Icon name="bars_3" size={20}/>
       </button>
