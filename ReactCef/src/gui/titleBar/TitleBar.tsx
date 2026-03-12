@@ -22,10 +22,14 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
           <button
             title="Properties"
             className="w-full h-full flex items-center justify-center hover:bg-[#373737] text-[#a8a8a8]"
+            // onClick={openPropsWnd}
           ><Icon name="bars_arrow_down" size={20}/>
           </button>
         </div>
-        <TabContainer tabs={tabs} closeTab={closeTab}/>
+        {/* Scrollable tabs */}
+        <div className="flex-1 overflow-x-auto">
+          <TabContainer tabs={tabs} closeTab={closeTab} />
+        </div>
       </div>
       <WindowControls />
     </div>
