@@ -1,14 +1,20 @@
 import DropdownWindow from "../dropdown/DropdownWindow";
 
 
-const OverlayLayer = () => {
-  const showDropdown = true;
-  const x = 50;
-  const y = 50;
+interface DropdownState {
+  visible: boolean;
+  x: number;
+  y: number;
+}
+interface OverlayLayerProps {
+  dropdown: DropdownState;
+}
+
+const OverlayLayer: React.FC<OverlayLayerProps> = ({dropdown}) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-50">
-      {showDropdown && <DropdownWindow x={x} y={y}/>}
+      {dropdown.visible && <DropdownWindow x={dropdown.x} y={dropdown.y}/>}
     </div>
   );
 };

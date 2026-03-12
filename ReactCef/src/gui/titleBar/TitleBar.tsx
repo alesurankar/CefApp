@@ -10,14 +10,15 @@ interface Tab {
 interface TitleBarProps {
   tabs: Tab[];
   closeTab: (id: number) => void;
+  toggleDropdown: (e: React.MouseEvent) => void;
 }
 
-const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
+const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab, toggleDropdown }) => {
 
   return (
     <div className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none">
       <div className="flex items-center flex-1 overflow-hidden">
-        <ViewButton />
+        <ViewButton onClick={toggleDropdown}/>
         <TabContainer tabs={tabs} closeTab={closeTab} />
       </div>
       <WindowControls />

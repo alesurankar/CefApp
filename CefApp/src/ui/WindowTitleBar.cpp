@@ -32,8 +32,8 @@ WindowTitleBar::WindowTitleBar(HWND hwndParent)
 	hwndParent_ = hwndParent;
 
 	hWnd_ = CreateWindowExA(
-		0,                           // change to this to show the hendleBar
-		//WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
+		//0,                           // change to this to show the hendleBar
+		WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
 		"STATIC",
 		nullptr,
 		WS_CHILD | WS_VISIBLE | SS_NOTIFY,

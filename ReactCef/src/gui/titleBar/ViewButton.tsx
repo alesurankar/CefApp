@@ -1,17 +1,18 @@
 import Icon from "../../icons/Icon.tsx";
 
 
-const ViewButton = () => {
-  const showProps = () => {
+interface ViewButtonProps {
+  onClick: (e: React.MouseEvent) => void;
+}
 
-  }
+const ViewButton: React.FC<ViewButtonProps> = ({ onClick }) => {
 
   return (
     <div className="flex-shrink-0 w-12 h-8">
       <button
-        title="Properties"
+        title="View Panel"
         className="w-full h-full flex items-center justify-center hover:bg-[#373737] text-[#a8a8a8]"
-        onClick={showProps}
+        onClick={onClick}
       ><Icon name="bars_arrow_down" size={20}/>
       </button>
     </div>

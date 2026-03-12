@@ -1,10 +1,10 @@
 
-interface DropdownProps {
+interface DropdownWindowProps {
   x: number;
   y: number;
 }
 
-const DropdownWindow: React.FC<DropdownProps> = ({ x, y }) => {
+const DropdownWindow: React.FC<DropdownWindowProps> = ({ x, y }) => {
   return (
     <div
       className="pointer-events-auto absolute top-10 left-10 bg-gray-800 text-white p-3 rounded shadow-lg"

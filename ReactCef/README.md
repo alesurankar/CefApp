@@ -23,6 +23,7 @@ ReactCef/
 │  │  ├─ titleBar/
 │  │  │  ├─ TabContainer.tsx
 │  │  │  ├─ TitleBar.tsx
+│  │  │  ├─ ViewButton.tsx
 │  │  │  └─ WindowControls.tsx
 │  │  └─ FooterBar.tsx
 │  ├─ hooks/
