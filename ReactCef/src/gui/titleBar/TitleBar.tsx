@@ -10,7 +10,7 @@ interface Tab {
 interface TitleBarProps {
   tabs: Tab[];
   closeTab: (id: number) => void;
-  toggleDropdown: (e: React.MouseEvent) => void;
+  toggleDropdown: (x: number, y: number) => void;
 }
 
 const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab, toggleDropdown }) => {
@@ -19,7 +19,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab, toggleDropdown }) =
     <div className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none">
       <div className="flex items-center flex-1 overflow-hidden">
         <ViewButton onClick={toggleDropdown}/>
-        <TabContainer tabs={tabs} closeTab={closeTab} />
+        <TabContainer tabs={tabs} closeTab={closeTab}/>
       </div>
       <WindowControls />
     </div>
