@@ -13,29 +13,30 @@ interface TabContainerProps {
 }
 
 const TabContainer: React.FC<TabContainerProps> = ({ tabs, closeTab }) => {
-  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handle = requestAnimationFrame(() => {
-      let width = 0;
-      tabRefs.current.forEach(tab => {
-        if (tab) width += tab.offsetWidth + 20;
-      });
-      myCefSetHandleX(width);
+      if (!containerRef.current) return;
+      
+      const widthCssPx = containerRef.current.scrollWidth;
+      const widthNativePx = Math.round(widthCssPx * window.devicePixelRatio);
+      myCefSetHandleX(widthNativePx);
     });
 
     return () => cancelAnimationFrame(handle);
-  }, [tabs]);
+  }, [tabs.length]);
 
   return (
-    <div className="flex flex-1 items-center overflow-x-auto space-x-0.5 px-0.5">
-      {tabs.map((tab, idx) => (
+    <div 
+      ref={containerRef}
+      className="flex w-max items-center">
+      {tabs.map((tab) => (
         <div
           key={tab.id}
-          ref={el => { tabRefs.current[idx] = el; }}
-          className="flex items-center text-[#a8a8a8] hover:text-[#ffffff] bg-[#373737] hover:bg-[#202020]"
-        >
-          <span className="text-sm px-2 ">{tab.title}</span>
+          className="border border-gray-800 flex items-center text-[#a8a8a8] hover:text-[#ffffff] bg-[#373737] hover:bg-[#202020]"
+        ><span className="text-sm px-2 ">{tab.title}</span>
+        
           <button
             title="close"
             className="hover:bg-[#1177bb] my-1 mx-0.5 rounded"
