@@ -7,7 +7,7 @@ interface DropdownWindowProps {
 const DropdownWindow: React.FC<DropdownWindowProps> = ({ x, y }) => {
   return (
     <div
-      className="pointer-events-auto absolute top-10 left-10 bg-gray-800 text-white p-3 rounded shadow-lg"
+      className="pointer-events-auto absolute bg-gray-800 text-white p-3 rounded shadow-lg"
       style={{ top: y, left: x }}
     >
       <div>This is Dropdown Window</div>

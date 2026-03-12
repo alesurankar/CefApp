@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { tabManager } from './hooks/tabManager';
+import { dropdownManager } from "./hooks/dropdownManager.ts";
 import { myCefMouseClick } from "./cef/cefInterface"
 import TitleBar from './gui/titleBar/TitleBar.tsx';
 import BodyContainer from './gui/bodyContainer/BodyContainer.tsx';
@@ -9,20 +10,7 @@ import OverlayLayer from "./gui/overlays/OverlayLayer.tsx";
 
 const App = () => {
   const { tabs, spawnTab, closeTab } = tabManager();
-
-  const [dropdown, setDropdown] = useState<{ visible: boolean; x: number; y: number }>({
-    visible: false,
-    x: 0,
-    y: 0,
-  });
-
-  const toggleDropdown = (e: React.MouseEvent) => {
-    setDropdown(prev => ({
-      visible: !prev.visible, // ✅ use previous state
-      x: e.clientX,
-      y: e.clientY,
-    }));
-  };
+  const { dropdown, toggleDropdown } = dropdownManager();
 
   useEffect(() => {
     document.addEventListener("mousedown", myCefMouseClick);
