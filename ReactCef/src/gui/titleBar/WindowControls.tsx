@@ -1,4 +1,5 @@
 import { myCefMinimize, myCefResize, myCefClose } from "../../cef/cefInterface.ts"
+import Icon from "../../icons/Icon.tsx";
 
 
 const WindowControls = () => {
@@ -11,19 +12,20 @@ const WindowControls = () => {
         title="Minimize"
         className="w-12 h-full flex items-center justify-center hover:bg-[#373737]"
         onClick={myCefMinimize}
-      >―
+      ><Icon name="minus" size={20}/>
       </button>
       <button
         title="Resize"
         className="w-12 h-full flex items-center justify-center hover:bg-[#373737]"
         onClick={myCefResize}
-      >☐
+      ><Icon name="squere" size={15}/>
+      {/* >☐ */}
       </button>
       <button
         title="Close"
         className="w-12 h-full flex items-center justify-center hover:bg-red-600"
         onClick={myCefClose}
-      >✕
+      ><Icon name="x_mark" size={20}/>
       </button>
     </div>
   );

@@ -20,7 +20,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab }) => {
       <button
         title="Properties"
         className="w-12 h-full flex items-center justify-center hover:bg-[#373737] text-[#a8a8a8]"
-      ><Icon name="bars_3" size={20}/>
+      ><Icon name="bars_arrow_down" size={20}/>
       </button>
       <TabContainer tabs={tabs} closeTab={closeTab}/>
       <WindowControls />

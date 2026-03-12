@@ -1,5 +1,6 @@
 import { myCefSetHandleX, } from "../../cef/cefInterface.ts"
 import { useEffect, useRef } from "react";
+import Icon from "../../icons/Icon.tsx";
 
 
 interface Tab {
@@ -27,19 +28,19 @@ const TabContainer: React.FC<TabContainerProps> = ({ tabs, closeTab }) => {
   }, [tabs]);
 
   return (
-    <div className="flex-1 flex items-center overflow-x-auto space-x-1 px-1">
+    <div className="flex flex-1 items-center overflow-x-auto space-x-0.5 px-0.5">
       {tabs.map((tab, idx) => (
         <div
           key={tab.id}
           ref={el => { tabRefs.current[idx] = el; }}
-          className="flex items-center text-[#a8a8a8] hover:text-[#ffffff] bg-[#373737] hover:bg-[#202020] px-1 rounded"
+          className="flex items-center text-[#a8a8a8] hover:text-[#ffffff] bg-[#373737] hover:bg-[#202020]"
         >
-          <span className="text-sm">{tab.title}</span>
+          <span className="text-sm px-2 ">{tab.title}</span>
           <button
             title="close"
-            className="hover:bg-[#1177bb] space-x-1 px-1 my-1"
+            className="hover:bg-[#1177bb] my-1 mx-0.5 rounded"
             onClick={() => closeTab(tab.id)}
-          >✕
+          ><Icon name="x_mark" size={15}/>
           </button>
         </div>
       ))}
