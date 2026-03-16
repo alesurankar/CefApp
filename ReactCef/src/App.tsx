@@ -29,10 +29,23 @@ const App = () => {
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
-      <TitleBar views={views} activeViewId={activeViewId} closeView={closeView} focusView={focusView} toggleDropdown={toggleDropdown} />
-      <BodyContainer views={views} activeViewId={activeViewId} spawnView={spawnView} />
-      <FooterBar />
-      <OverlayLayer dropdown={dropdown} hideDropdown={hideDropdown} />
+      <TitleBar 
+        views={views} 
+        activeViewId={activeViewId} 
+        closeView={closeView} 
+        focusView={focusView} 
+        toggleDropdown={toggleDropdown} 
+        className="flex h-8 w-full"/>
+      <BodyContainer 
+        views={views} 
+        activeViewId={activeViewId} 
+        spawnView={spawnView} 
+        className="flex flex-1"/>
+      <FooterBar 
+        className="flex h-6 w-full"/>
+      <OverlayLayer 
+        dropdown={dropdown} 
+        hideDropdown={hideDropdown} />
     </div>
   );
 };

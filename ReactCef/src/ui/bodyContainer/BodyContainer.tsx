@@ -11,14 +11,22 @@ interface BodyContainerProps {
   views: View[];
   activeViewId: number | null;
   spawnView: () => void;
+  className?: string;
 }
 
-const BodyContainer: React.FC<BodyContainerProps> = ({ views, activeViewId, spawnView }) => {
+const BodyContainer: React.FC<BodyContainerProps> = ({ views, activeViewId, spawnView, className }) => {
 
   return (
-    <div className="flex flex-1 overflow-auto">
-      <NavigationBar spawnView={spawnView}/>
-      <MainFrameArea views={views} activeViewId={activeViewId}/>
+    <div className={`${className}`}>
+      <NavigationBar 
+        spawnView={spawnView} 
+        className="flex w-12 h-full"
+      />
+      <MainFrameArea 
+        views={views} 
+        activeViewId={activeViewId} 
+        className="flex flex-1"
+      />
     </div>
   );
 };

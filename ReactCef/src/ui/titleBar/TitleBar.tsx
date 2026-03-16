@@ -14,14 +14,16 @@ interface TitleBarProps {
   closeView: (id: number) => void;
   focusView: (id: number) => void;
   toggleDropdown: (x: number, y: number) => void;
+  className?: string;
 }
 
-const TitleBar: React.FC<TitleBarProps> = ({ views, activeViewId, closeView, focusView, toggleDropdown }) => {
+const TitleBar: React.FC<TitleBarProps> = ({ views, activeViewId, closeView, focusView, toggleDropdown, className }) => {
 
   return (
-    <div className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none">
+    <div className={`items-center justify-between bg-[#202020] text-white select-none ${className}`}>
       <div className="flex items-center flex-1 overflow-hidden">
-        <ViewButton onClick={toggleDropdown}/>
+        <ViewButton onClick={toggleDropdown}
+        />
         <TabContainer 
           views={views} 
           activeViewId={activeViewId} 

@@ -1,8 +1,12 @@
 
-const FooterBar = () => {
+interface FooterProps {
+  className?: string;
+}
+
+const FooterBar: React.FC<FooterProps> = ({ className }) => {
 
   return (
-    <div className="h-6 w-full flex items-center justify-between bg-[#007acc]">
+    <div className={`items-center justify-between bg-[#007acc] ${className}`}>
       <p className="pl-10 pb-1 text-sm truncate">Footer</p>
     </div>
   );

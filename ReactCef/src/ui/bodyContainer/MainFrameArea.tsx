@@ -9,16 +9,24 @@ interface View {
 interface MainFrameAreaProps {
   views: View[]
   activeViewId: number | null;
+  className?: string;
 }
 
-const MainFrameArea: React.FC<MainFrameAreaProps> = ({ views, activeViewId }) => {
+const MainFrameArea: React.FC<MainFrameAreaProps> = ({ views, activeViewId, className }) => {
   return (
-    <div className="flex-1">
+    <div className={`${className}`}>
+      {views.length === 0 && (
+        <div className="flex flex-1 items-center justify-center text-gray-500 text-lg">
+          Welcome! Open a new view.
+        </div>
+      )}
+      
       {views.map(view => (
         <BaseFrame
           key={view.id}
           title={view.title}
           visible={view.id === activeViewId}
+          className="flex flex-1"
         />
       ))}
     </div>
