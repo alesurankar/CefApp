@@ -3,16 +3,16 @@ import Icon from "../icons/Icon.tsx";
 
 
 interface NavigationBarProps {
-  spawnTab: () => void;
+  spawnView: () => void;
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({ spawnTab }) => {
+const NavigationBar: React.FC<NavigationBarProps> = ({ spawnView }) => {
   return (
     <div className="w-12 bg-[#373737] text-[#a8a8a8] flex flex-col items-center">
       <button 
         title="New Tab"
         className="w-12 h-12 flex items-center justify-center hover:text-[#ffffff] hover:font-bold"
-        onClick={spawnTab}
+        onClick={spawnView}
       ><Icon name="plus" size={24}/>
       </button>
 

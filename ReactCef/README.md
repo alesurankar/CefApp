@@ -11,7 +11,7 @@ ReactCef/
 │  │  └─ cefInterface.ts
 │  ├─ hooks/
 │  │  ├─ dropdownManager.ts
-│  │  └─ tabManager.ts
+│  │  └─ viewManager.ts
 │  ├─ ui/
 │  │  ├─ bodyContainer/
 │  │  │  ├─ frames/

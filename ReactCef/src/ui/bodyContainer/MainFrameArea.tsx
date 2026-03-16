@@ -1,21 +1,21 @@
 import BaseFrame from "./frames/BaseFrame";
 
 
-interface Tab {
+interface View {
   id: number;
   title: string;
 }
 interface MainFrameAreaProps {
-  tabs: Tab[]
+  views: View[]
 }
 
-const MainFrameArea: React.FC<MainFrameAreaProps> = ({ tabs }) => {
+const MainFrameArea: React.FC<MainFrameAreaProps> = ({ views }) => {
   return (
     <div className="flex-1">
-      {tabs.map(tab => (
+      {views.map(view => (
         <BaseFrame
-          key={tab.id}
-          title={tab.title}
+          key={view.id}
+          title={view.title}
         />
       ))}
     </div>

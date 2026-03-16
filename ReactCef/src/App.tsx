@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { tabManager } from './hooks/tabManager';
+import { viewManager } from './hooks/viewManager';
 import { dropdownManager } from "./hooks/dropdownManager.ts";
 import { myCefMouseClick } from "./cef/cefInterface"
 import TitleBar from './ui/titleBar/TitleBar.tsx';
@@ -9,7 +9,7 @@ import OverlayLayer from "./ui/overlayLayer/OverlayLayer.tsx";
 
 
 const App = () => {
-  const { tabs, spawnTab, closeTab } = tabManager();
+  const { views, spawnView, closeView } = viewManager();
   const { dropdown, toggleDropdown, showDropdown, hideDropdown } = dropdownManager();
 
   useEffect(() => {
@@ -29,8 +29,8 @@ const App = () => {
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
-      <TitleBar tabs={tabs} closeTab={closeTab} toggleDropdown={toggleDropdown} />
-      <BodyContainer tabs={tabs} spawnTab={spawnTab} />
+      <TitleBar tabs={views} closeTab={closeView} toggleDropdown={toggleDropdown} />
+      <BodyContainer views={views} spawnView={spawnView} />
       <FooterBar />
       <OverlayLayer dropdown={dropdown} hideDropdown={hideDropdown} />
     </div>

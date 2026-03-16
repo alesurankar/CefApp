@@ -2,21 +2,21 @@ import NavigationBar from "./NavigationBar.tsx";
 import MainFrameArea from "./MainFrameArea.tsx";
 
 
-interface Tab {
+interface View {
   id: number;
   title: string;
 }
 interface BodyContainerProps {
-  tabs: Tab[];
-  spawnTab: () => void;
+  views: View[];
+  spawnView: () => void;
 }
 
-const BodyContainer: React.FC<BodyContainerProps> = ({ tabs, spawnTab }) => {
+const BodyContainer: React.FC<BodyContainerProps> = ({ views, spawnView }) => {
 
   return (
     <div className="flex flex-1 overflow-auto">
-      <NavigationBar spawnTab={spawnTab}/>
-      <MainFrameArea tabs={tabs}/>
+      <NavigationBar spawnView={spawnView}/>
+      <MainFrameArea views={views}/>
     </div>
   );
 };
