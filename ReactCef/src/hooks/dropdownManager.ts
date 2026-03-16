@@ -18,8 +18,8 @@ export const dropdownManager = () => {
     setDropdown( prev => ({ visible: !prev.visible, x, y }));
   };
 
-  const showDropdown = (e: React.MouseEvent) => {
-    setDropdown({ visible: true, x: e.clientX, y: e.clientY });
+  const showDropdown = (x: number, y: number) => {
+    setDropdown({ visible: true, x, y });
   };
 
   const hideDropdown = () => {
