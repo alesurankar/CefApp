@@ -1,10 +1,10 @@
 
-interface DropdownWindowProps {
+interface BaseDropdownProps {
   x: number;
   y: number;
 }
 
-const DropdownWindow: React.FC<DropdownWindowProps> = ({ x, y }) => {
+const BaseDropdown: React.FC<BaseDropdownProps> = ({ x, y }) => {
   return (
     <div
       className="pointer-events-auto absolute bg-gray-800 text-white p-3 rounded shadow-lg"
@@ -17,4 +17,4 @@ const DropdownWindow: React.FC<DropdownWindowProps> = ({ x, y }) => {
   );
 };
 
-export default DropdownWindow;
+export default BaseDropdown;

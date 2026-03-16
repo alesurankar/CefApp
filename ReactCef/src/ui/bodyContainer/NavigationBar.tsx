@@ -1,5 +1,5 @@
 import { myCefCreateD3DWindow } from "../../cef/cefInterface.ts"
-import Icon from "../../icons/Icon.tsx";
+import Icon from "../icons/Icon.tsx";
 
 
 interface NavigationBarProps {

@@ -1,4 +1,4 @@
-import Icon from "../../icons/Icon.tsx";
+import Icon from "../icons/Icon.tsx";
 
 
 interface ViewButtonProps {

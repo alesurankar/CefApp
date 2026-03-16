@@ -1,5 +1,5 @@
 import { myCefMinimize, myCefResize, myCefClose } from "../../cef/cefInterface.ts"
-import Icon from "../../icons/Icon.tsx";
+import Icon from "../icons/Icon.tsx";
 
 
 const WindowControls = () => {

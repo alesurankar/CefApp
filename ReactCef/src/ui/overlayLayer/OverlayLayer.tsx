@@ -1,4 +1,4 @@
-import DropdownWindow from "../dropdown/DropdownWindow";
+import BaseDropdown from "./dropdowns/BaseDropdown";
 
 
 interface DropdownState {
@@ -19,7 +19,7 @@ const OverlayLayer: React.FC<OverlayLayerProps> = ({dropdown, hideDropdown}) => 
         dropdown.visible ? "pointer-events-auto" : "pointer-events-none"
       }`}
       onMouseDown={hideDropdown}
-    >{dropdown.visible && <DropdownWindow x={dropdown.x} y={dropdown.y}/>}
+    >{dropdown.visible && <BaseDropdown x={dropdown.x} y={dropdown.y}/>}
     </div>
   );
 };

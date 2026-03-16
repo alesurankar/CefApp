@@ -1,6 +1,6 @@
 import { myCefSetHandleX, } from "../../cef/cefInterface.ts"
 import { useEffect, useRef } from "react";
-import Icon from "../../icons/Icon.tsx";
+import Icon from "../icons/Icon.tsx";
 
 
 interface Tab {

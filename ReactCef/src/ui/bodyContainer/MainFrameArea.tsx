@@ -1,4 +1,4 @@
-import BaseFrame from "../../frames/BaseFrame";
+import BaseFrame from "./frames/BaseFrame";
 
 
 interface Tab {

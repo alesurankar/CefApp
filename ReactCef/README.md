@@ -9,16 +9,23 @@ ReactCef/
 ├─ src/
 │  ├─ cef/
 │  │  └─ cefInterface.ts
-│  ├─ frames/
-│  │  └─ BaseFrame.tsx
-│  ├─ gui/
+│  ├─ hooks/
+│  │  ├─ dropdownManager.ts
+│  │  └─ tabManager.ts
+│  ├─ ui/
 │  │  ├─ bodyContainer/
+│  │  │  ├─ frames/
+│  │  │  │  └─ BaseFrame.tsx
 │  │  │  ├─ BodyContainer.tsx
 │  │  │  ├─ MainFrameArea.tsx
 │  │  │  └─ NavigationBar.tsx
-│  │  ├─ dropdown/
-│  │  │  └─ DropdownWindow.tsx
-│  │  ├─ overlays/
+│  │  ├─ icons/
+│  │  │  ├─ svg/
+│  │  │  ├─ Icon.tsx
+│  │  │  └─ IconPaths.ts
+│  │  ├─ overlayLayer/
+│  │  │  ├─ dropdowns/
+│  │  │  │  └─ BaseDropdown.tsx
 │  │  │  └─ OverlayLayer.tsx
 │  │  ├─ titleBar/
 │  │  │  ├─ TabContainer.tsx
@@ -26,12 +33,6 @@ ReactCef/
 │  │  │  ├─ ViewButton.tsx
 │  │  │  └─ WindowControls.tsx
 │  │  └─ FooterBar.tsx
-│  ├─ hooks/
-│  │  └─ tabManager.ts
-│  ├─ icons/
-│  │  ├─ svg/
-│  │  ├─ Icon.tsx
-│  │  └─ IconPaths.ts
 │  ├─ utils/
 │  ├─ App.tsx
 │  ├─ index.css

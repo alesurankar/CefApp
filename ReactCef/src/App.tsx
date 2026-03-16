@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { tabManager } from './hooks/tabManager';
 import { dropdownManager } from "./hooks/dropdownManager.ts";
 import { myCefMouseClick } from "./cef/cefInterface"
-import TitleBar from './gui/titleBar/TitleBar.tsx';
-import BodyContainer from './gui/bodyContainer/BodyContainer.tsx';
-import FooterBar from './gui/FooterBar.tsx';
-import OverlayLayer from "./gui/overlays/OverlayLayer.tsx";
+import TitleBar from './ui/titleBar/TitleBar.tsx';
+import BodyContainer from './ui/bodyContainer/BodyContainer.tsx';
+import FooterBar from './ui/FooterBar.tsx';
+import OverlayLayer from "./ui/overlayLayer/OverlayLayer.tsx";
 
 
 const App = () => {
