@@ -3,23 +3,31 @@ import TabContainer from "./TabContainer.tsx";
 import WindowControls from "./WindowControls.tsx";
 
 
-interface Tab {
+interface View {
   id: number;
   title: string;
+  type?: string;
 }
 interface TitleBarProps {
-  tabs: Tab[];
-  closeTab: (id: number) => void;
+  views: View[];
+  activeViewId: number | null;
+  closeView: (id: number) => void;
+  focusView: (id: number) => void;
   toggleDropdown: (x: number, y: number) => void;
 }
 
-const TitleBar: React.FC<TitleBarProps> = ({ tabs, closeTab, toggleDropdown }) => {
+const TitleBar: React.FC<TitleBarProps> = ({ views, activeViewId, closeView, focusView, toggleDropdown }) => {
 
   return (
     <div className="h-8 w-full flex items-center justify-between bg-[#202020] text-white select-none">
       <div className="flex items-center flex-1 overflow-hidden">
         <ViewButton onClick={toggleDropdown}/>
-        <TabContainer tabs={tabs} closeTab={closeTab}/>
+        <TabContainer 
+          views={views} 
+          activeViewId={activeViewId} 
+          closeView={closeView} 
+          focusView={focusView} 
+        />
       </div>
       <WindowControls />
     </div>

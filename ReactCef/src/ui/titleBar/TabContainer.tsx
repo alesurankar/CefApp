@@ -3,16 +3,19 @@ import { useEffect, useRef } from "react";
 import Icon from "../icons/Icon.tsx";
 
 
-interface Tab {
+interface View {
   id: number;
   title: string;
+  type?: string;
 }
 interface TabContainerProps {
-  tabs: Tab[];
-  closeTab: (id: number) => void;
+  views: View[];
+  activeViewId: number | null;
+  closeView: (id: number) => void;
+  focusView: (id: number) => void;
 }
 
-const TabContainer: React.FC<TabContainerProps> = ({ tabs, closeTab }) => {
+const TabContainer: React.FC<TabContainerProps> = ({ views, activeViewId, closeView, focusView }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -25,24 +28,34 @@ const TabContainer: React.FC<TabContainerProps> = ({ tabs, closeTab }) => {
     });
 
     return () => cancelAnimationFrame(handle);
-  }, [tabs.length]);
+  }, [views.length]);
 
   return (
     <div className="flex-1 overflow-x-auto">
       <div 
         ref={containerRef}
         className="flex w-max items-center">
-        {tabs.map((tab) => (
+        {views.map((view) => (
           <div
-            key={tab.id}
-            className="border border-gray-800 flex items-center text-[#a8a8a8] hover:text-[#ffffff] bg-[#373737] hover:bg-[#202020]"
-          ><span className="text-sm px-2 ">{tab.title}</span>
+            key={view.id}
+            className={`group border border-gray-800 flex items-center ${
+              view.id === activeViewId 
+              ? "bg-[#202020] text-white" 
+              : "bg-[#373737] text-[#a8a8a8] hover:text-white"
+            }`}
+            onClick={() => focusView(view.id)}
+          ><span className="text-sm pl-3 pr-1">{view.title}</span>
           
             <button
               title="close"
-              className="hover:bg-[#1177bb] my-1 mx-0.5 rounded"
-              onClick={() => closeTab(tab.id)}
-            ><Icon name="x_mark" size={15}/>
+              className={`hover:bg-[#1177bb] my-1 mx-0.5 rounded
+                ${
+                  view.id === activeViewId
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
+                }`}
+              onClick={(e) => { e.stopPropagation(); closeView(view.id); }}
+            ><Icon name="x_mark" size={15} />
             </button>
           </div>
         ))}

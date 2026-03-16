@@ -9,7 +9,7 @@ import OverlayLayer from "./ui/overlayLayer/OverlayLayer.tsx";
 
 
 const App = () => {
-  const { views, spawnView, closeView } = viewManager();
+  const { views, activeViewId, spawnView, closeView, focusView } = viewManager();
   const { dropdown, toggleDropdown, showDropdown, hideDropdown } = dropdownManager();
 
   useEffect(() => {
@@ -29,8 +29,8 @@ const App = () => {
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden">
-      <TitleBar tabs={views} closeTab={closeView} toggleDropdown={toggleDropdown} />
-      <BodyContainer views={views} spawnView={spawnView} />
+      <TitleBar views={views} activeViewId={activeViewId} closeView={closeView} focusView={focusView} toggleDropdown={toggleDropdown} />
+      <BodyContainer views={views} activeViewId={activeViewId} spawnView={spawnView} />
       <FooterBar />
       <OverlayLayer dropdown={dropdown} hideDropdown={hideDropdown} />
     </div>
