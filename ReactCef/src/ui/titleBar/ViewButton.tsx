@@ -2,14 +2,14 @@ import Icon from "../icons/Icon.tsx";
 
 
 interface ViewButtonProps {
-  onClick: (x: number, y: number) => void;
+  onClick: (x: number, y: number, type: "viewPanel" | "other") => void;
 }
 
 const ViewButton: React.FC<ViewButtonProps> = ({ onClick }) => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    onClick(rect.left, rect.bottom);
+    onClick(rect.left, rect.bottom, "viewPanel");
   };
 
   return (

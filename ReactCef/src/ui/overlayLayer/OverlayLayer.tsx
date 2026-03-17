@@ -1,10 +1,11 @@
-import BaseDropdown from "./dropdowns/BaseDropdown";
+import ViewPanelDropdown from "./dropdowns/ViewPanelDropdown";
 
 
 interface DropdownState {
-  visible: boolean;
   x: number;
   y: number;
+  visible: boolean;
+  type?: "viewPanel" | "other"
 }
 interface OverlayLayerProps {
   dropdown: DropdownState;
@@ -12,14 +13,23 @@ interface OverlayLayerProps {
 }
 
 const OverlayLayer: React.FC<OverlayLayerProps> = ({dropdown, hideDropdown}) => {
-
+  if (!dropdown.visible) return null;
+  
+  const renderDropdown = () => {
+    switch (dropdown.type) {
+      case "viewPanel":
+        return <ViewPanelDropdown x={dropdown.x} y={dropdown.y} />;
+      case "other":
+        return null;
+      default:
+        return null;
+    }
+  };
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full z-50 ${
-        dropdown.visible ? "pointer-events-auto" : "pointer-events-none"
-      }`}
+      className="fixed top-0 left-0 w-full h-full z-50 auto"
       onMouseDown={hideDropdown}
-    >{dropdown.visible && <BaseDropdown x={dropdown.x} y={dropdown.y}/>}
+    >{renderDropdown()}
     </div>
   );
 };

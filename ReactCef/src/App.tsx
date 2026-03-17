@@ -15,7 +15,7 @@ const App = () => {
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault(); // stops Chrome/CEF default menu
-      showDropdown(e.clientX, e.clientY);
+      showDropdown(e.clientX, e.clientY, "viewPanel");
     };
 
     document.addEventListener("mousedown", myCefMouseClick);

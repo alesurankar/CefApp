@@ -2,24 +2,26 @@ import { useState } from "react"
 
 
 export interface DropdownWindow {
-  visible: boolean;
   x: number;
   y: number;
+  visible: boolean;
+  type?: "viewPanel" | "other"
 }
 
 export const dropdownManager = () => {
   const [dropdown, setDropdown] = useState<DropdownWindow>({ 
-    visible: false, 
+    visible: false,
     x: 0, 
-    y: 0 
+    y: 0,
+    type: undefined
   });
 
-  const toggleDropdown = (x: number, y: number) => {
-    setDropdown( prev => ({ visible: !prev.visible, x, y }));
+  const toggleDropdown = (x: number, y: number, type?: "viewPanel" | "other") => {
+    setDropdown( prev => ({ visible: !prev.visible, x, y, type }));
   };
 
-  const showDropdown = (x: number, y: number) => {
-    setDropdown({ visible: true, x, y });
+  const showDropdown = (x: number, y: number, type?: "viewPanel" | "other") => {
+    setDropdown({ visible: true, x, y, type });
   };
 
   const hideDropdown = () => {
