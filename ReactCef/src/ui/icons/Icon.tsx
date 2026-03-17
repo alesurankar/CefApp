@@ -1,20 +1,19 @@
-import React from "react";
 import { ICON_PATHS } from "./IconPaths";
 import type { IconName } from "./IconPaths";
 
-type Props = {
+type IconProps = {
   name: IconName;
   size?: number;
   color?: string;
   strokeWidth?: number;
 };
 
-const Icon: React.FC<Props> = ({
+const Icon = ({
   name,
   size = 24,
   color = "currentColor",
   strokeWidth = 1.5,
-}) => {
+}: IconProps) => {
   const path = ICON_PATHS[name];
 
   return (

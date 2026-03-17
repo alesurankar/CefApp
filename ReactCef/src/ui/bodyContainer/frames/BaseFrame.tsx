@@ -5,7 +5,7 @@ interface BaseFrameProps {
   className?: string;
 }
 
-const BaseFrame: React.FC<BaseFrameProps> = ({ title, visible, className }) => {
+const BaseFrame = ({ title, visible, className }: BaseFrameProps) => {
   if (!visible) return null;
 
   return (

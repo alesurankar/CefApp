@@ -12,7 +12,7 @@ interface MainFrameAreaProps {
   className?: string;
 }
 
-const MainFrameArea: React.FC<MainFrameAreaProps> = ({ views, activeViewId, className }) => {
+const MainFrameArea = ({ views, activeViewId, className }: MainFrameAreaProps) => {
   return (
     <div className={`${className}`}>
       {views.length === 0 && (

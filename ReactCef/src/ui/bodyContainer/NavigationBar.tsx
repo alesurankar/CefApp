@@ -7,7 +7,7 @@ interface NavigationBarProps {
   className?: string;
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({ spawnView, className }) => {
+const NavigationBar = ({ spawnView, className }: NavigationBarProps) => {
   return (
     <div className={`flex-col bg-[#373737] text-[#a8a8a8] ${className}`}>
       <button 

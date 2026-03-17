@@ -3,7 +3,7 @@ interface FooterProps {
   className?: string;
 }
 
-const FooterBar: React.FC<FooterProps> = ({ className }) => {
+const FooterBar = ({ className }: FooterProps) => {
 
   return (
     <div className={`items-center justify-between bg-[#007acc] ${className}`}>

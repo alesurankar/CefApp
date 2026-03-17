@@ -5,7 +5,7 @@ interface BaseDropdownProps {
   children: React.ReactNode;
 }
 
-const BaseDropdown: React.FC<BaseDropdownProps> = ({ x, y, children }) => {
+const BaseDropdown = ({ x, y, children }: BaseDropdownProps) => {
 
   return (
     <div

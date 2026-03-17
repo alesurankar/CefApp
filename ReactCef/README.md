@@ -26,6 +26,7 @@ ReactCef/
 │  │  ├─ overlayLayer/
 │  │  │  ├─ dropdowns/
 │  │  │  │  ├─ BaseDropdown.tsx
+│  │  │  │  ├─ OtherDropdown.tsx
 │  │  │  │  └─ ViewPanelDropdown.tsx
 │  │  │  └─ OverlayLayer.tsx
 │  │  ├─ titleBar/

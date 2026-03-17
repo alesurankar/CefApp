@@ -5,7 +5,7 @@ interface ViewButtonProps {
   onClick: (x: number, y: number, type: "viewPanel" | "other") => void;
 }
 
-const ViewButton: React.FC<ViewButtonProps> = ({ onClick }) => {
+const ViewButton = ({ onClick }: ViewButtonProps) => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();

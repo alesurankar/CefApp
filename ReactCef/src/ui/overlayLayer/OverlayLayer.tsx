@@ -13,7 +13,7 @@ interface OverlayLayerProps {
   hideDropdown: () => void;
 }
 
-const OverlayLayer: React.FC<OverlayLayerProps> = ({dropdown, hideDropdown}) => {
+const OverlayLayer = ({dropdown, hideDropdown}: OverlayLayerProps) => {
   if (!dropdown.visible) return null;
   
   const renderDropdown = () => {

@@ -15,7 +15,7 @@ interface TabContainerProps {
   focusView: (id: number) => void;
 }
 
-const TabContainer: React.FC<TabContainerProps> = ({ views, activeViewId, closeView, focusView }) => {
+const TabContainer = ({ views, activeViewId, closeView, focusView }: TabContainerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

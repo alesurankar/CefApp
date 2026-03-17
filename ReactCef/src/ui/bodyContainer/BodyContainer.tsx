@@ -14,7 +14,7 @@ interface BodyContainerProps {
   className?: string;
 }
 
-const BodyContainer: React.FC<BodyContainerProps> = ({ views, activeViewId, spawnView, className }) => {
+const BodyContainer = ({ views, activeViewId, spawnView, className }: BodyContainerProps) => {
 
   return (
     <div className={`${className}`}>

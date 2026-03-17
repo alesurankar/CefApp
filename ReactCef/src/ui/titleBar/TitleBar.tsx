@@ -17,7 +17,7 @@ interface TitleBarProps {
   className?: string;
 }
 
-const TitleBar: React.FC<TitleBarProps> = ({ views, activeViewId, closeView, focusView, toggleDropdown, className }) => {
+const TitleBar = ({ views, activeViewId, closeView, focusView, toggleDropdown, className }: TitleBarProps) => {
 
   return (
     <div className={`items-center justify-between bg-[#202020] text-white select-none ${className}`}>

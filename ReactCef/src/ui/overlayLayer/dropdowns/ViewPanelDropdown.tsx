@@ -6,7 +6,7 @@ interface ViewPanelDropdownProps {
   y: number;
 }
 
-const ViewPanelDropdown: React.FC<ViewPanelDropdownProps> = ({ x, y }) => {
+const ViewPanelDropdown = ({ x, y }: ViewPanelDropdownProps) => {
   return (
     <BaseDropdown x={x} y={y}>
       <div>
