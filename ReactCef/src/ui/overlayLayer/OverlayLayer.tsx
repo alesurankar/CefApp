@@ -1,4 +1,5 @@
 import ViewPanelDropdown from "./dropdowns/ViewPanelDropdown";
+import OtherDropdown from "./dropdowns/OtherDropdown";
 
 
 interface DropdownState {
@@ -20,7 +21,7 @@ const OverlayLayer: React.FC<OverlayLayerProps> = ({dropdown, hideDropdown}) => 
       case "viewPanel":
         return <ViewPanelDropdown x={dropdown.x} y={dropdown.y} />;
       case "other":
-        return null;
+        return <OtherDropdown x={dropdown.x} y={dropdown.y}/>;
       default:
         return null;
     }
