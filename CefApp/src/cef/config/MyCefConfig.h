@@ -6,7 +6,7 @@
 #define CEF_USE_SANDBOX 0             // Disable sandbox for simpler build (no OS-level isolation)
 
 // --- GPU / Rendering ---
-//#define CEF_USE_GPU 1                 // Keep GPU enabled for fast rendering (WebGL, CSS, video)
+#define CEF_USE_GPU 1                 // Keep GPU enabled for fast rendering (WebGL, CSS, video)
 #define CEF_USE_MEDIA 0               // Disable unnecessary media frameworks if you don't use them
 #define CEF_USE_SWIFTSHADER 0         // Disable software GPU fallback
 //#define CEF_USE_V8_CONTEXT_SNAPSHOT 1 // Enable fast JavaScript initialization

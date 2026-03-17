@@ -28,7 +28,7 @@ const App = () => {
   }, [showDropdown]);
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden">
+    <div className="flex flex-col h-screen w-screen overflow-hidden select-none">
       <TitleBar 
         views={views} 
         activeViewId={activeViewId} 

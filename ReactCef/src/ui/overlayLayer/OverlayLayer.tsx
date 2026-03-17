@@ -13,10 +13,11 @@ interface OverlayLayerProps {
   hideDropdown: () => void;
 }
 
-const OverlayLayer = ({dropdown, hideDropdown}: OverlayLayerProps) => {
-  if (!dropdown.visible) return null;
+const OverlayLayer = ({ dropdown, hideDropdown }: OverlayLayerProps) => {
   
   const renderDropdown = () => {
+    if (!dropdown.visible) return null;
+
     switch (dropdown.type) {
       case "viewPanel":
         return <ViewPanelDropdown x={dropdown.x} y={dropdown.y} />;
@@ -28,7 +29,9 @@ const OverlayLayer = ({dropdown, hideDropdown}: OverlayLayerProps) => {
   };
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full z-50 auto"
+      className={`fixed inset-0 z-50 ${
+        dropdown.visible ? "pointer-events-auto" : "pointer-events-none"
+      }`}
       onMouseDown={hideDropdown}
     >{renderDropdown()}
     </div>
