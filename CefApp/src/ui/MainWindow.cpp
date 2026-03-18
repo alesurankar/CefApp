@@ -229,6 +229,8 @@ MainWindow::MainWindow()
 	if (hWnd_ == nullptr) {
 		throw AppException(__LINE__, __FILE__, "CreateWindowExA in MainWindow failed!");
 	}
+	ShowWindow(hWnd_, SW_MINIMIZE);
+	ShowWindow(hWnd_, SW_HIDE);
 
 	CreateWindowTitleBar();
 	CreateBrowserView();

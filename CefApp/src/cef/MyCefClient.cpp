@@ -26,17 +26,17 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 			window->StartFade(MainWindow::FadeAction::Close);
 		}
 		else if (received == "minimize") {
-			window->StartFade(MainWindow::FadeAction::Minimize);
+			ShowWindow(hWndParent_, SW_MINIMIZE);
 		}
 		else if (received == "resize") {
 			WINDOWPLACEMENT wp{};
 			wp.length = sizeof(wp);
 			if (GetWindowPlacement(hWndParent_, &wp)) {
 				if (wp.showCmd == SW_MAXIMIZE) {
-					window->StartFade(MainWindow::FadeAction::Restore);
+					ShowWindow(hWndParent_, SW_RESTORE);
 				}
 				else {
-					window->StartFade(MainWindow::FadeAction::Maximize);
+					ShowWindow(hWndParent_, SW_MAXIMIZE);
 				}
 			}
 		}
@@ -77,7 +77,7 @@ void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
 	MainWindow* window = MainWindow::GetWindow(hWndParent_);
-	window->StartFade(MainWindow::FadeAction::Restore, 0);
+	ShowWindow(hWndParent_, SW_RESTORE);
 }
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
