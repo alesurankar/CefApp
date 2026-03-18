@@ -5,7 +5,7 @@ import MainFrameArea from "./MainFrameArea.tsx";
 interface View {
   id: number;
   title: string;
-  type?: string;
+  type: "empty" | "D3DWindow";
 }
 interface BodyContainerProps {
   views: View[];

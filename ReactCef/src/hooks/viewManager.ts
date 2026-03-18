@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 export interface View {
   id: number;
   title: string;
@@ -13,7 +14,8 @@ export const viewManager = () => {
   const spawnView  = () => {
     const newView: View = { 
       id: Date.now(), 
-      title: `View ${views.length + 1}` 
+      title: `View ${views.length + 1}`,
+      type: undefined
     };
     setViews([...views, newView]);
     setActiveViewId(newView.id);
