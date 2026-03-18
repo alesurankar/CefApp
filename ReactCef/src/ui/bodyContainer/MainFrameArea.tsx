@@ -10,7 +10,18 @@ interface MainFrameAreaProps {
 }
 
 const MainFrameArea = ({ views, activeViewId, className }: MainFrameAreaProps) => {
-  
+  const activeView = views.find(v => v.id === activeViewId) ?? views[0];
+
+  const renderActiveFrame = () => {
+    if (!activeView) return null;
+
+    switch (activeView.kind) {
+      case "d3d": return <D3DFrame key={activeView.id} visible className="flex flex-1" />;
+      case "empty":
+      default: return <EmptyFrame key={activeView.id} visible className="flex flex-1" />;
+    }
+  };
+
   return (
     <div className={className}>
       {views.length === 0 && (
@@ -18,31 +29,7 @@ const MainFrameArea = ({ views, activeViewId, className }: MainFrameAreaProps) =
           Welcome! Open a new view.
         </div>
       )}
-      
-      {views.map((view) => {
-      const isActive = view.id === activeViewId;
-
-      switch (view.kind) {
-        case "d3d":
-          return (
-            <D3DFrame
-              key={view.id}
-              visible={isActive}
-              className="flex flex-1"
-            />
-          );
-
-        case "empty":
-        default:
-          return (
-            <EmptyFrame
-              key={view.id}
-              visible={isActive}
-              className="flex flex-1"
-            />
-          );
-        }
-      })}
+      {renderActiveFrame()}
     </div>
   );
 };
