@@ -1,12 +1,8 @@
 import EmptyFrame from "./frames/EmptyFrame";
 import D3DFrame from "./frames/D3DFrame";
+import type { View } from "../../types/view";
 
 
-interface View {
-  id: number;
-  title: string;
-  type: "empty" | "D3DWindow";
-}
 interface MainFrameAreaProps {
   views: View[]
   activeViewId: number | null;
@@ -26,8 +22,8 @@ const MainFrameArea = ({ views, activeViewId, className }: MainFrameAreaProps) =
       {views.map((view) => {
       const isActive = view.id === activeViewId;
 
-      switch (view.type) {
-        case "D3DWindow":
+      switch (view.kind) {
+        case "d3d":
           return (
             <D3DFrame
               key={view.id}

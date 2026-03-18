@@ -1,8 +1,9 @@
 import Icon from "../icons/Icon.tsx";
+import type { ViewKind } from "../../types/view.ts";
 
 
 interface NavigationBarProps {
-  spawnView: (type: "empty" | "D3DWindow") => void;
+  spawnView: (kind: ViewKind) => void;
   className?: string;
 }
 
@@ -19,7 +20,7 @@ const NavigationBar = ({ spawnView, className }: NavigationBarProps) => {
       <button 
         title="D3DWindow"
         className="h-12 flex items-center justify-center hover:text-[#ffffff] hover:font-bold"
-        onClick={() => (spawnView("D3DWindow"))}
+        onClick={() => (spawnView("d3d"))}
       ><Icon name="tv" size={26}/>
       </button>
     </div>

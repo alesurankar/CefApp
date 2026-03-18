@@ -1,16 +1,12 @@
 import NavigationBar from "./NavigationBar.tsx";
 import MainFrameArea from "./MainFrameArea.tsx";
+import type { View, ViewKind } from "../../types/view.ts";
 
 
-interface View {
-  id: number;
-  title: string;
-  type: "empty" | "D3DWindow";
-}
 interface BodyContainerProps {
   views: View[];
   activeViewId: number | null;
-  spawnView: () => void;
+  spawnView: (kind: ViewKind) => void;
   className?: string;
 }
 

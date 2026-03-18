@@ -9,7 +9,7 @@ interface EmptyFrameProps {
 const EmptyFrame = ({ visible, className }: EmptyFrameProps) => {
   return (
     <BaseFrame title="EmptyFrame" visible={visible} className={className}>
-      <div>EmptyFrame</div>
+      <div></div>
     </BaseFrame>
   );
 };

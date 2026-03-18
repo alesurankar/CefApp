@@ -12,6 +12,8 @@ ReactCef/
 │  ├─ hooks/
 │  │  ├─ dropdownManager.ts
 │  │  └─ viewManager.ts
+│  ├─ types/
+│  │  └─ view.ts
 │  ├─ ui/
 │  │  ├─ bodyContainer/
 │  │  │  ├─ frames/

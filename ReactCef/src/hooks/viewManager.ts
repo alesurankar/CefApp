@@ -1,21 +1,16 @@
 import { useState } from "react";
+import type { View, ViewKind } from "../types/view";
 
-
-export interface View {
-  id: number;
-  title: string;
-  type?: "empty" | "D3DWindow";
-}
 
 export const viewManager = () => {
   const [views, setViews] = useState<View[]>([]);
   const [activeViewId, setActiveViewId] = useState<number | null>(null); 
 
-  const spawnView  = () => {
+  const spawnView  = (kind: ViewKind) => {
     const newView: View = { 
       id: Date.now(), 
       title: `View ${views.length + 1}`,
-      type: undefined
+      kind,
     };
     setViews([...views, newView]);
     setActiveViewId(newView.id);
