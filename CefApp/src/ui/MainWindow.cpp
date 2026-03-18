@@ -29,13 +29,35 @@ namespace
 			if (window && window->HasBrowserWindow()) {
 				return 1;
 			}
-		}
-		break;
+		} break;
 
 		case WM_MOVE: {
 			window->OnSize(SIZE_RESTORED);
-		}
-		break;
+		} break;
+
+		case WM_PAINT: {
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hWnd, &ps);
+
+			// Load your background image
+			HBITMAP hBmp = (HBITMAP)LoadImage(nullptr, "bg_placeholder.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			if (hBmp) {
+				HDC memDC = CreateCompatibleDC(hdc);
+				SelectObject(memDC, hBmp);
+
+				BITMAP bmp{};
+				GetObject(hBmp, sizeof(BITMAP), &bmp);
+
+				// Stretch or blit image to window
+				StretchBlt(hdc, 0, 0, ps.rcPaint.right, ps.rcPaint.bottom,
+					memDC, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
+
+				DeleteDC(memDC);
+				DeleteObject(hBmp);
+			}
+
+			EndPaint(hWnd, &ps);
+		} break;
 
 		case WM_SIZE: {
 			switch (wParam)
@@ -57,8 +79,7 @@ namespace
 				break;
 			}
 			window->OnSize(wParam);
-		}
-		break;
+		} break;
 
 		case WM_GETMINMAXINFO: {
 			MINMAXINFO* mmi = reinterpret_cast<MINMAXINFO*>(lParam);
@@ -119,8 +140,7 @@ namespace
 					}
 				}
 			}
-		}
-		break;
+		} break;
 
 		case WM_NCCALCSIZE: {
 			if (wParam) {
@@ -186,7 +206,7 @@ MainWindow::MainWindowClass::MainWindowClass()
 	//	IMAGE_ICON, 32, 32, 0
 	//));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	//wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = GetName();
 	//wcex.hIconSm = static_cast<HICON>(LoadImage(
@@ -254,13 +274,14 @@ void MainWindow::CreateBrowserView()
 	CefWindowInfo info;
 	info.SetAsChild(hWnd_, CefRect(0, 0,
 		rect.right - rect.left, rect.bottom - rect.top));
-
+	CefBrowserSettings settings;
+	settings.background_color = CefColorSetARGB(0, 0, 0, 0);
 	try {
 		CefBrowserHost::CreateBrowser(
 			info,
 			client_,
 			url_,
-			CefBrowserSettings{},
+			settings,
 			nullptr,
 			nullptr
 		);

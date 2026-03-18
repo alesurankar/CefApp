@@ -13,7 +13,7 @@
 #define NOMENUS
 #define NOICONS
 //#define NOSYSCOMMANDS
-#define NORASTEROPS
+//#define NORASTEROPS
 #define OEMRESOURCE
 #define NOATOM
 #define NOCLIPBOARD
