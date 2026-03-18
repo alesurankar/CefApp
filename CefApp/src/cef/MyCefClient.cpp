@@ -69,19 +69,15 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 		MainWindow* window = MainWindow::GetWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
-			PostMessage(hWndParent_, WM_SIZE, 0, 0);
 		}
-		mainBrowser_->GetMainFrame()->ExecuteJavaScript(
-			"console.log('Browser Count " + std::to_string(browserCount_) + "')",
-			mainBrowser_->GetMainFrame()->GetURL(), 0
-		);
 	}
 }
 
 void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
-	pFrame->ExecuteJavaScript("console.log('Step9: Page loaded!')", pFrame->GetURL(), 0);
+	MainWindow* window = MainWindow::GetWindow(hWndParent_);
+	window->StartFade(MainWindow::FadeAction::Restore, 0);
 }
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)

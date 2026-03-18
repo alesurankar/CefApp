@@ -46,7 +46,7 @@ public:
 	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
 	void RequestClose();
-	void StartFade(FadeAction action);
+	void StartFade(FadeAction action, int time = 10);
 public:
 	inline static MainWindow* GetWindow(HWND hWnd)
 	{
@@ -63,7 +63,6 @@ public:
 	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
 	std::unique_ptr<WindowTitleBar> titleBar_;
-	HBITMAP g_hBmp = nullptr;
 private:
 	HWND hWnd_ = nullptr;
 	HWND hWndBrowser_ = nullptr;

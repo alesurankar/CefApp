@@ -35,22 +35,6 @@ namespace
 			window->OnSize(SIZE_RESTORED);
 		} break;
 
-		case WM_PAINT: {
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint(hWnd, &ps);
-
-			if (window && window->g_hBmp) {
-				HDC memDC = CreateCompatibleDC(hdc);
-				SelectObject(memDC, window->g_hBmp);
-				BITMAP bmp{};
-				GetObject(window->g_hBmp, sizeof(BITMAP), &bmp);
-				StretchBlt(hdc, 0, 0, ps.rcPaint.right, ps.rcPaint.bottom,
-					memDC, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
-				DeleteDC(memDC);
-			}
-			EndPaint(hWnd, &ps);
-		} break;
-
 		case WM_SIZE: {
 			switch (wParam)
 			{
@@ -187,7 +171,7 @@ MainWindow::MainWindowClass::MainWindowClass()
 {
 	WNDCLASSEXA wcex{};
 	wcex.cbSize = sizeof(wcex);
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.style = 0;
 	wcex.lpfnWndProc = MainWindowWndProc;
 
 	//wc.cbClsExtra = 0;
@@ -198,7 +182,7 @@ MainWindow::MainWindowClass::MainWindowClass()
 	//	IMAGE_ICON, 32, 32, 0
 	//));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	wcex.hbrBackground = nullptr;
 	//wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = GetName();
 	//wcex.hIconSm = static_cast<HICON>(LoadImage(
@@ -233,8 +217,8 @@ MainWindow::MainWindow()
 		0,
 		MainWindowClass::GetName(),
 		"CEF",
-		//WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
-		WS_POPUP | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN,
+		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		//WS_POPUP | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_CLIPCHILDREN,
 		200, 50, 1400, 900,
 		nullptr,
 		nullptr,
@@ -245,22 +229,13 @@ MainWindow::MainWindow()
 	if (hWnd_ == nullptr) {
 		throw AppException(__LINE__, __FILE__, "CreateWindowExA in MainWindow failed!");
 	}
-	g_hBmp = (HBITMAP)LoadImage(nullptr, "bg_placeholder.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-
 
 	CreateWindowTitleBar();
 	CreateBrowserView();
-
-	ShowWindow(hWnd_, SW_SHOWDEFAULT);
-	UpdateWindow(hWnd_);
 }
 
 MainWindow::~MainWindow()
 {
-	if (g_hBmp) {
-		DeleteObject(g_hBmp);
-		g_hBmp = nullptr;
-	}
 	DestroyWindow(hWnd_);
 }
 
@@ -272,14 +247,12 @@ void MainWindow::CreateBrowserView()
 	CefWindowInfo info;
 	info.SetAsChild(hWnd_, CefRect(0, 0,
 		rect.right - rect.left, rect.bottom - rect.top));
-	CefBrowserSettings settings;
-	settings.background_color = CefColorSetARGB(0, 0, 0, 0);
 	try {
 		CefBrowserHost::CreateBrowser(
 			info,
 			client_,
 			url_,
-			settings,
+			CefBrowserSettings{},
 			nullptr,
 			nullptr
 		);
@@ -357,7 +330,7 @@ void MainWindow::RequestClose()
 	}
 }
 
-void MainWindow::StartFade(FadeAction action)
+void MainWindow::StartFade(FadeAction action, int time)
 {
 	LONG ex = GetWindowLong(hWnd_, GWL_EXSTYLE);
 	SetWindowLong(hWnd_, GWL_EXSTYLE, ex | WS_EX_LAYERED);
@@ -365,5 +338,5 @@ void MainWindow::StartFade(FadeAction action)
 	fadeStep = FADE_STEPS;
 	fadeAction_ = action;
 
-	SetTimer(hWnd_, TIMER_FADE, 10, NULL);
+	SetTimer(hWnd_, TIMER_FADE, time, NULL);
 }
