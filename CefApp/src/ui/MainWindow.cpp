@@ -39,23 +39,15 @@ namespace
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps);
 
-			// Load your background image
-			HBITMAP hBmp = (HBITMAP)LoadImage(nullptr, "bg_placeholder.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-			if (hBmp) {
+			if (window && window->g_hBmp) {
 				HDC memDC = CreateCompatibleDC(hdc);
-				SelectObject(memDC, hBmp);
-
+				SelectObject(memDC, window->g_hBmp);
 				BITMAP bmp{};
-				GetObject(hBmp, sizeof(BITMAP), &bmp);
-
-				// Stretch or blit image to window
+				GetObject(window->g_hBmp, sizeof(BITMAP), &bmp);
 				StretchBlt(hdc, 0, 0, ps.rcPaint.right, ps.rcPaint.bottom,
 					memDC, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
-
 				DeleteDC(memDC);
-				DeleteObject(hBmp);
 			}
-
 			EndPaint(hWnd, &ps);
 		} break;
 
@@ -253,6 +245,8 @@ MainWindow::MainWindow()
 	if (hWnd_ == nullptr) {
 		throw AppException(__LINE__, __FILE__, "CreateWindowExA in MainWindow failed!");
 	}
+	g_hBmp = (HBITMAP)LoadImage(nullptr, "bg_placeholder.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+
 
 	CreateWindowTitleBar();
 	CreateBrowserView();
@@ -263,6 +257,10 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+	if (g_hBmp) {
+		DeleteObject(g_hBmp);
+		g_hBmp = nullptr;
+	}
 	DestroyWindow(hWnd_);
 }
 

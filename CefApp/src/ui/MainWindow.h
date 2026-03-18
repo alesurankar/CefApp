@@ -63,6 +63,7 @@ public:
 	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
 	std::unique_ptr<WindowTitleBar> titleBar_;
+	HBITMAP g_hBmp = nullptr;
 private:
 	HWND hWnd_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
