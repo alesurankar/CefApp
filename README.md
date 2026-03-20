@@ -2,7 +2,7 @@
 
 A CEF-based desktop application under development.  
 
-The final goal of this project is not fully defined yet, but the idea is to combine **modern UI with a native 3D renderer**, creating a flexible framework that could evolve into a game engine inspired by **Unreal Engine**, with a CEF-powered GUI. 
+The final goal of this project is not fully defined yet, but the idea is to create a flexible framework that could evolve into a game engine inspired by **Unreal Engine**, with a CEF-powered GUI. 
 
 ---
 
