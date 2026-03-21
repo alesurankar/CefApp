@@ -11,7 +11,7 @@ int APIENTRY WinMain(
 	try {
 		Application app;
 		// blocking mode by default
-		app.EnableRealTimeLoop(false);
+		app.EnableRealTimeLoop(true);
 		return app.Run(hInstance, lpCmdLine, nCmdShow);
 	}
 	catch (const MyException& e) {

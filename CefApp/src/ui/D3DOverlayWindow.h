@@ -11,6 +11,7 @@ public:
 	D3DOverlayWindow(HWND hwndParent);
 	~D3DOverlayWindow();
 	void OnSize(int parentWidth, int parentHeight);
+	void Render();
 public:
 	Keyboard kbd;
 	Mouse mouse;

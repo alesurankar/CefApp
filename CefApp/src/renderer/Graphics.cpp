@@ -5,7 +5,11 @@ namespace wrl = Microsoft::WRL;
 #pragma comment(lib, "d3d11.lib")
 
 #define GFX_THROW(hrcall, note) \
-    do { HRESULT hrTemp = (hrcall); if (FAILED(hrTemp)) throw AppException(__LINE__, __FILE__, note); } while(0)
+    do { \
+        HRESULT hrTemp = (hrcall); \
+        if (FAILED(hrTemp)) \
+            throw AppException(__LINE__, __FILE__, note); \
+    } while(0)
 
 Graphics::Graphics(HWND hwndOverlay)
 {
@@ -55,8 +59,7 @@ Graphics::Graphics(HWND hwndOverlay)
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
-    if (pContext && pTarget)
-    {
+    if (pContext && pTarget) {
         const float color[] = { red,green,blue,1.0f };
         pContext->ClearRenderTargetView(pTarget.Get(), color);
     }
@@ -64,11 +67,11 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 
 void Graphics::EndFrame()
 {
-    if (pSwap)
-    {
-        HRESULT hr = pSwap->Present(1, 0);
-        if (FAILED(hr))
+    if (pSwap) {
+        HRESULT hr = pSwap->Present(4, 0);
+        if (FAILED(hr)) {
             throw AppException(__LINE__, __FILE__, "Failed to present frame");
+        }
     }
 }
 

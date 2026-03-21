@@ -76,3 +76,10 @@ void D3DOverlayWindow::OnSize(int parentWidth, int parentHeight)
 	);
 	renderer_->OnResize(width, height);
 }
+
+void D3DOverlayWindow::Render()
+{
+	if (renderer_) {
+		renderer_->Render();
+	}
+}

@@ -69,10 +69,10 @@ int Application::RunRealTimeLoop()
             DispatchMessage(&msg);
         }
 
-        // Engine tick goes here
-        // EngineCore::Get().Tick();
-
-        Sleep(1); // prevent 100% CPU in early phase
+        // Render the overlay
+        if (mainWnd_->GetOverlay()) {
+            mainWnd_->GetOverlay()->Render();
+        }
     }
 
     return static_cast<int>(msg.wParam);
