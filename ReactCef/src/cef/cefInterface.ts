@@ -8,6 +8,7 @@ export interface CefApi {
   ResizeFunc(): void;
   // BodyFrame
   CreateD3DWindowFunc(): void;
+  DestroyD3DWindowFunc(): void;
   SetHandleXFunc(x: number): void;
   SpawnTabWindowFunc(): void;
 }
@@ -21,5 +22,6 @@ export function myCefMinimize(): void { return cef.MinimizeFunc(); }
 export function myCefResize(): void { return cef.ResizeFunc(); }
 // BodyFrame
 export function myCefCreateD3DWindow(): void { cef.CreateD3DWindowFunc(); }
+export function myCefDestroyD3DWindow(): void { cef.DestroyD3DWindowFunc(); }
 export function myCefSetHandleX(x: number): void { cef.SetHandleXFunc(x); }
 export function myCefSpawnTabWindow(): void { cef.SpawnTabWindowFunc(); }

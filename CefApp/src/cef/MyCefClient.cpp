@@ -47,9 +47,9 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 			if (!window->GetOverlay()) {
 				window->CreateD3DWindow();
 			}
-			else {
-				window->DestroyD3DWindow();
-			}
+		}
+		else if (received == "destroyD3DWindow") {
+			window->DestroyD3DWindow();
 		}
 		return true;
 	}
