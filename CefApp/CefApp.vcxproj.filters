@@ -206,6 +206,9 @@
     <ClInclude Include="src\ui\MainWindow.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\helpers\dxerr.h">
+      <Filter>Header Files\renderer\helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest">
@@ -216,5 +219,16 @@
     <None Include="README.md">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\renderer\helpers\DXGetErrorDescription.inl">
+      <Filter>Header Files\renderer\helpers</Filter>
+    </Text>
+    <Text Include="src\renderer\helpers\DXGetErrorString.inl">
+      <Filter>Header Files\renderer\helpers</Filter>
+    </Text>
+    <Text Include="src\renderer\helpers\DXTrace.inl">
+      <Filter>Header Files\renderer\helpers</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -21,9 +21,9 @@ namespace
 }
 
 D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
+	:
+	hwndParent_(hwndParent)
 {
-	hwndParent_ = hwndParent;
-
 	hWnd_ = CreateWindowExA(
 		WS_EX_LAYERED | WS_EX_NOACTIVATE,
 		"STATIC",
@@ -42,6 +42,7 @@ D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
 	SetLayeredWindowAttributes(hWnd_, 0, 200, LWA_ALPHA);
 
 	ShowWindow(hWnd_, SW_SHOW);
+	renderer_ = std::make_unique<Renderer>(hWnd_);
 }
 
 D3DOverlayWindow::~D3DOverlayWindow()
@@ -73,4 +74,5 @@ void D3DOverlayWindow::OnSize(int parentWidth, int parentHeight)
 		height,
 		SWP_NOACTIVATE
 	);
+	renderer_->OnResize(width, height);
 }

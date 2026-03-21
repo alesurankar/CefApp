@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
+    <ClInclude Include="src\renderer\helpers\dxerr.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_base.h" />
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />
@@ -160,6 +161,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\renderer\helpers\DXTrace.inl" />
+    <Text Include="src\renderer\helpers\DXGetErrorString.inl" />
+    <Text Include="src\renderer\helpers\DXGetErrorDescription.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

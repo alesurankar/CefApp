@@ -41,3 +41,15 @@ Graphics::Graphics(HWND hwndOverlay)
         &pContext
     );
 }
+
+void Graphics::Clear(float red, float green, float blue) noexcept
+{
+}
+
+void Graphics::Resize(int width, int height)
+{
+}
+
+void Graphics::Present()
+{
+}
