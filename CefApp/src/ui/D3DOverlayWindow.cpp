@@ -48,28 +48,26 @@ D3DOverlayWindow::~D3DOverlayWindow()
 	}
 }
 
-void D3DOverlayWindow::OnSize(int parentWidth, int parentHeight)
+void D3DOverlayWindow::SetFrame(int left, int top, int width, int height)
 {
-	if (!hWnd_ || !hwndParent_) return;
+	if (!hWnd_) return;
+	int offsetX = 60;
+	int offsetY = 40;
+	int footerY = 29;
 
-	int x = 100;
-	int y = 100;
-	int width = parentWidth - 200;
-	int height = parentHeight - 140;
-
-	POINT pt{ x, y };
-	ClientToScreen(hwndParent_, &pt);
+	int overlayWidth = width - offsetX;
+	int overlayHeight = height - offsetY - footerY;
 
 	SetWindowPos(
 		hWnd_,
 		HWND_TOP,
-		pt.x,
-		pt.y,
-		width,
-		height,
+		left+offsetX,
+		top+offsetY,
+		overlayWidth,
+		overlayHeight,
 		SWP_NOACTIVATE
 	);
-	renderer_->OnResize(width, height);
+	renderer_->OnResize(overlayWidth, overlayHeight);
 }
 
 void D3DOverlayWindow::Render()

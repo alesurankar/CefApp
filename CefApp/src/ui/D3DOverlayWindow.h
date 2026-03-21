@@ -10,7 +10,7 @@ class D3DOverlayWindow
 public:
 	D3DOverlayWindow(HWND hwndParent);
 	~D3DOverlayWindow();
-	void OnSize(int parentWidth, int parentHeight);
+	void SetFrame(int left, int top, int width, int height);
 	void Render();
 public:
 	Keyboard kbd;
