@@ -11,8 +11,6 @@ CefApp/
    ├─ cef/          # CEF integration layer
    ├─ platform/
    ├─ renderer/
-   │  ├─ helpers/
-   │  │   └─ DxgiInfoManager
    │  ├─ input/
    │  │   ├─ Keyboard
    │  │   └─ Mouse
@@ -24,5 +22,6 @@ CefApp/
    │   ├─ D3DOverlayWindow   # Native renderer viewport container (D3D target)
    │   └─ MainWindow      # Top-level window
    └─ util/
+       ├─ AppException
        └─ MyException
  ```

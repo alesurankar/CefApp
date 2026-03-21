@@ -112,7 +112,6 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\ui\BrowserView.cpp" />
-    <ClCompile Include="src\renderer\helpers\DxgiInfoManager.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
     <ClCompile Include="src\renderer\input\Mouse.cpp" />
@@ -129,7 +128,6 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
-    <ClInclude Include="src\renderer\helpers\dxerr.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_base.h" />
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />
@@ -140,7 +138,6 @@
     <ClInclude Include="src\cef\config\MyCefConfig_resource_handler.h" />
     <ClInclude Include="src\platform\MyWin.h" />
     <ClInclude Include="src\platform\MyWinX.h" />
-    <ClInclude Include="src\renderer\helpers\DxgiInfoManager.h" />
     <ClInclude Include="src\platform\MyTimer.h" />
     <ClInclude Include="src\renderer\Graphics.h" />
     <ClInclude Include="src\renderer\input\Keyboard.h" />
@@ -161,11 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\renderer\helpers\DXTrace.inl" />
-    <Text Include="src\renderer\helpers\DXGetErrorString.inl" />
-    <Text Include="src\renderer\helpers\DXGetErrorDescription.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

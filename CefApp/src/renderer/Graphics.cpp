@@ -1,7 +1,11 @@
 #include "Graphics.h"
-#include <platform/MyWin.h>
+#include <sstream>
 
+namespace wrl = Microsoft::WRL;
 #pragma comment(lib, "d3d11.lib")
+
+#define GFX_THROW(hrcall, note) \
+    do { HRESULT hrTemp = (hrcall); if (FAILED(hrTemp)) throw AppException(__LINE__, __FILE__, note); } while(0)
 
 Graphics::Graphics(HWND hwndOverlay)
 {
@@ -27,7 +31,8 @@ Graphics::Graphics(HWND hwndOverlay)
     swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    D3D11CreateDeviceAndSwapChain(
+    // create device and front/back buffers, and swap chain and rendering context
+    GFX_THROW(D3D11CreateDeviceAndSwapChain(
         nullptr,
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
@@ -40,32 +45,41 @@ Graphics::Graphics(HWND hwndOverlay)
         &pDevice,
         nullptr,
         &pContext
-    );
+    ), "Failed to create D3D11 device and swap chain");
 
-    Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
-    pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer);
-    pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget);
+    // gain access to texture subresource in swap chain (back buffer)
+    wrl::ComPtr<ID3D11Resource> pBackBuffer;
+    GFX_THROW(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer), "Failed to get back buffer");
+    GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV");
 }
 
-void Graphics::Clear(float red, float green, float blue) noexcept
+void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
-    const float color[] = { red,green,blue,1.0f };
-    pContext->ClearRenderTargetView(pTarget.Get(), color);
+    if (pContext && pTarget)
+    {
+        const float color[] = { red,green,blue,1.0f };
+        pContext->ClearRenderTargetView(pTarget.Get(), color);
+    }
+}
+
+void Graphics::EndFrame()
+{
+    if (pSwap)
+    {
+        HRESULT hr = pSwap->Present(1, 0);
+        if (FAILED(hr))
+            throw AppException(__LINE__, __FILE__, "Failed to present frame");
+    }
 }
 
 void Graphics::Resize(int width, int height)
 {
     if (!pSwap) return;
+
     pTarget.Reset(); // release current RTV
     pSwap->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 
     Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
-    pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer);
-    pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget);
-}
-
-void Graphics::Present()
-{
-    if (pSwap)
-        pSwap->Present(1, 0);
+    GFX_THROW(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer), "Failed to get back buffer after resize");
+    GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV after resize");
 }
