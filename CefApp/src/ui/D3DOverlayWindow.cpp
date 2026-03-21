@@ -55,19 +55,19 @@ void D3DOverlayWindow::SetFrame(int left, int top, int width, int height)
 	int offsetY = 40;
 	int footerY = 29;
 
-	int overlayWidth = width - offsetX;
-	int overlayHeight = height - offsetY - footerY;
+	int windowWidth = width - offsetX;
+	int windowHeight = height - offsetY - footerY;
 
 	SetWindowPos(
 		hWnd_,
 		HWND_TOP,
 		left+offsetX,
 		top+offsetY,
-		overlayWidth,
-		overlayHeight,
+		windowWidth,
+		windowHeight,
 		SWP_NOACTIVATE
 	);
-	renderer_->OnResize(overlayWidth, overlayHeight);
+	renderer_->OnResize(windowWidth, windowHeight);
 }
 
 void D3DOverlayWindow::Render()

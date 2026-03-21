@@ -6,7 +6,7 @@
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
-	MainWindow* window = MainWindow::GetWindow(hWndParent_);
+	MainWindow* window = MainWindow::GetMainWindow(hWndParent_);
 	if (!window) return true;
 	std::string msgName = message->GetName();
 
@@ -44,7 +44,7 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 			window->titleBar_->RaiseHandle();
 		}
 		else if (received == "createD3DWindow") {
-			if (!window->GetOverlay()) {
+			if (!window->GetD3DWindow()) {
 				window->CreateD3DWindow();
 			}
 		}
@@ -66,7 +66,7 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 	HWND hWndBrowser = pBrowser->GetHost()->GetWindowHandle();
 
 	if (hWndBrowser && hWndParent_) {
-		MainWindow* window = MainWindow::GetWindow(hWndParent_);
+		MainWindow* window = MainWindow::GetMainWindow(hWndParent_);
 		if (window) {
 			window->SetBrowserHWND(hWndBrowser);
 		}
@@ -76,7 +76,7 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
-	MainWindow* window = MainWindow::GetWindow(hWndParent_);
+	MainWindow* window = MainWindow::GetMainWindow(hWndParent_);
 	ShowWindow(hWndParent_, SW_RESTORE);
 }
 

@@ -70,8 +70,8 @@ int Application::RunRealTimeLoop()
         }
 
         // Render the overlay
-        if (mainWnd_->GetOverlay()) {
-            mainWnd_->GetOverlay()->Render();
+        if (mainWnd_->GetD3DWindow()) {
+            mainWnd_->GetD3DWindow()->Render();
         }
     }
 

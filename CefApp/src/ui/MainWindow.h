@@ -48,12 +48,12 @@ public:
 	void RequestClose();
 	void StartFade(FadeAction action, int time = 10);
 public:
-	inline static MainWindow* GetWindow(HWND hWnd)
+	inline static MainWindow* GetMainWindow(HWND hWnd)
 	{
 		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 	inline void AttachHWND(HWND hWnd) { hWnd_ = hWnd; }
-	inline D3DOverlayWindow* GetOverlay() const { return d3dWindow_.get(); }
+	inline D3DOverlayWindow* GetD3DWindow() const { return d3dWindow_.get(); }
 	inline void DestroyD3DWindow() { if (d3dWindow_) d3dWindow_.reset(); }
 public:
 	static constexpr int FADE_STEPS = 15;
