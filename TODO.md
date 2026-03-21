@@ -1,9 +1,10 @@
 
 # TODO
 
-last updated: 18.3.2026
+last updated: 21.3.2026
 
 
 ## Tasks
 
 - [ ] Refactor Cef browser to do offscreen rendering to eliminate window flicker
+- [ ] Implement D3D renderer inside the window
