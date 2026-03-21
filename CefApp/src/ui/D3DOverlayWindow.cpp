@@ -7,14 +7,11 @@ namespace
 	LRESULT CALLBACK D3DOverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg) {
-			case WM_PAINT: {
-				PAINTSTRUCT ps;
-				HDC hdc = BeginPaint(hwnd, &ps);
-				// Fill with semi-transparent gray
-				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_BTNFACE + 1));
-				EndPaint(hwnd, &ps);
-				return 0;
-			}
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+			// TODO forward to renderer
+			break;
 		}
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
@@ -25,12 +22,12 @@ D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
 	hwndParent_(hwndParent)
 {
 	hWnd_ = CreateWindowExA(
-		WS_EX_LAYERED | WS_EX_NOACTIVATE,
+		0,
 		"STATIC",
 		nullptr,
 		WS_POPUP,
 		0, 0, 0, 0,
-		hwndParent,
+		hwndParent_,
 		nullptr,
 		GetModuleHandle(nullptr),
 		nullptr
@@ -38,8 +35,6 @@ D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
 	if (hWnd_ == nullptr) {
 		throw AppException(__LINE__, __FILE__, "CreateWindowExA in D3DOverlayWindow failed!");
 	}
-	SetWindowLongPtr(hWnd_, GWLP_WNDPROC, (LONG_PTR)D3DOverlayWindowProc);
-	SetLayeredWindowAttributes(hWnd_, 0, 200, LWA_ALPHA);
 
 	ShowWindow(hWnd_, SW_SHOW);
 	renderer_ = std::make_unique<Renderer>(hWnd_);
