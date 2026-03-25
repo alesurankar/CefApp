@@ -12,12 +12,15 @@ void D3DRenderer::Update(float dt)
 
 void D3DRenderer::Render()
 {
+	if (clientWidth < 1 || clientHeight < 1) {
+		return;
+	}
 	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
 	wnd_->Gfx().BeginFrame(c, c, 1.0f);
 	wnd_->Gfx().DrawTestTriangle(
 		timer.Peek(),
-		wnd_->mouse.GetPosX() / float(clientWidth/2) - 1.0f,
-		-wnd_->mouse.GetPosY() / float(clientHeight/2) + 1.0f
+		wnd_->mouse.GetPosX() / float(clientWidth * 0.5f) - 1.0f,
+		-wnd_->mouse.GetPosY() / float(clientWidth * 0.5f) + 1.0f
 	);
 	wnd_->Gfx().EndFrame();
 }
