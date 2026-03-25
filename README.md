@@ -16,7 +16,7 @@ The application consists of three main components:
 
 ### 2. Renderer Widget (Independent)
 - A native child window of the main window  
-- Handles **real-time 3D rendering** (D3D11 planned)  
+- Handles **real-time 3D rendering**
 - Fully independent of CEF, ensuring **native GPU performance**  
 
 ### 3. CEF / React GUI Panels
@@ -42,14 +42,14 @@ Setup follows a minimal distribution approach, inspired by this YouTube tutorial
 - **Chromium Embedded Framework (CEF)** – UI panels  
 - **C++ / Win32 API** – main window & backend logic  
 - **React + Tailwind CSS** – interactive GUI  
-- **Direct3D 11** – renderer widget (planned for 3D viewport)
+- **Direct3D 11** – renderer widget
 
 ---
 
 ## 🚧 Current Status
 
 - Main window and CEF panels working  
-- Renderer widget scaffold implemented (no full 3D yet)  
+- Renderer widget scaffold implemented
 - Communication between UI and backend functioning  
 - Multiple widgets under development  
 
@@ -60,7 +60,7 @@ Setup follows a minimal distribution approach, inspired by this YouTube tutorial
 - Modular editor-style architecture  
 - Custom window overlays and input handling  
 - Multiple interactive widgets under development  
-- Planned D3D11 renderer for 3D content  
+- D3D11 renderer for 3D content  
 - Communication between CEF UI and native widgets  
 
 > Note: This is an experimental project and primarily a playground for advanced CEF + Win32 + React integration.
