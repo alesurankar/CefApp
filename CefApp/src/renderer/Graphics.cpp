@@ -96,10 +96,6 @@ void Graphics::Resize(int width, int height)
 
 void Graphics::DrawTestTriangle(float angle, float x, float y)
 {
-    dx::XMVECTOR v = dx::XMVectorSet(3.0f, 3.0f, 0.0f, 0.0f);
-    auto result = dx::XMVector3Transform(v, dx::XMMatrixScaling(1.5f, 0.0f, 0.0f));
-    auto xx = dx::XMVectorGetX(result);
-
     struct Vertex
     {
         struct
@@ -108,28 +104,20 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
             float y;
             float z;
         } pos;
-        struct
-        {
-            unsigned char r;
-            unsigned char g;
-            unsigned char b;
-            unsigned char a;
-        } color;
     };
 
     // create vertex buffer (1 2d triangle at center of screen)
     Vertex vertices[] =
     {
-        { -1.0f, -1.0f, -1.0f,   255,  0,  0 },
-        {  1.0f, -1.0f, -1.0f,     0,255,  0 },
-        { -1.0f,  1.0f, -1.0f,     0,  0,255 },
-        {  1.0f,  1.0f, -1.0f,   255,255,  0 },
-        { -1.0f, -1.0f,  1.0f,   255,  0,255 },
-        {  1.0f, -1.0f,  1.0f,     0,255,255 },
-        { -1.0f,  1.0f,  1.0f,     0,  0,  0 },
-        {  1.0f,  1.0f,  1.0f,   255,255,255 },
+        { -1.0f, -1.0f, -1.0f },
+        {  1.0f, -1.0f, -1.0f },
+        { -1.0f,  1.0f, -1.0f },
+        {  1.0f,  1.0f, -1.0f },
+        { -1.0f, -1.0f,  1.0f },
+        {  1.0f, -1.0f,  1.0f },
+        { -1.0f,  1.0f,  1.0f },
+        {  1.0f,  1.0f,  1.0f },
     };
-    vertices[0].color.g = 255;
     wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
     D3D11_BUFFER_DESC bd = {};
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -202,6 +190,43 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 
     // bind constant buffer to vertex shader
     pContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+
+    struct ConstantBuffer2
+    {
+        struct
+        {
+            float r;
+            float g;
+            float b;
+            float a;
+        } face_colors[6];
+    };
+    const ConstantBuffer2 cb2 =
+    {
+        {
+            {1.0f,0.0f,1.0f},
+            {1.0f,0.0f,0.0f},
+            {0.0f,1.0f,0.0f},
+            {0.0f,0.0f,1.0f},
+            {1.0f,1.0f,0.0f},
+            {0.0f,1.0f,1.0f},
+        }
+    };
+    wrl::ComPtr<ID3D11Buffer> pConstantBuffer2;
+    D3D11_BUFFER_DESC cbd2;
+    cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    cbd2.Usage = D3D11_USAGE_DEFAULT;
+    cbd2.CPUAccessFlags = 0u;
+    cbd2.MiscFlags = 0u;
+    cbd2.ByteWidth = sizeof(cb2);
+    cbd2.StructureByteStride = 0u;
+    D3D11_SUBRESOURCE_DATA csd2 = {};
+    csd2.pSysMem = &cb2;
+    GFX_THROW(pDevice->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2), "Failed to create constant buffer");
+
+    // bind constant buffer to pixel shader
+    pContext->PSSetConstantBuffers(0u, 1u, pConstantBuffer2.GetAddressOf());
+
 
     // create pixel shader
     wrl::ComPtr<ID3D11PixelShader> pPixelShader;
