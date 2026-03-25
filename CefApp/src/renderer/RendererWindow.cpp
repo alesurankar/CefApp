@@ -80,6 +80,8 @@ void RendererWindow::SetFrame(int left, int top, int width, int height)
 	int offsetY = 40;
 	int footerY = 29;
 
+	int topLeftX = left + offsetX;
+	int topLeftY = top + offsetY;
 	int windowWidth = width - offsetX;
 	int windowHeight = height - offsetY - footerY;
 	clientWidth = windowWidth;
@@ -88,13 +90,13 @@ void RendererWindow::SetFrame(int left, int top, int width, int height)
 	SetWindowPos(
 		hWnd_,
 		HWND_TOP,
-		left+offsetX,
-		top+offsetY,
+		topLeftX,
+		topLeftY,
 		windowWidth,
 		windowHeight,
 		SWP_NOACTIVATE
 	);
-	gfx_->Resize(windowWidth, windowHeight);
+	gfx_->Resize(topLeftX, topLeftY, windowWidth, windowHeight);
 }
 
 Graphics& RendererWindow::Gfx()

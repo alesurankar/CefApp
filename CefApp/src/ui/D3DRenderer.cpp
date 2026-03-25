@@ -22,8 +22,7 @@ void D3DRenderer::Render()
 	wnd_->Gfx().EndFrame();
 }
 
-void D3DRenderer::OnResize(int left, int top, int width, int height)
+void D3DRenderer::Resize(int left, int top, int width, int height)
 {
-	//gfx_->Resize(width, height);
 	wnd_->SetFrame(left, top, width, height);
 }

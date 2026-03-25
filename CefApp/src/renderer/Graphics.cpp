@@ -81,10 +81,11 @@ void Graphics::EndFrame()
     }
 }
 
-void Graphics::Resize(int width, int height)
+void Graphics::Resize(int left, int top, int width, int height)
 {
     if (!pSwap) return;
-
+    clientWidth = width;
+    clientHeight = height;
     pTarget.Reset(); // release current RTV
     pSwap->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 
@@ -236,12 +237,12 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 
     // configure viewport
     D3D11_VIEWPORT vp{};
-    vp.Width = 800;
-    vp.Height = 600;
+    vp.Width = clientWidth;
+    vp.Height = clientHeight;
     vp.MinDepth = 0;
     vp.MaxDepth = 1;
-    vp.TopLeftX = 0;
-    vp.TopLeftY = 0;
+    vp.TopLeftX = left;
+    vp.TopLeftY = top;
     pContext->RSSetViewports(1u, &vp);
 
 

@@ -13,9 +13,13 @@ public:
 	~Graphics() = default;
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void EndFrame();
-	void Resize(int width, int height);
+	void Resize(int left, int top, int width, int height);
 	void DrawTestTriangle(float  angle, float x, float y);
 private:
+	int left = 0;
+	int top = 0;
+	int clientWidth = 0;
+	int clientHeight = 0;
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;
