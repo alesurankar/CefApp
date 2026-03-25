@@ -86,3 +86,41 @@ void Graphics::Resize(int width, int height)
     GFX_THROW(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer), "Failed to get back buffer after resize");
     GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV after resize");
 }
+
+void Graphics::DrawTestTriangle()
+{
+    namespace Wrl = Microsoft::WRL;
+
+    struct Vertex
+    {
+        float x;
+        float y;
+    };
+
+    // create vertex buffer (1 2d triangle at center of screen)
+    const Vertex vertices[] =
+    {
+        { 0.0f,0.5f },
+        { 0.5f,0.5f },
+        { -0.5f,-0.5f },
+    };
+
+    wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
+    D3D11_BUFFER_DESC bd = {};
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.CPUAccessFlags = 0u;
+    bd.MiscFlags = 0u;
+    bd.ByteWidth = sizeof(vertices);
+    bd.StructureByteStride = sizeof(Vertex);
+    D3D11_SUBRESOURCE_DATA sd = {};
+    sd.pSysMem = vertices;
+    pDevice->CreateBuffer(&bd, &sd, &pVertexBuffer);
+
+    // Bind Vertex buffer to pipeline
+    const UINT stride = sizeof(Vertex);
+    const UINT offset = 0u;
+    pContext->IASetVertexBuffers(0u, 1u, &pVertexBuffer, &stride, &offset);
+
+    pContext->Draw(3u, 0u);
+}
