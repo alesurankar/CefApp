@@ -37,9 +37,9 @@ public:
 	Keyboard kbd;
 	Mouse mouse;
 private:
-	int clientWidth = 0;
-	int clientHeight = 0;
 	HWND hWnd_ = nullptr; 
 	HWND hwndParent_ = nullptr;
 	std::unique_ptr<Graphics> gfx_;
+	int clientWidth = 0;
+	int clientHeight = 0;
 };

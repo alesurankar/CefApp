@@ -16,13 +16,15 @@ void D3DRenderer::Render()
 	wnd_->Gfx().BeginFrame(c, c, 1.0f);
 	wnd_->Gfx().DrawTestTriangle(
 		timer.Peek(),
-		wnd_->mouse.GetPosX() / 400.0f - 1.0f,
-		wnd_->mouse.GetPosY() / 300.0f - 1.0f
+		wnd_->mouse.GetPosX() / float(clientWidth/2) - 1.0f,
+		-wnd_->mouse.GetPosY() / float(clientHeight/2) + 1.0f
 	);
 	wnd_->Gfx().EndFrame();
 }
 
 void D3DRenderer::Resize(int left, int top, int width, int height)
 {
+	clientWidth = width;
+	clientHeight = height;
 	wnd_->SetFrame(left, top, width, height);
 }

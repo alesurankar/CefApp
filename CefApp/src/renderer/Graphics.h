@@ -16,10 +16,10 @@ public:
 	void Resize(int width, int height);
 	void DrawTestTriangle(float  angle, float x, float y);
 private:
-	int clientWidth = 0;
-	int clientHeight = 0;
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
+	int clientWidth = 0;
+	int clientHeight = 0;
 };

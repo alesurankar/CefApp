@@ -15,4 +15,6 @@ public:
 private:
 	std::unique_ptr<RendererWindow> wnd_;
 	MyTimer timer;
+	int clientWidth = 0;
+	int clientHeight = 0;
 };
