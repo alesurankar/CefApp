@@ -274,9 +274,9 @@ void MainWindow::CreateWindowTitleBar()
 	titleBar_ = std::make_unique<WindowTitleBar>(hWnd_);
 }
 
-void MainWindow::CreateD3DWindow()
+void MainWindow::CreateD3DRenderer()
 {
-	d3dWindow_ = std::make_unique<D3DOverlayWindow>(hWnd_);
+	d3dRenderer_ = std::make_unique<D3DOverlayWindow>(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }
 
@@ -313,10 +313,10 @@ void MainWindow::OnSize(WPARAM wParam)
 			SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 
-	if (d3dWindow_) {
+	if (d3dRenderer_) {
 		POINT topLeft = { rect.left, rect.top };
 		ClientToScreen(hWnd_, &topLeft);
-		d3dWindow_->SetFrame(topLeft.x, topLeft.y, width, height);
+		d3dRenderer_->SetFrame(topLeft.x, topLeft.y, width, height);
 	}
 }
 

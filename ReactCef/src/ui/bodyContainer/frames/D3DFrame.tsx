@@ -1,5 +1,5 @@
-import { myCefCreateD3DWindow } from "../../../cef/cefInterface.ts";
-import { myCefDestroyD3DWindow } from "../../../cef/cefInterface.ts";
+import { myCefCreateD3DRenderer } from "../../../cef/cefInterface.ts";
+import { myCefDestroyD3DRenderer } from "../../../cef/cefInterface.ts";
 import { useEffect } from "react";
 import BaseFrame from "./BaseFrame.tsx";
 
@@ -12,15 +12,15 @@ interface D3DFrameProps {
 const D3DFrame = ({ visible, className }: D3DFrameProps) => {
   useEffect(() => {
     if (!visible) return;
-    myCefCreateD3DWindow();
+    myCefCreateD3DRenderer();
     
     return () => {
-      myCefDestroyD3DWindow();
+      myCefDestroyD3DRenderer();
     };
   }, [visible]);
 
   return (
-    <BaseFrame title="D3DWindow" visible={visible} className={className}>
+    <BaseFrame title="D3DRenderer" visible={visible} className={className}>
       <div>
       </div>
     </BaseFrame>

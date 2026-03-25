@@ -42,7 +42,7 @@ public:
 	void CreateBrowserView();
 	void SetBrowserHWND(HWND hWndBrowser);
 	void CreateWindowTitleBar();
-	void CreateD3DWindow();
+	void CreateD3DRenderer();
 	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
 	void RequestClose();
@@ -53,8 +53,8 @@ public:
 		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 	inline void AttachHWND(HWND hWnd) { hWnd_ = hWnd; }
-	inline D3DOverlayWindow* GetD3DWindow() const { return d3dWindow_.get(); }
-	inline void DestroyD3DWindow() { if (d3dWindow_) d3dWindow_.reset(); }
+	inline D3DOverlayWindow* GetD3DRenderer() const { return d3dRenderer_.get(); }
+	inline void DestroyD3DRenderer() { if (d3dRenderer_) d3dRenderer_.reset(); }
 public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
@@ -66,7 +66,7 @@ public:
 private:
 	HWND hWnd_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
-	std::unique_ptr<D3DOverlayWindow> d3dWindow_;
+	std::unique_ptr<D3DOverlayWindow> d3dRenderer_;
 	CefRefPtr<MyCefClient> client_;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false;

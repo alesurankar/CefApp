@@ -68,8 +68,8 @@ int Application::RunRealTimeLoop()
             DispatchMessage(&msg);
         }
 
-        if (mainWnd_->GetD3DWindow()) {
-            mainWnd_->GetD3DWindow()->Render();
+        if (mainWnd_->GetD3DRenderer()) {
+            mainWnd_->GetD3DRenderer()->Render();
         }
     }
 

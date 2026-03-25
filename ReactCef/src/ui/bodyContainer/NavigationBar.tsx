@@ -18,7 +18,7 @@ const NavigationBar = ({ spawnView, className }: NavigationBarProps) => {
       </button>
 
       <button 
-        title="D3DWindow"
+        title="D3DRenderer"
         className="h-12 flex items-center justify-center hover:text-[#ffffff] hover:font-bold"
         onClick={() => (spawnView("d3d"))}
       ><Icon name="tv" size={26}/>
