@@ -14,7 +14,7 @@ public:
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void EndFrame();
 	void Resize(int width, int height);
-	void DrawTestTriangle();
+	void DrawTestTriangle(float  angle);
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;

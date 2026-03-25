@@ -14,7 +14,7 @@ void Renderer::Render()
 {
 	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
 	gfx_->BeginFrame(c, c, 1.0f);
-	gfx_->DrawTestTriangle();
+	gfx_->DrawTestTriangle(timer.Peek());
 	gfx_->EndFrame();
 }
 
