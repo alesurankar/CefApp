@@ -1,5 +1,4 @@
 #include "Application.h"
-//#include <cef/MyCefApp.h>
 #include <util/AppException.h>
 #include <filesystem>
 
@@ -69,7 +68,6 @@ int Application::RunRealTimeLoop()
             DispatchMessage(&msg);
         }
 
-        // Render the overlay
         if (mainWnd_->GetD3DWindow()) {
             mainWnd_->GetD3DWindow()->Render();
         }
