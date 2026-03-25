@@ -2,7 +2,7 @@
 #include <queue>
 class Mouse
 {
-	friend class Window;
+	friend class RendererWindow;
 public:
 	class Event
 	{

@@ -4,7 +4,7 @@
 
 class Keyboard
 {
-	friend class Window;
+	friend class RendererWindow;
 public:
 	class Event
 	{
