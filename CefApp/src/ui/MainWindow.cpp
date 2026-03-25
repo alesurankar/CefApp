@@ -276,7 +276,7 @@ void MainWindow::CreateWindowTitleBar()
 
 void MainWindow::CreateD3DRenderer()
 {
-	d3dRenderer_ = std::make_unique<D3DOverlayWindow>(hWnd_);
+	d3dRenderer_ = std::make_unique<D3DRenderer>(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }
 
@@ -316,7 +316,7 @@ void MainWindow::OnSize(WPARAM wParam)
 	if (d3dRenderer_) {
 		POINT topLeft = { rect.left, rect.top };
 		ClientToScreen(hWnd_, &topLeft);
-		d3dRenderer_->SetFrame(topLeft.x, topLeft.y, width, height);
+		d3dRenderer_->OnResize(topLeft.x, topLeft.y, width, height);
 	}
 }
 

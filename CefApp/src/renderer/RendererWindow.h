@@ -2,21 +2,21 @@
 #include <platform/MyWin.h>
 #include <renderer/input/Keyboard.h>
 #include <renderer/input/Mouse.h>
-#include <renderer/Renderer.h>
+#include <renderer/Graphics.h>
 #include <memory>
 
-class D3DOverlayWindow
+class RendererWindow
 {
 public:
-	D3DOverlayWindow(HWND hwndParent);
-	~D3DOverlayWindow();
+	RendererWindow(HWND hwndParent);
+	~RendererWindow();
 	void SetFrame(int left, int top, int width, int height);
-	void Render();
+	Graphics& Gfx();
 public:
 	Keyboard kbd;
 	Mouse mouse;
 private:
 	HWND hWnd_ = nullptr; 
 	HWND hwndParent_ = nullptr;
-	std::unique_ptr<Renderer> renderer_;
+	std::unique_ptr<Graphics> gfx_;
 };

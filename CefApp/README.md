@@ -18,12 +18,13 @@ CefApp/
    │  │   ├─ PixelShader.hlsl
    │  │   └─ VertexShader.hlsl
    │  ├─ Graphics
-   │  └─ Renderer
+   │  └─ RendererWindow
    ├─ resources/
    ├─ ui/           # Native window composition layer
    │   ├─ BrowserView     # Cef Browser
-   │   ├─ D3DOverlayWindow   # Native renderer viewport container (D3D target)
-   │   └─ MainWindow      # Top-level window
+   │   ├─ D3DRenderer
+   │   ├─ MainWindow      # Top-level window
+   │   └─ WindowTitleBar
    └─ util/
        ├─ AppException
        └─ MyException

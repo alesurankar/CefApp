@@ -123,13 +123,13 @@
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
     <ClCompile Include="src\renderer\input\Mouse.cpp" />
-    <ClCompile Include="src\renderer\Renderer.cpp" />
+    <ClCompile Include="src\ui\D3DRenderer.cpp" />
     <ClCompile Include="src\ui\MainWindow.cpp" />
     <ClCompile Include="src\cef\MyCefApp.cpp" />
     <ClCompile Include="src\cef\MyCefClient.cpp" />
     <ClCompile Include="src\resources\FileResourceHandler.cpp" />
     <ClCompile Include="src\app\EntryPoint.cpp" />
-    <ClCompile Include="src\ui\D3DOverlayWindow.cpp" />
+    <ClCompile Include="src\renderer\RendererWindow.cpp" />
     <ClCompile Include="src\ui\WindowTitleBar.cpp" />
     <ClCompile Include="src\util\MyException.cpp" />
   </ItemGroup>
@@ -150,13 +150,13 @@
     <ClInclude Include="src\renderer\Graphics.h" />
     <ClInclude Include="src\renderer\input\Keyboard.h" />
     <ClInclude Include="src\renderer\input\Mouse.h" />
-    <ClInclude Include="src\renderer\Renderer.h" />
+    <ClInclude Include="src\ui\D3DRenderer.h" />
     <ClInclude Include="src\ui\MainWindow.h" />
     <ClInclude Include="src\cef\MyCefApp.h" />
     <ClInclude Include="src\cef\MyCefClient.h" />
     <ClInclude Include="src\resources\FileResourceHandler.h" />
     <ClInclude Include="src\resources\FileSchemeHandlerFactory.h" />
-    <ClInclude Include="src\ui\D3DOverlayWindow.h" />
+    <ClInclude Include="src\renderer\RendererWindow.h" />
     <ClInclude Include="src\ui\WindowTitleBar.h" />
     <ClInclude Include="src\util\AppException.h" />
     <ClInclude Include="src\util\MyException.h" />

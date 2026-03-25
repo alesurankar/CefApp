@@ -1,7 +1,7 @@
 #pragma once
 #include <platform/MyWin.h>
 #include <ui/WindowTitleBar.h>
-#include <ui/D3DOverlayWindow.h>
+#include <ui/D3DRenderer.h>
 #include <string>
 #include <memory>
 #include <cef/config/MyCefConfig_base.h>
@@ -53,7 +53,7 @@ public:
 		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 	inline void AttachHWND(HWND hWnd) { hWnd_ = hWnd; }
-	inline D3DOverlayWindow* GetD3DRenderer() const { return d3dRenderer_.get(); }
+	inline D3DRenderer* GetD3DRenderer() const { return d3dRenderer_.get(); }
 	inline void DestroyD3DRenderer() { if (d3dRenderer_) d3dRenderer_.reset(); }
 public:
 	static constexpr int FADE_STEPS = 15;
@@ -66,7 +66,7 @@ public:
 private:
 	HWND hWnd_ = nullptr;
 	HWND hWndBrowser_ = nullptr;
-	std::unique_ptr<D3DOverlayWindow> d3dRenderer_;
+	std::unique_ptr<D3DRenderer> d3dRenderer_;
 	CefRefPtr<MyCefClient> client_;
 	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false;

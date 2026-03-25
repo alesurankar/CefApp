@@ -1,10 +1,10 @@
-#include "D3DOverlayWindow.h"
+#include "RendererWindow.h"
 #include <util/AppException.h>
 
 
 namespace 
 {
-	LRESULT CALLBACK D3DOverlayWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT CALLBACK RendererWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg) {
 		case WM_MOUSEMOVE:
@@ -17,7 +17,7 @@ namespace
 	}
 }
 
-D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
+RendererWindow::RendererWindow(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
@@ -33,14 +33,14 @@ D3DOverlayWindow::D3DOverlayWindow(HWND hwndParent)
 		nullptr
 	);
 	if (hWnd_ == nullptr) {
-		throw AppException(__LINE__, __FILE__, "CreateWindowExA in D3DOverlayWindow failed!");
+		throw AppException(__LINE__, __FILE__, "CreateWindowExA in RendererWindow failed!");
 	}
 
 	ShowWindow(hWnd_, SW_SHOW);
-	renderer_ = std::make_unique<Renderer>(hWnd_);
+	gfx_ = std::make_unique<Graphics>(hWnd_);
 }
 
-D3DOverlayWindow::~D3DOverlayWindow()
+RendererWindow::~RendererWindow()
 {
 	if (hWnd_) {
 		DestroyWindow(hWnd_);
@@ -48,7 +48,7 @@ D3DOverlayWindow::~D3DOverlayWindow()
 	}
 }
 
-void D3DOverlayWindow::SetFrame(int left, int top, int width, int height)
+void RendererWindow::SetFrame(int left, int top, int width, int height)
 {
 	if (!hWnd_) return;
 	int offsetX = 60;
@@ -67,12 +67,14 @@ void D3DOverlayWindow::SetFrame(int left, int top, int width, int height)
 		windowHeight,
 		SWP_NOACTIVATE
 	);
-	renderer_->OnResize(windowWidth, windowHeight);
+	gfx_->Resize(windowWidth, windowHeight);
 }
 
-void D3DOverlayWindow::Render()
+Graphics& RendererWindow::Gfx()
 {
-	if (renderer_) {
-		renderer_->Render();
+	if (!gfx_)
+	{
+		throw; //something
 	}
+	return *gfx_;
 }
