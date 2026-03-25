@@ -93,7 +93,7 @@ void Graphics::Resize(int width, int height)
     GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV after resize");
 }
 
-void Graphics::DrawTestTriangle(float angle)
+void Graphics::DrawTestTriangle(float angle, float x, float y)
 {
     namespace wrl = Microsoft::WRL;
 
@@ -174,7 +174,8 @@ void Graphics::DrawTestTriangle(float angle)
         {
             dx::XMMatrixTranspose(
                 dx::XMMatrixRotationZ(angle) *
-                dx::XMMatrixScaling(3.0f / 4.0f,1.0f,1.0f)
+                dx::XMMatrixScaling(3.0f / 4.0f,1.0f,1.0f) *
+                dx::XMMatrixTranslation(x,y,0.0f)
             )
         }
     };
