@@ -1,10 +1,13 @@
 
 # TODO
 
-last updated: 21.3.2026
+last updated: 25.3.2026
 
 
-## Tasks
+## Finished Tasks
+- [x] Implement D3D renderer inside the window
 
+## Unfinished Tasks
 - [ ] Refactor Cef browser to do offscreen rendering to eliminate window flicker
-- [ ] Implement D3D renderer inside the window
+- [ ] forward mouse messages to D3DRenderer
+- [ ] forward mouse keyboard to D3DRenderer
