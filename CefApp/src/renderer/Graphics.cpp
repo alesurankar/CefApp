@@ -81,7 +81,7 @@ void Graphics::EndFrame()
     }
 }
 
-void Graphics::Resize(int left, int top, int width, int height)
+void Graphics::Resize(int width, int height)
 {
     if (!pSwap) return;
     clientWidth = width;
@@ -237,12 +237,12 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 
     // configure viewport
     D3D11_VIEWPORT vp{};
-    vp.Width = clientWidth;
-    vp.Height = clientHeight;
+    vp.Width = static_cast<FLOAT>(clientWidth);
+    vp.Height = static_cast<FLOAT>(clientHeight);
     vp.MinDepth = 0;
     vp.MaxDepth = 1;
-    vp.TopLeftX = left;
-    vp.TopLeftY = top;
+    vp.TopLeftX = 0;
+    vp.TopLeftY = 0;
     pContext->RSSetViewports(1u, &vp);
 
 

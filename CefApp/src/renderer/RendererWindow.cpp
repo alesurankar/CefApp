@@ -50,7 +50,6 @@ RendererWindow::RendererWindow(HWND hwndParent)
 		RendererWindowClass::GetName(), 
 		nullptr,
 		WS_POPUP,
-		//WS_CHILD | WS_VISIBLE,
 		0, 0, 0, 0,
 		hwndParent_,
 		nullptr, 
@@ -96,7 +95,7 @@ void RendererWindow::SetFrame(int left, int top, int width, int height)
 		windowHeight,
 		SWP_NOACTIVATE
 	);
-	gfx_->Resize(topLeftX, topLeftY, windowWidth, windowHeight);
+	gfx_->Resize(windowWidth, windowHeight);
 }
 
 Graphics& RendererWindow::Gfx()
