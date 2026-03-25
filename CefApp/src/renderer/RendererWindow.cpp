@@ -1,5 +1,6 @@
 #include "RendererWindow.h"
 #include <util/AppException.h>
+#include <cassert>
 
 
 namespace 
@@ -72,9 +73,6 @@ void RendererWindow::SetFrame(int left, int top, int width, int height)
 
 Graphics& RendererWindow::Gfx()
 {
-	if (!gfx_)
-	{
-		throw; //something
-	}
+	assert(gfx_ && "gfx_ should never be null");
 	return *gfx_;
 }
