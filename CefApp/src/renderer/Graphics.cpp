@@ -83,7 +83,7 @@ void Graphics::EndFrame()
 
 void Graphics::Resize(int width, int height)
 {
-    if (!pSwap) return;
+    if (!pSwap || width < 1 || height < 1) return;
     clientWidth = width;
     clientHeight = height;
     pTarget.Reset(); // release current RTV

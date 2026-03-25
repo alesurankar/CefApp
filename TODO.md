@@ -12,3 +12,4 @@ last updated: 25.3.2026
 
 ## Unfinished Tasks
 - [ ] Refactor Cef browser to do offscreen rendering to eliminate window flicker
+- [ ] on d3d toggle hide and show the window instead of destroy and recreate
