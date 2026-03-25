@@ -76,6 +76,9 @@
     <Filter Include="Source Files\ui">
       <UniqueIdentifier>{438bb881-0813-4277-9c1a-ffc2ca76894c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{aa35a5ee-0c21-44a0-aa8f-e50774b11994}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -210,5 +213,13 @@
     <None Include="README.md">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\renderer\shaders\PixelShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="src\renderer\shaders\VertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

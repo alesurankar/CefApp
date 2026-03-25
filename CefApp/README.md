@@ -14,6 +14,9 @@ CefApp/
    │  ├─ input/
    │  │   ├─ Keyboard
    │  │   └─ Mouse
+   │  ├─ shaders/
+   │  │   ├─ PixelShader.hlsl
+   │  │   └─ VertexShader.hlsl
    │  ├─ Graphics
    │  └─ Renderer
    ├─ resources/

@@ -12,10 +12,9 @@ void Renderer::Update(float dt)
 
 void Renderer::Render()
 {
-	float dt = timer.Mark();
 	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
-	Update(dt);
 	gfx_->BeginFrame(c, c, 1.0f);
+	gfx_->DrawTestTriangle();
 	gfx_->EndFrame();
 }
 
