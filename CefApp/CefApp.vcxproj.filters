@@ -132,6 +132,9 @@
     <ClCompile Include="src\renderer\bindables\Bindable.cpp">
       <Filter>Source Files\renderer\bindables</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\bindables\IndexBuffer.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\MyWin.h">
@@ -218,29 +221,32 @@
     <ClInclude Include="src\renderer\bindables\BindableBase.h">
       <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\GraphicsThrowMacros.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
     <ClInclude Include="src\renderer\bindables\ConstantBuffers.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\IndexBuffer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\InputLayout.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\PixelShader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\Topology.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\TransformCbuf.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\VertexBuffer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\VertexShader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\renderer\bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

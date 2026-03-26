@@ -3,6 +3,7 @@
 #include <d3dcompiler.h>
 #include <cmath>
 #include <DirectXMath.h>
+#include <util/GraphicsThrowMacros.h>
 
 
 namespace wrl = Microsoft::WRL;
@@ -10,12 +11,6 @@ namespace dx = DirectX;
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
 
-#define GFX_THROW(hrcall, note) \
-    do { \
-        HRESULT hrTemp = (hrcall); \
-        if (FAILED(hrTemp)) \
-            throw AppException(__LINE__, __FILE__, note); \
-    } while(0)
 
 Graphics::Graphics(HWND hwndOverlay)
 {

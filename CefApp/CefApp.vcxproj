@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\renderer\bindables\Bindable.cpp" />
+    <ClCompile Include="src\renderer\bindables\IndexBuffer.cpp" />
     <ClCompile Include="src\ui\BrowserView.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="src\renderer\bindables\Topology.h" />
     <ClInclude Include="src\renderer\bindables\TransformCbuf.h" />
     <ClInclude Include="src\renderer\bindables\VertexShader.h" />
+    <ClInclude Include="src\util\GraphicsThrowMacros.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_base.h" />
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />
