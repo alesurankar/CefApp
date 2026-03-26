@@ -65,33 +65,78 @@ Graphics::Graphics(HWND hwndOverlay)
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
-    if (pContext && pTarget) {
-        const float color[] = { red,green,blue,1.0f };
-        pContext->ClearRenderTargetView(pTarget.Get(), color);
-    }
+    const float color[] = { red,green,blue,1.0f };
+    pContext->ClearRenderTargetView(pTarget.Get(), color);
+    pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
 void Graphics::EndFrame()
 {
-    if (pSwap) {
-        HRESULT hr = pSwap->Present(4, 0);
-        if (FAILED(hr)) {
-            throw AppException(__LINE__, __FILE__, "Failed to present frame");
+    HRESULT hr;
+    if (FAILED(hr = pSwap->Present(2u, 0u)))
+    {
+        if (hr == DXGI_ERROR_DEVICE_REMOVED)
+        {
+            throw AppException(__LINE__, __FILE__, "Device removed: " + std::to_string(pDevice->GetDeviceRemovedReason()));
+        }
+        else
+        {
+            throw AppException(__LINE__, __FILE__, "Failed to present frame. HRESULT: " + std::to_string(hr));
         }
     }
 }
 
 void Graphics::Resize(int width, int height)
 {
+    if (width == clientWidth && height == clientHeight) return;
     if (!pSwap || width < 1 || height < 1) return;
+    pContext->OMSetRenderTargets(0, nullptr, nullptr);
     clientWidth = width;
     clientHeight = height;
     pTarget.Reset(); // release current RTV
+    pDSV.Reset();
     pSwap->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 
     Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
     GFX_THROW(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer), "Failed to get back buffer after resize");
     GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV after resize");
+
+    // create depth stensil state
+    D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+    dsDesc.DepthEnable = TRUE;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+    wrl::ComPtr<ID3D11DepthStencilState> pDSState;
+    GFX_THROW(pDevice->CreateDepthStencilState(&dsDesc, &pDSState), "");
+
+    // bind depth state
+    pContext->OMSetDepthStencilState(pDSState.Get(), 1u);
+
+    // create depth stensil texture
+    wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
+    D3D11_TEXTURE2D_DESC descDepth = {};
+    descDepth.Width = clientWidth;
+    descDepth.Height = clientHeight;
+    descDepth.MipLevels = 1u;
+    descDepth.ArraySize = 1u;
+    descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+    descDepth.SampleDesc.Count = 1u;
+    descDepth.SampleDesc.Quality = 0u;
+    descDepth.Usage = D3D11_USAGE_DEFAULT;
+    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    GFX_THROW(pDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil), "");
+
+    // create view of depth stensil texture
+    D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
+    descDSV.Format = DXGI_FORMAT_D32_FLOAT;
+    descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    descDSV.Texture2D.MipSlice = 0u;
+    GFX_THROW(pDevice->CreateDepthStencilView(
+        pDepthStencil.Get(), &descDSV, &pDSV
+    ), "");
+
+    // bind depth stensil view to OM
+    pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 }
 
 void Graphics::DrawTestTriangle(float angle, float x, float z)
@@ -260,9 +305,6 @@ void Graphics::DrawTestTriangle(float angle, float x, float z)
 
     // bind vertex layout
     pContext->IASetInputLayout(pInputLayout.Get());
-
-    // bind render target
-    pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), nullptr);
 
     // Set primitive topology to triangle list (groups of 3 vertices)
     pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
