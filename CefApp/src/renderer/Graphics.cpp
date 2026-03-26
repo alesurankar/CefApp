@@ -94,7 +94,7 @@ void Graphics::Resize(int width, int height)
     GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV after resize");
 }
 
-void Graphics::DrawTestTriangle(float angle, float x, float y)
+void Graphics::DrawTestTriangle(float angle, float x, float z)
 {
     struct Vertex
     {
@@ -171,7 +171,7 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
             dx::XMMatrixTranspose(
                 dx::XMMatrixRotationZ(angle) *
                 dx::XMMatrixRotationX(angle) *
-                dx::XMMatrixTranslation(x,y,4.0f) *
+                dx::XMMatrixTranslation(x,0.0f,z + 4.0f) *
                 dx::XMMatrixPerspectiveLH(1.0f,3.0f / 4.0f,0.5f,10.0f)
             )
         }
@@ -250,7 +250,6 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
     const D3D11_INPUT_ELEMENT_DESC ied[] =
     {
         { "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-        { "Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,12u,D3D11_INPUT_PER_VERTEX_DATA,0 },
     };
     GFX_THROW(pDevice->CreateInputLayout(
         ied, (UINT)std::size(ied),

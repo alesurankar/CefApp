@@ -18,6 +18,11 @@ void D3DRenderer::Render()
 	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
 	wnd_->Gfx().BeginFrame(c, c, 1.0f);
 	wnd_->Gfx().DrawTestTriangle(
+		-timer.Peek(),
+		0.0f,
+		0.0f
+	);
+	wnd_->Gfx().DrawTestTriangle(
 		timer.Peek(),
 		wnd_->mouse.GetPosX() / float(clientWidth * 0.5f) - 1.0f,
 		-wnd_->mouse.GetPosY() / float(clientWidth * 0.5f) + 1.0f
