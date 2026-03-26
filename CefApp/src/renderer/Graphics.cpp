@@ -4,6 +4,7 @@
 #include <cmath>
 #include <DirectXMath.h>
 
+
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 #pragma comment(lib, "d3d11.lib")
@@ -63,29 +64,6 @@ Graphics::Graphics(HWND hwndOverlay)
     GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV");
 }
 
-void Graphics::BeginFrame(float red, float green, float blue) noexcept
-{
-    const float color[] = { red,green,blue,1.0f };
-    pContext->ClearRenderTargetView(pTarget.Get(), color);
-    pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
-}
-
-void Graphics::EndFrame()
-{
-    HRESULT hr;
-    if (FAILED(hr = pSwap->Present(2u, 0u)))
-    {
-        if (hr == DXGI_ERROR_DEVICE_REMOVED)
-        {
-            throw AppException(__LINE__, __FILE__, "Device removed: " + std::to_string(pDevice->GetDeviceRemovedReason()));
-        }
-        else
-        {
-            throw AppException(__LINE__, __FILE__, "Failed to present frame. HRESULT: " + std::to_string(hr));
-        }
-    }
-}
-
 void Graphics::Resize(int width, int height)
 {
     if (width == clientWidth && height == clientHeight) return;
@@ -137,6 +115,39 @@ void Graphics::Resize(int width, int height)
 
     // bind depth stensil view to OM
     pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
+
+    // configure viewport
+    D3D11_VIEWPORT vp{};
+    vp.Width = static_cast<FLOAT>(clientWidth);
+    vp.Height = static_cast<FLOAT>(clientHeight);
+    vp.MinDepth = 0;
+    vp.MaxDepth = 1;
+    vp.TopLeftX = 0;
+    vp.TopLeftY = 0;
+    pContext->RSSetViewports(1u, &vp);
+}
+
+void Graphics::BeginFrame(float red, float green, float blue) noexcept
+{
+    const float color[] = { red,green,blue,1.0f };
+    pContext->ClearRenderTargetView(pTarget.Get(), color);
+    pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+}
+
+void Graphics::EndFrame()
+{
+    HRESULT hr;
+    if (FAILED(hr = pSwap->Present(2u, 0u)))
+    {
+        if (hr == DXGI_ERROR_DEVICE_REMOVED)
+        {
+            throw AppException(__LINE__, __FILE__, "Device removed: " + std::to_string(pDevice->GetDeviceRemovedReason()));
+        }
+        else
+        {
+            throw AppException(__LINE__, __FILE__, "Failed to present frame. HRESULT: " + std::to_string(hr));
+        }
+    }
 }
 
 void Graphics::DrawTestTriangle(float angle, float x, float z)
@@ -309,16 +320,20 @@ void Graphics::DrawTestTriangle(float angle, float x, float z)
     // Set primitive topology to triangle list (groups of 3 vertices)
     pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    // configure viewport
-    D3D11_VIEWPORT vp{};
-    vp.Width = static_cast<FLOAT>(clientWidth);
-    vp.Height = static_cast<FLOAT>(clientHeight);
-    vp.MinDepth = 0;
-    vp.MaxDepth = 1;
-    vp.TopLeftX = 0;
-    vp.TopLeftY = 0;
-    pContext->RSSetViewports(1u, &vp);
-
-
     pContext->DrawIndexed((UINT)std::size(indices), 0u, 0u);
 }
+
+//void Graphics::DrawIndexed(UINT count) noexcept
+//{
+//    pContext->DrawIndexed(count, 0u, 0u);
+//}
+//
+//void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept
+//{
+//    projection = proj;
+//}
+//
+//DirectX::XMMATRIX Graphics::GetProjection() const noexcept
+//{
+//    return projection;
+//}

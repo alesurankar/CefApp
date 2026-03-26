@@ -79,6 +79,12 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{aa35a5ee-0c21-44a0-aa8f-e50774b11994}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\renderer\bindables">
+      <UniqueIdentifier>{044abc1e-2a6e-4199-b48e-d712d5f26365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\bindables">
+      <UniqueIdentifier>{b56a3e46-a566-4e4c-af78-c04a332b7a9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -122,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="src\ui\D3DRenderer.cpp">
       <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\bindables\Bindable.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +211,36 @@
     </ClInclude>
     <ClInclude Include="src\ui\D3DRenderer.h">
       <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\Bindable.h">
+      <Filter>Header Files\renderer\bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\BindableBase.h">
+      <Filter>Header Files\renderer\bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\ConstantBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\InputLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\PixelShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\Topology.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\TransformCbuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\bindables\VertexShader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

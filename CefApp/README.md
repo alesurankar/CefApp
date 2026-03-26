@@ -14,9 +14,18 @@ CefApp/
    │  ├─ input/
    │  │   ├─ Keyboard
    │  │   └─ Mouse
-   │  ├─ shaders/
-   │  │   ├─ PixelShader.hlsl
-   │  │   └─ VertexShader.hlsl
+   │  ├─ shaders/     # HLSL files
+   │  ├─ bindables/
+   │  │  ├─ BindableBase.h    # includes all concrete bindables
+   │  │  ├─ Bindable          # abstract base class
+   │  │  ├─ ConstantBuffers
+   │  │  ├─ IndexBuffer
+   │  │  ├─ InputLayout
+   │  │  ├─ PixelShader
+   │  │  ├─ Topology
+   │  │  ├─ TransformCbuf
+   │  │  ├─ VertexBuffer     
+   │  │  └─ VertexShader    
    │  ├─ Graphics
    │  └─ RendererWindow
    ├─ resources/

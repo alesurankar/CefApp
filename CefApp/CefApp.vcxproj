@@ -119,6 +119,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
+    <ClCompile Include="src\renderer\bindables\Bindable.cpp" />
     <ClCompile Include="src\ui\BrowserView.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
@@ -136,6 +137,16 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
+    <ClInclude Include="src\renderer\bindables\Bindable.h" />
+    <ClInclude Include="src\renderer\bindables\BindableBase.h" />
+    <ClInclude Include="src\renderer\bindables\ConstantBuffers.h" />
+    <ClInclude Include="src\renderer\bindables\VertexBuffer.h" />
+    <ClInclude Include="src\renderer\bindables\IndexBuffer.h" />
+    <ClInclude Include="src\renderer\bindables\InputLayout.h" />
+    <ClInclude Include="src\renderer\bindables\PixelShader.h" />
+    <ClInclude Include="src\renderer\bindables\Topology.h" />
+    <ClInclude Include="src\renderer\bindables\TransformCbuf.h" />
+    <ClInclude Include="src\renderer\bindables\VertexShader.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_base.h" />
     <ClInclude Include="src\cef\config\wrapper\MyCefConfig_closure_task.h" />

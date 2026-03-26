@@ -3,9 +3,14 @@
 #include <util/AppException.h> 
 #include <d3d11.h>
 #include <wrl.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
+#include <memory>
+#include <random>
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	Graphics(HWND hwndOverlay);
 	Graphics(const Graphics&) = delete;
@@ -14,8 +19,12 @@ public:
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void EndFrame();
 	void Resize(int width, int height);
-	void DrawTestTriangle(float  angle, float x, float z);
+	void DrawTestTriangle(float  angle, float x, float z); 
+	void DrawIndexed(UINT count) noexcept(!_DEBUG);
+	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
 private:
+	DirectX::XMMATRIX projection;
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;
