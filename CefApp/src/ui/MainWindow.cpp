@@ -26,12 +26,15 @@ namespace
 
 		switch (msg) {
 		case WM_ENTERSIZEMOVE:
-			//window->isResizing_ = true;
-			return 0;
+			window->isResizing_ = true;
+			SetTimer(hWnd, 999, 16, nullptr); // ~60 FPS
+			break;
 
 		case WM_EXITSIZEMOVE:
-			//window->isResizing_ = false;
-			return 0;
+			window->isResizing_ = false;
+			KillTimer(hWnd, 999);
+			break;
+
 		case WM_ERASEBKGND: {
 			if (window && window->HasBrowserWindow()) {
 				return 1;
@@ -68,7 +71,13 @@ namespace
 		}
 
 		case WM_TIMER: {
-			if (wParam == MainWindow::TIMER_FADE) {
+			if (wParam == 999 && window->isResizing_) {
+				// Render continuously while resizing
+				if (window->GetD3DRenderer()) {
+					window->GetD3DRenderer()->Render();
+				}
+			}
+			else if (wParam == MainWindow::TIMER_FADE) {
 				if (window->fadeStep <= 0) {
 					KillTimer(hWnd, MainWindow::TIMER_FADE);
 
