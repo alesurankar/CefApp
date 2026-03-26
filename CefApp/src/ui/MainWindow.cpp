@@ -35,12 +35,6 @@ namespace
 			KillTimer(hWnd, 999);
 			break;
 
-		case WM_ERASEBKGND: {
-			if (window && window->HasBrowserWindow()) {
-				return 1;
-			}
-		} break;
-
 		case WM_MOVE: {
 			window->OnSize(SIZE_RESTORED);
 		} break;
