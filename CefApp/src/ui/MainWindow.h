@@ -15,10 +15,7 @@ public:
 	enum class FadeAction
 	{
 		None,
-		Close,
-		Minimize,
-		Maximize,
-		Restore
+		Close
 	};
 private:
 	// singleton manages registration/cleanup of window class
@@ -59,8 +56,6 @@ public:
 	static constexpr int FADE_STEPS = 15;
 	static constexpr int TIMER_FADE = 1;
 	int fadeStep = 0;
-	bool isMinimized_ = false;
-	bool isMaximized_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
 	std::unique_ptr<WindowTitleBar> titleBar_;
 private:

@@ -25,6 +25,13 @@ namespace
 		}
 
 		switch (msg) {
+		case WM_ENTERSIZEMOVE:
+			//window->isResizing_ = true;
+			return 0;
+
+		case WM_EXITSIZEMOVE:
+			//window->isResizing_ = false;
+			return 0;
 		case WM_ERASEBKGND: {
 			if (window && window->HasBrowserWindow()) {
 				return 1;
@@ -36,24 +43,6 @@ namespace
 		} break;
 
 		case WM_SIZE: {
-			switch (wParam)
-			{
-			case SIZE_MINIMIZED:
-				window->isMinimized_ = true;
-				window->isMaximized_ = false;
-				SetLayeredWindowAttributes(hWnd, 0, 0, LWA_ALPHA);
-				break;
-			case SIZE_MAXIMIZED:
-				window->isMaximized_ = true;
-				window->isMinimized_ = false;
-				SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-				break;
-			case SIZE_RESTORED:
-				window->isMinimized_ = false;
-				window->isMaximized_ = false;
-				SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-				break;
-			}
 			window->OnSize(wParam);
 		} break;
 
@@ -87,15 +76,6 @@ namespace
 					case MainWindow::FadeAction::Close:
 						PostMessage(hWnd, WM_CLOSE, 0, 0);
 						break;
-					case MainWindow::FadeAction::Minimize:
-						ShowWindow(hWnd, SW_MINIMIZE);
-						break;
-					case MainWindow::FadeAction::Maximize:
-						ShowWindow(hWnd, SW_MAXIMIZE);
-						break;
-					case MainWindow::FadeAction::Restore:
-						ShowWindow(hWnd, SW_RESTORE);
-						break;
 					default:
 						break;
 					}
@@ -106,7 +86,6 @@ namespace
 
 					switch (window->fadeAction_) {
 					case MainWindow::FadeAction::Close:
-					case MainWindow::FadeAction::Minimize:
 						SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);
 						window->fadeStep--;
 						break;
