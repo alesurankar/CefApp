@@ -19,7 +19,6 @@ public:
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void EndFrame();
 	void Resize(int width, int height);
-	void DrawTestTriangle(float  angle, float x, float z); 
 	void DrawIndexed(UINT count) noexcept(!_DEBUG);
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;

@@ -121,6 +121,12 @@
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\renderer\bindables\Bindable.cpp" />
     <ClCompile Include="src\renderer\bindables\IndexBuffer.cpp" />
+    <ClCompile Include="src\renderer\bindables\InputLayout.cpp" />
+    <ClCompile Include="src\renderer\bindables\PixelShader.cpp" />
+    <ClCompile Include="src\renderer\bindables\Topology.cpp" />
+    <ClCompile Include="src\renderer\bindables\TransformCbuf.cpp" />
+    <ClCompile Include="src\renderer\bindables\VertexBuffer.cpp" />
+    <ClCompile Include="src\renderer\bindables\VertexShader.cpp" />
     <ClCompile Include="src\ui\BrowserView.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />

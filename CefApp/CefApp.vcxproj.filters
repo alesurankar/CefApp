@@ -135,6 +135,24 @@
     <ClCompile Include="src\renderer\bindables\IndexBuffer.cpp">
       <Filter>Source Files\renderer\bindables</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\bindables\InputLayout.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\bindables\PixelShader.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\bindables\Topology.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\bindables\TransformCbuf.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\bindables\VertexBuffer.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\bindables\VertexShader.cpp">
+      <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\MyWin.h">

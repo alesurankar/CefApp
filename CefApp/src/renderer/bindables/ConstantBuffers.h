@@ -11,11 +11,11 @@ public:
 		INFOMAN(gfx);
 
 		D3D11_MAPPED_SUBRESOURCE msr;
-		GFX_THROW_INFO(GetContext(gfx)->Map(
+		GFX_THROW(GetContext(gfx)->Map(
 			pConstantBuffer.Get(), 0u,
 			D3D11_MAP_WRITE_DISCARD, 0u,
 			&msr
-		));
+		), "Failed to map constant buffer for writing");
 		memcpy(msr.pData, &consts, sizeof(consts));
 		GetContext(gfx)->Unmap(pConstantBuffer.Get(), 0u);
 	}

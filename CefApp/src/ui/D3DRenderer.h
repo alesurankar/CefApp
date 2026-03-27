@@ -8,7 +8,7 @@ class D3DRenderer
 {
 public:
 	D3DRenderer(HWND hwndParent);
-	~D3DRenderer() = default;
+	~D3DRenderer();
 	void Update(float dt);
 	void Render();
 	void Resize(int left, int top, int width, int height);
