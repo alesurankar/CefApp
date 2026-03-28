@@ -6,7 +6,6 @@ VertexShader::VertexShader(Graphics& gfx, const std::wstring& path)
 {
 	INFOMAN(gfx);
 
-	//GFX_THROW(D3DReadFileToBlob(path.c_str(), &pBytecodeBlob), "Failed to load vertex shader");
 	GFX_THROW(D3DReadFileToBlob(path.c_str(), &pBytecodeBlob), "Failed to load vertex shader");
 	GFX_THROW(GetDevice(gfx)->CreateVertexShader(
 		pBytecodeBlob->GetBufferPointer(),

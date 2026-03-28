@@ -141,6 +141,8 @@
     <ClCompile Include="src\app\EntryPoint.cpp" />
     <ClCompile Include="src\renderer\RendererWindow.cpp" />
     <ClCompile Include="src\ui\WindowTitleBar.cpp" />
+    <ClCompile Include="src\util\dxerr.cpp" />
+    <ClCompile Include="src\util\DxginfoManager.cpp" />
     <ClCompile Include="src\util\MyException.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +160,8 @@
     <ClInclude Include="src\renderer\bindables\VertexShader.h" />
     <ClInclude Include="src\renderer\drawables\Box.h" />
     <ClInclude Include="src\renderer\drawables\Drawable.h" />
+    <ClInclude Include="src\util\dxerr.h" />
+    <ClInclude Include="src\util\DxgiInfoManager.h" />
     <ClInclude Include="src\util\GraphicsThrowMacros.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_base.h" />
@@ -189,6 +193,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include="src\util\DXGetErrorDescription.inl" />
+    <None Include="src\util\DXGetErrorString.inl" />
+    <None Include="src\util\DxTrace.inl" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\renderer\shaders\PixelShader.hlsl">

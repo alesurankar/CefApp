@@ -159,6 +159,12 @@
     <ClCompile Include="src\renderer\drawables\Drawable.cpp">
       <Filter>Source Files\renderer\drawables</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\dxerr.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\DxginfoManager.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\MyWin.h">
@@ -278,6 +284,12 @@
     <ClInclude Include="src\renderer\drawables\Drawable.h">
       <Filter>Header Files\renderer\drawables</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\dxerr.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\DxgiInfoManager.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest">
@@ -287,6 +299,15 @@
   <ItemGroup>
     <None Include="README.md">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="src\util\DXGetErrorDescription.inl">
+      <Filter>Header Files\util</Filter>
+    </None>
+    <None Include="src\util\DXGetErrorString.inl">
+      <Filter>Header Files\util</Filter>
+    </None>
+    <None Include="src\util\DxTrace.inl">
+      <Filter>Header Files\util</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

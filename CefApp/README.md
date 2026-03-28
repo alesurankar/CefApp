@@ -39,6 +39,7 @@ CefApp/
    │   └─ WindowTitleBar
    └─ util/
        ├─ AppException
+       ├─ DxginfoManager
        ├─ GraphicsThrowMacros
        └─ MyException
  ```
