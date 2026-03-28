@@ -26,6 +26,9 @@ CefApp/
    │  │  ├─ TransformCbuf
    │  │  ├─ VertexBuffer     
    │  │  └─ VertexShader    
+   │  ├─ drawables/
+   │  │  ├─ Box          
+   │  │  └─ Drawable         # abstract base class  
    │  ├─ Graphics
    │  └─ RendererWindow
    ├─ resources/

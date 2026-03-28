@@ -9,5 +9,5 @@
 
 // macro for importing infomanager into local scope
 #ifndef INFOMAN
-#define INFOMAN(gfx) HRESULT hr;
+#define INFOMAN(gfx);
 #endif

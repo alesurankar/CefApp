@@ -58,12 +58,6 @@
     <Filter Include="Source Files\renderer\input">
       <UniqueIdentifier>{c8197509-5f95-4e18-8cad-b560b8902b76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\renderer\helpers">
-      <UniqueIdentifier>{34b33a08-7302-4c95-ab40-18f2a8faa70b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\renderer\helpers">
-      <UniqueIdentifier>{4736d17b-f292-4e27-829f-47f06fac3b10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\util">
       <UniqueIdentifier>{62b9bb21-640e-4c0c-9dc0-3a3cccc2f966}</UniqueIdentifier>
     </Filter>
@@ -84,6 +78,12 @@
     </Filter>
     <Filter Include="Header Files\renderer\bindables">
       <UniqueIdentifier>{b56a3e46-a566-4e4c-af78-c04a332b7a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer\drawables">
+      <UniqueIdentifier>{0942b096-0b25-42be-8bba-401de53c9dc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderer\drawables">
+      <UniqueIdentifier>{4e8b8ca9-8b21-4d86-a7fd-b96ab7125e0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="src\renderer\bindables\VertexShader.cpp">
       <Filter>Source Files\renderer\bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\drawables\Box.cpp">
+      <Filter>Source Files\renderer\drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\drawables\Drawable.cpp">
+      <Filter>Source Files\renderer\drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="src\renderer\bindables\VertexShader.h">
       <Filter>Header Files\renderer\bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\drawables\Box.h">
+      <Filter>Header Files\renderer\drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\drawables\Drawable.h">
+      <Filter>Header Files\renderer\drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

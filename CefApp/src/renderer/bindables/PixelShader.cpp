@@ -6,8 +6,13 @@ PixelShader::PixelShader(Graphics& gfx, const std::wstring& path)
 	INFOMAN(gfx);
 
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
-	GFX_THROW(D3DReadFileToBlob(path.c_str(), &pBlob), "Failed to load pixel shader");
-	GFX_THROW(GetDevice(gfx)->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader), "Failed to create pixel shader");
+	//GFX_THROW(D3DReadFileToBlob(path.c_str(), &pBlob), "Failed to load pixel shader");
+	GFX_THROW(D3DReadFileToBlob(L"shader_bins/PixelShader.cso", &pBlob), "Failed to load pixel shader");
+	GFX_THROW(GetDevice(gfx)->CreatePixelShader(
+		pBlob->GetBufferPointer(), 
+		pBlob->GetBufferSize(), 
+		nullptr, &pPixelShader), 
+		"Failed to create pixel shader");
 }
 
 void PixelShader::Bind(Graphics& gfx) noexcept

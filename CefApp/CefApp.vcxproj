@@ -127,6 +127,8 @@
     <ClCompile Include="src\renderer\bindables\TransformCbuf.cpp" />
     <ClCompile Include="src\renderer\bindables\VertexBuffer.cpp" />
     <ClCompile Include="src\renderer\bindables\VertexShader.cpp" />
+    <ClCompile Include="src\renderer\drawables\Box.cpp" />
+    <ClCompile Include="src\renderer\drawables\Drawable.cpp" />
     <ClCompile Include="src\ui\BrowserView.cpp" />
     <ClCompile Include="src\renderer\Graphics.cpp" />
     <ClCompile Include="src\renderer\input\Keyboard.cpp" />
@@ -154,6 +156,8 @@
     <ClInclude Include="src\renderer\bindables\Topology.h" />
     <ClInclude Include="src\renderer\bindables\TransformCbuf.h" />
     <ClInclude Include="src\renderer\bindables\VertexShader.h" />
+    <ClInclude Include="src\renderer\drawables\Box.h" />
+    <ClInclude Include="src\renderer\drawables\Drawable.h" />
     <ClInclude Include="src\util\GraphicsThrowMacros.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
     <ClInclude Include="src\cef\config\MyCefConfig_base.h" />

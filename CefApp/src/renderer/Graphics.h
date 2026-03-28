@@ -19,7 +19,7 @@ public:
 	void BeginFrame(float red, float green, float blue) noexcept;
 	void EndFrame();
 	void Resize(int width, int height);
-	void DrawIndexed(UINT count) noexcept(!_DEBUG);
+	void DrawIndexed(UINT count) noexcept;
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 private:
