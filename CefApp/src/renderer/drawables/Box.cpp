@@ -42,11 +42,11 @@ Box::Box(Graphics& gfx,
 	};
 	AddBind(std::make_unique<VertexBuffer>(gfx, vertices));
 
-	auto pvs = std::make_unique<VertexShader>(gfx, L"VertexShader.cso");
+	auto pvs = std::make_unique<VertexShader>(gfx, L"shader_bins/VertexShader.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(std::make_unique<PixelShader>(gfx, L"PixelShader.cso"));
+	AddBind(std::make_unique<PixelShader>(gfx, L"shader_bins/PixelShader.cso"));
 
 	const std::vector<unsigned short> indices =
 	{
