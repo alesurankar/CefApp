@@ -7,12 +7,12 @@ InputLayout::InputLayout(Graphics& gfx,
 {
 	INFOMAN(gfx);
 
-	GFX_THROW(GetDevice(gfx)->CreateInputLayout(
+	GFX_THROW_INFO(GetDevice(gfx)->CreateInputLayout(
 		layout.data(), (UINT)layout.size(),
 		pVertexShaderBytecode->GetBufferPointer(),
 		pVertexShaderBytecode->GetBufferSize(),
 		&pInputLayout
-	), "Failed to create input layout");
+	));
 }
 
 void InputLayout::Bind(Graphics& gfx) noexcept

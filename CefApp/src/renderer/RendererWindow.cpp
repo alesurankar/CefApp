@@ -1,5 +1,5 @@
 #include "RendererWindow.h"
-#include <util/AppException.h>
+#include <util/WindowsThrowMacros.h>
 #include <cassert>
 
 
@@ -57,7 +57,7 @@ RendererWindow::RendererWindow(HWND hwndParent)
 		this
 	);
 	if (hWnd_ == nullptr) {
-		throw AppException(__LINE__, __FILE__, "CreateWindowExA in RendererWindow failed!");
+		throw WND_LAST_EXCEPT();
 	}
 
 	ShowWindow(hWnd_, SW_SHOW);

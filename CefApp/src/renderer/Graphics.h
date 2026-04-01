@@ -3,6 +3,7 @@
 #include <util/AppException.h> 
 #include <d3d11.h>
 #include <wrl.h>
+#include <util/DxgiInfoManager.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <memory>
@@ -24,6 +25,9 @@ public:
 	DirectX::XMMATRIX GetProjection() const noexcept;
 private:
 	DirectX::XMMATRIX projection;
+#ifndef NDEBUG
+	DxgiInfoManager infoManager;
+#endif
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;

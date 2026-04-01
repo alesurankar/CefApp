@@ -11,7 +11,6 @@ namespace dx = DirectX;
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
 
-
 Graphics::Graphics(HWND hwndOverlay)
 {
     // Minimal Direct3D11 initialization
@@ -36,9 +35,9 @@ Graphics::Graphics(HWND hwndOverlay)
 #ifndef NDEBUG
     swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-
+    HRESULT hr;
     // create device and front/back buffers, and swap chain and rendering context
-    GFX_THROW(D3D11CreateDeviceAndSwapChain(
+    GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
         nullptr,
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
@@ -51,16 +50,18 @@ Graphics::Graphics(HWND hwndOverlay)
         &pDevice,
         nullptr,
         &pContext
-    ), "Failed to create D3D11 device and swap chain");
+    ));
 
     // gain access to texture subresource in swap chain (back buffer)
     wrl::ComPtr<ID3D11Resource> pBackBuffer;
-    GFX_THROW(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer), "Failed to get back buffer");
-    GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV");
+    GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
+    GFX_THROW_INFO(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget));
 }
 
 void Graphics::Resize(int width, int height)
 {
+    HRESULT hr;
+
     if (width == clientWidth && height == clientHeight) return;
     if (!pSwap || width < 1 || height < 1) return;
     pContext->OMSetRenderTargets(0, nullptr, nullptr);
@@ -71,8 +72,8 @@ void Graphics::Resize(int width, int height)
     pSwap->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 
     Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
-    GFX_THROW(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer), "Failed to get back buffer after resize");
-    GFX_THROW(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget), "Failed to create RTV after resize");
+    GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
+    GFX_THROW_INFO(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget));
 
     // create depth stensil state
     D3D11_DEPTH_STENCIL_DESC dsDesc = {};
@@ -80,7 +81,7 @@ void Graphics::Resize(int width, int height)
     dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
     wrl::ComPtr<ID3D11DepthStencilState> pDSState;
-    GFX_THROW(pDevice->CreateDepthStencilState(&dsDesc, &pDSState), "");
+    GFX_THROW_INFO(pDevice->CreateDepthStencilState(&dsDesc, &pDSState));
 
     // bind depth state
     pContext->OMSetDepthStencilState(pDSState.Get(), 1u);
@@ -97,16 +98,16 @@ void Graphics::Resize(int width, int height)
     descDepth.SampleDesc.Quality = 0u;
     descDepth.Usage = D3D11_USAGE_DEFAULT;
     descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-    GFX_THROW(pDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil), "");
+    GFX_THROW_INFO(pDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
 
     // create view of depth stensil texture
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
     descDSV.Format = DXGI_FORMAT_D32_FLOAT;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     descDSV.Texture2D.MipSlice = 0u;
-    GFX_THROW(pDevice->CreateDepthStencilView(
+    GFX_THROW_INFO(pDevice->CreateDepthStencilView(
         pDepthStencil.Get(), &descDSV, &pDSV
-    ), "");
+    ));
 
     // bind depth stensil view to OM
     pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
@@ -132,15 +133,16 @@ void Graphics::BeginFrame(float red, float green, float blue) noexcept
 void Graphics::EndFrame()
 {
     HRESULT hr;
+#ifndef NDEBUG
+    infoManager.Set();
+#endif
     if (FAILED(hr = pSwap->Present(2u, 0u)))
     {
-        if (hr == DXGI_ERROR_DEVICE_REMOVED)
-        {
-            throw AppException(__LINE__, __FILE__, "Device removed: " + std::to_string(pDevice->GetDeviceRemovedReason()));
+        if (hr == DXGI_ERROR_DEVICE_REMOVED) {
+            throw GFX_DEVICE_REMOVED_EXCEPT(pDevice->GetDeviceRemovedReason());
         }
-        else
-        {
-            throw AppException(__LINE__, __FILE__, "Failed to present frame. HRESULT: " + std::to_string(hr));
+        else {
+            throw GFX_EXCEPT(hr);
         }
     }
 }

@@ -1,5 +1,5 @@
 #include "Application.h"
-#include <util/AppException.h>
+#include <util/AppThrowMacros.h>
 #include <filesystem>
 
 
@@ -38,12 +38,12 @@ void Application::Initialize()
     );
 
     if (!CefInitialize(CefMainArgs(hInstance_), settings, cefApp_, nullptr)) {
-        throw AppException(__LINE__, __FILE__, "CEF Initialization failed");
+        throw APP_EXCEPT("CEF Initialization failed");
     }
 
     mainWnd_ = std::make_unique<MainWindow>();
     if (!mainWnd_) {
-        throw AppException(__LINE__, __FILE__, "Failed to create main window");
+        throw APP_EXCEPT("Failed to create main window");
     }
     running_ = true;
 }

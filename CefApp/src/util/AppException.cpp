@@ -3,6 +3,13 @@
 
 
 // AppException
+AppException::AppException(int line, const char* file, const std::string& message) noexcept
+    :
+    MyException(line, file)
+{
+    infoMessage = message;
+}
+
 std::string AppException::TranslateErrorCode(HRESULT hr) noexcept
 {
     char* pMsgBuf = nullptr;
@@ -26,6 +33,11 @@ std::string AppException::TranslateErrorCode(HRESULT hr) noexcept
     }
     LocalFree(pMsgBuf);
     return errorString;
+}
+
+const std::string& AppException::GetErrorInfo() const noexcept
+{
+    return infoMessage;
 }
 
 

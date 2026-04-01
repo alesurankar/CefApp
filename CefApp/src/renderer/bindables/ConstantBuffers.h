@@ -11,11 +11,11 @@ public:
 		INFOMAN(gfx);
 
 		D3D11_MAPPED_SUBRESOURCE msr;
-		GFX_THROW(GetContext(gfx)->Map(
+		GFX_THROW_INFO(GetContext(gfx)->Map(
 			pConstantBuffer.Get(), 0u,
 			D3D11_MAP_WRITE_DISCARD, 0u,
 			&msr
-		), "Failed to map constant buffer for writing");
+		));
 		memcpy(msr.pData, &consts, sizeof(consts));
 		GetContext(gfx)->Unmap(pConstantBuffer.Get(), 0u);
 	}
@@ -33,7 +33,7 @@ public:
 
 		D3D11_SUBRESOURCE_DATA csd = {};
 		csd.pSysMem = &consts;
-		GFX_THROW(GetDevice(gfx)->CreateBuffer(&cbd, &csd, &pConstantBuffer), "Failed to create constant buffer");
+		GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&cbd, &csd, &pConstantBuffer));
 	}
 	ConstantBuffer(Graphics& gfx)
 	{
@@ -46,7 +46,7 @@ public:
 		cbd.MiscFlags = 0u;
 		cbd.ByteWidth = sizeof(C);
 		cbd.StructureByteStride = 0u;
-		GFX_THROW(GetDevice(gfx)->CreateBuffer(&cbd, nullptr, &pConstantBuffer), "Failed to create constant buffer");
+		GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&cbd, nullptr, &pConstantBuffer));
 	}
 protected:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer;

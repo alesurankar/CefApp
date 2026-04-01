@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include <cef/MyCefClient.h>
-#include <util/AppException.h>
+#include <util/WindowsThrowMacros.h>
+#include <util/AppThrowMacros.h>
 
 
 // Wnd Procedure stuff
@@ -172,7 +173,7 @@ MainWindow::MainWindowClass::MainWindowClass()
 	//	IMAGE_ICON, 16, 16, 0
 	//));
 	if (!RegisterClassEx(&wcex)) {
-		throw AppException(__LINE__, __FILE__, "RegisterClassExA failed!");
+		throw WND_LAST_EXCEPT();
 	}
 }
 
@@ -207,9 +208,9 @@ MainWindow::MainWindow()
 		MainWindowClass::GetInstance(),
 		this
 	);
-
+	// check for error
 	if (hWnd_ == nullptr) {
-		throw AppException(__LINE__, __FILE__, "CreateWindowExA in MainWindow failed!");
+		throw WND_LAST_EXCEPT();
 	}
 	ShowWindow(hWnd_, SW_MINIMIZE);
 	ShowWindow(hWnd_, SW_HIDE);
@@ -242,7 +243,7 @@ void MainWindow::CreateBrowserView()
 		);
 	}
 	catch (...) {
-		throw AppException(__LINE__, __FILE__, "Failed to create browser");
+		throw APP_EXCEPT("Failed to create browser");
 	}
 }
 

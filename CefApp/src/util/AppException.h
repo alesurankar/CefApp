@@ -10,7 +10,11 @@ class AppException : public MyException
 protected:
 	using MyException::MyException;
 public:
+	AppException(int line, const char* file, const std::string& message) noexcept;
+	const std::string& GetErrorInfo() const noexcept;
 	static std::string TranslateErrorCode(HRESULT hr) noexcept;
+private:
+	std::string infoMessage;
 };
 
 class HrException : public AppException
