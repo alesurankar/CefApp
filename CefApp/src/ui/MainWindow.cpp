@@ -249,7 +249,9 @@ void MainWindow::OnSize(WPARAM wParam)
 	}
 
 	if (d3dRenderer_) {
-		d3dRenderer_->Resize(rect.left, rect.top, width, height);
+		POINT topLeft = { rect.left, rect.top };
+		ClientToScreen(hWnd_, &topLeft);
+		d3dRenderer_->Resize(topLeft.x, topLeft.y, width, height);
 	}
 }
 
