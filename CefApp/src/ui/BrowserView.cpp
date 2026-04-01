@@ -6,24 +6,17 @@ BrowserView::BrowserView(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
-	client_ = new MyCefClient(hWnd_);
+	client_ = new MyCefClient(hwndParent_);
 	RECT rect{};
 	GetClientRect(hwndParent_, &rect);
 	CefWindowInfo info;
 	info.SetAsChild(hwndParent_, CefRect(0, 0,
 		rect.right - rect.left, rect.bottom - rect.top));
 
-	try {
-		CefBrowserHost::CreateBrowser(
-			info,
-			client_,
-			url_,
+	if (!CefBrowserHost::CreateBrowser(
+			info, client_, url_,
 			CefBrowserSettings{},
-			nullptr,
-			nullptr
-		);
-	}
-	catch (...) {
+			nullptr, nullptr)) {
 		throw APP_EXCEPT("Failed to create browser");
 	}
 }

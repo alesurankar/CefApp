@@ -1,16 +1,23 @@
 
+```text
 EntryPoint
   │
   ├── Application
-  │   app.run();   [SYNC]
+  │   app.run();   [SYNC] blocks until app exits
   │
-  ├── new MyCefApp();
-  │   CefExecuteProcess();
+  ├── new MyCefApp();      [SYNC] just allocates the CEF app object
+  │   CefExecuteProcess(); [SYNC] subprocess check, [ASYNC] internally for subprocesses
   │
-  ├── CefInitialize()
-  │      ├── Browser Thread     [ASYNC]
-  │      ├── IO Thread          [ASYNC]
-  │      └── GPU Thread         [ASYNC]
+  ├── CefInitialize()       [SYNC] initializes CEF, returns after threads start
+  │      ├── Browser Thread [ASYNC]
+  │      ├── IO Thread      [ASYNC]
+  │      └── GPU Thread     [ASYNC]
   │
-  ├── std::make_unique<MainWindow>();   [SYNC]
-  └── RunMessageLoop();                 [SYNC]
+  ├── Create MainWindow     [SYNC] window and child controls are created
+  │      ├── Create WindowTitleBar [SYNC]
+  │      └── Create BrowserView    [SYNC] constructs object
+  │            ├── new MyCefClient        [SYNC] object creation only
+  │            └── CefBrowserHost::CreateBrowser  [ASYNC] browser window created asynchronously
+  │
+  └── RunMessageLoop();  [SYNC] runs until WM_QUIT received
+  ```

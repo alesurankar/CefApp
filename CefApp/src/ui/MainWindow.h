@@ -37,8 +37,6 @@ private:
 public:
 	MainWindow();
 	~MainWindow();
-	void CreateBrowserView();
-	void CreateWindowTitleBar();
 	void CreateD3DRenderer();
 	void OnSize(WPARAM wParam);
 	void RequestClose();

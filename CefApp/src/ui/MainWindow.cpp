@@ -215,23 +215,13 @@ MainWindow::MainWindow()
 	ShowWindow(hWnd_, SW_MINIMIZE);
 	ShowWindow(hWnd_, SW_HIDE);
 
-	CreateWindowTitleBar();
-	CreateBrowserView();
+	titleBar_ = std::make_unique<WindowTitleBar>(hWnd_);
+	browserView_ = std::make_unique<BrowserView>(hWnd_);
 }
 
 MainWindow::~MainWindow()
 {
 	DestroyWindow(hWnd_);
-}
-
-void MainWindow::CreateBrowserView()
-{
-	browserView_ = std::make_unique<BrowserView>(hWnd_);
-}
-
-void MainWindow::CreateWindowTitleBar()
-{
-	titleBar_ = std::make_unique<WindowTitleBar>(hWnd_);
 }
 
 void MainWindow::CreateD3DRenderer()
@@ -266,12 +256,12 @@ void MainWindow::OnSize(WPARAM wParam)
 void MainWindow::RequestClose()
 {
 	if (isClosing_) {
-		browserView_->CloseBrowser();
 		DestroyWindow(hWnd_);
 		return;
 	}
 
 	isClosing_ = true;
+	browserView_->CloseBrowser();
 }
 
 void MainWindow::StartFade(FadeAction action, int time)
