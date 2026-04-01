@@ -44,6 +44,7 @@ public:
 	void OnSize(WPARAM wParam);
 	void RequestClose();
 	void StartFade(FadeAction action, int time = 10);
+	void Update();
 public:
 	inline static MainWindow* GetMainWindow(HWND hWnd)
 	{

@@ -1,10 +1,7 @@
 #pragma once
 #include <platform/MyWin.h>
-//#include <cef/config/MyCefConfig_base.h>
 #include <cef/MyCefClient.h>
 
-
-//class MyCefClient;
 
 class BrowserView
 {
