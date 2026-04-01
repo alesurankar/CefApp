@@ -165,6 +165,9 @@
     <ClCompile Include="src\util\DxginfoManager.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\AppException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\MyWin.h">
