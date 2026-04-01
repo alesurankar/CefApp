@@ -1,9 +1,9 @@
-#include "DxgiInfoManager.h"
+#include <util/DxgiInfoManager.h>
 #include <renderer/Graphics.h>
 #include <dxgidebug.h>
 #include <memory>
-#include "GraphicsThrowMacros.h"
-#include "WindowsThrowMacros.h"
+#include <util/GraphicsThrowMacros.h>
+#include <util/WindowsThrowMacros.h>
 
 #pragma comment(lib, "dxguid.lib")
 

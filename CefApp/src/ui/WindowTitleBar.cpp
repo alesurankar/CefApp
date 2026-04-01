@@ -1,5 +1,5 @@
 #include "WindowTitleBar.h"
-#include <util/AppException.h>
+#include <util/WindowsThrowMacros.h>
 
 
 namespace
@@ -44,7 +44,7 @@ WindowTitleBar::WindowTitleBar(HWND hwndParent)
 		nullptr
 	);
 	if (hWnd_ == nullptr) {
-		throw AppException(__LINE__, __FILE__, "CreateWindowExA in WindowTitleBar failed!");
+		throw WND_LAST_EXCEPT();
 	}
 
 	SetWindowLongPtr(hWnd_, GWLP_WNDPROC, (LONG_PTR)HandleWndProc);

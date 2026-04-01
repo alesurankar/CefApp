@@ -1,4 +1,5 @@
 #pragma once
+#include <util/AppException.h>
 
 // HRESULT hr should exist in the local scope for these macros to work
 

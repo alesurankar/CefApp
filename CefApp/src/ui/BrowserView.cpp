@@ -1,5 +1,5 @@
 #include "BrowserView.h"
-#include <util/AppException.h>
+#include <util/AppThrowMacros.h>
 
 
 void BrowserView::CreateBrowserView(HWND hwndParent)
@@ -24,7 +24,7 @@ void BrowserView::CreateBrowserView(HWND hwndParent)
 		);
 	}
 	catch (...) {
-		throw AppException(__LINE__, __FILE__, "Failed to create browser");
+		throw APP_EXCEPT("Failed to create browser");
 	}
 }
 

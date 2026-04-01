@@ -1,6 +1,5 @@
 #pragma once
 #include <platform/MyWin.h>
-#include <util/AppException.h> 
 #include <d3d11.h>
 #include <wrl.h>
 #include <util/DxgiInfoManager.h>

@@ -8,6 +8,7 @@ last updated: 25.3.2026
 - [x] Implement D3D renderer inside the window
 - [X] forward mouse messages to D3DRenderer
 - [X] forward mouse keyboard to D3DRenderer
+- [X] integrate advanced graphics debugging
 
 
 ## Unfinished Tasks
