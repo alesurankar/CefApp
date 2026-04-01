@@ -172,9 +172,7 @@ MainWindow::MainWindowClass::MainWindowClass()
 	//	GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
 	//	IMAGE_ICON, 16, 16, 0
 	//));
-	if (!RegisterClassEx(&wcex)) {
-		throw WND_LAST_EXCEPT();
-	}
+	RegisterClassEx(&wcex);
 }
 
 MainWindow::MainWindowClass::~MainWindowClass()

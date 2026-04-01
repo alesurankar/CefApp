@@ -21,9 +21,20 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
         Shutdown();
         return code;
     }
-    catch (...) {
+    catch (const MyException& e) {
+        MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
         Shutdown();
-        throw;
+        return -1;
+    }
+    catch (const std::exception& e) {
+        MessageBox(nullptr, e.what(), "Standard Exception", MB_OK | MB_ICONEXCLAMATION);
+        Shutdown();
+        return -1;
+    }
+    catch (...) {
+        MessageBox(nullptr, "No details available", "Unknown Exception", MB_OK | MB_ICONEXCLAMATION);
+        Shutdown();
+        return -1;
     }
 }
 
