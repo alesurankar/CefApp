@@ -226,30 +226,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::CreateBrowserView()
 {
-	client_ = new MyCefClient(hWnd_);
-	RECT rect{};
-	GetClientRect(hWnd_, &rect);
-	CefWindowInfo info;
-	info.SetAsChild(hWnd_, CefRect(0, 0,
-		rect.right - rect.left, rect.bottom - rect.top));
-	try {
-		CefBrowserHost::CreateBrowser(
-			info,
-			client_,
-			url_,
-			CefBrowserSettings{},
-			nullptr,
-			nullptr
-		);
-	}
-	catch (...) {
-		throw APP_EXCEPT("Failed to create browser");
-	}
-}
-
-void MainWindow::SetBrowserHWND(HWND hWndBrowser)
-{
-	hWndBrowser_ = hWndBrowser; 
+	browserView_ = std::make_unique<BrowserView>(hWnd_);
 }
 
 void MainWindow::CreateWindowTitleBar()
@@ -261,19 +238,6 @@ void MainWindow::CreateD3DRenderer()
 {
 	d3dRenderer_ = std::make_unique<D3DRenderer>(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
-}
-
-bool MainWindow::HasBrowserWindow() const
-{
-	// Return true only if client exists and its browser window is valid
-	if (!client_)
-		return false;
-
-	if (auto browser = client_->GetBrowser())  // safe null check
-		if (auto host = browser->GetHost())   // safe host check
-			return host->GetWindowHandle() != nullptr;
-
-	return false;
 }
 
 void MainWindow::OnSize(WPARAM wParam)
@@ -290,31 +254,24 @@ void MainWindow::OnSize(WPARAM wParam)
 		titleBar_->OnSize(width);
 	}
 
-	if (hWndBrowser_) {
-		SetWindowPos(hWndBrowser_, nullptr, 0, 0,
-			width, height,
-			SWP_NOZORDER | SWP_NOACTIVATE);
+	if (browserView_) {
+		browserView_->OnSize(width, height);
 	}
 
 	if (d3dRenderer_) {
-		POINT topLeft = { rect.left, rect.top };
-		ClientToScreen(hWnd_, &topLeft);
-		d3dRenderer_->Resize(topLeft.x, topLeft.y, width, height);
+		d3dRenderer_->Resize(rect.left, rect.top, width, height);
 	}
 }
 
 void MainWindow::RequestClose()
 {
-	if (isClosing_ || !client_) {
+	if (isClosing_) {
+		browserView_->CloseBrowser();
 		DestroyWindow(hWnd_);
 		return;
 	}
-	assert(client_ && "RequestClose called but client_ is null");
 
 	isClosing_ = true;
-	if (auto browser = client_->GetBrowser()) {
-		browser->GetHost()->CloseBrowser(true);
-	}
 }
 
 void MainWindow::StartFade(FadeAction action, int time)

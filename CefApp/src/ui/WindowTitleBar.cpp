@@ -28,9 +28,9 @@ namespace
 }
 
 WindowTitleBar::WindowTitleBar(HWND hwndParent)
+	:
+	hwndParent_(hwndParent)
 {
-	hwndParent_ = hwndParent;
-
 	hWnd_ = CreateWindowExA(
 		//0,                           // change to this to show the hendleBar
 		WS_EX_TRANSPARENT,			   // change to this to hide the handleBar

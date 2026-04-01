@@ -1,5 +1,6 @@
 #pragma once
 #include <platform/MyWin.h>
+#include <ui/BrowserView.h>
 #include <ui/WindowTitleBar.h>
 #include <ui/D3DRenderer.h>
 #include <string>
@@ -37,10 +38,8 @@ public:
 	MainWindow();
 	~MainWindow();
 	void CreateBrowserView();
-	void SetBrowserHWND(HWND hWndBrowser);
 	void CreateWindowTitleBar();
 	void CreateD3DRenderer();
-	bool HasBrowserWindow() const;
 	void OnSize(WPARAM wParam);
 	void RequestClose();
 	void StartFade(FadeAction action, int time = 10);
@@ -51,6 +50,8 @@ public:
 		return reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 	inline void AttachHWND(HWND hWnd) { hWnd_ = hWnd; }
+	inline WindowTitleBar* GetTitleBar() const { return titleBar_.get(); }
+	inline BrowserView* GetBrowserView() const { return browserView_.get(); }
 	inline D3DRenderer* GetD3DRenderer() const { return d3dRenderer_.get(); }
 	inline void DestroyD3DRenderer() { if (d3dRenderer_) d3dRenderer_.reset(); }
 public:
@@ -59,12 +60,10 @@ public:
 	int fadeStep = 0;
 	bool isResizing_ = false;
 	FadeAction fadeAction_ = FadeAction::None;
-	std::unique_ptr<WindowTitleBar> titleBar_;
 private:
 	HWND hWnd_ = nullptr;
-	HWND hWndBrowser_ = nullptr;
+	std::unique_ptr<WindowTitleBar> titleBar_;
+	std::unique_ptr<BrowserView> browserView_;
 	std::unique_ptr<D3DRenderer> d3dRenderer_;
-	CefRefPtr<MyCefClient> client_;
-	std::string url_ = "http://localhost:5173/";
 	bool isClosing_ = false;
 };

@@ -2,10 +2,10 @@
 #include <util/AppThrowMacros.h>
 
 
-void BrowserView::CreateBrowserView(HWND hwndParent)
+BrowserView::BrowserView(HWND hwndParent)
+	:
+	hwndParent_(hwndParent)
 {
-	hwndParent_ = hwndParent;
-
 	client_ = new MyCefClient(hWnd_);
 	RECT rect{};
 	GetClientRect(hwndParent_, &rect);
