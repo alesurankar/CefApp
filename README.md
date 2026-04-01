@@ -82,4 +82,4 @@ Setup follows a minimal distribution approach, inspired by this YouTube tutorial
 - [CefApp](./CefApp/README.md) – Cef Backend
 - [ReactCef](./ReactCef/README.md) – React + Vite Frontend
 - [TODO](./TODO.md) – tasks
-- [System Flow](./docs/system-flow.md.md)
+- [System Flow](./docs/system-flow.md)
