@@ -15,3 +15,4 @@ last updated: 25.3.2026
 - [ ] Refactor Cef browser to do offscreen rendering to eliminate window flicker
 - [ ] on d3d toggle hide and show the window instead of destroy and recreate
 - [ ] adding favicon.ico to the project
+- [ ] fix crash when opening second d3d window, or when toggle
