@@ -11,8 +11,7 @@ D3DRenderer::D3DRenderer(HWND hwndParent)
 	std::uniform_real_distribution<float> ddist(0.0f, 3.1415f * 2.0f);
 	std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
-	for (auto i = 0; i < 80; i++)
-	{
+	for (auto i = 0; i < 80; i++) {
 		boxes.push_back(std::make_unique<Box>(
 			wnd_->Gfx(), rng, adist,
 			ddist, odist, rdist
@@ -24,9 +23,26 @@ D3DRenderer::D3DRenderer(HWND hwndParent)
 D3DRenderer::~D3DRenderer()
 {}
 
-void D3DRenderer::Update(float dt)
+void D3DRenderer::Update()
 {
-	// TODO
+	if (wnd_->kbd.KeyIsPressed('W')) {
+		y1 -= 0.02f;
+	}
+	if (wnd_->kbd.KeyIsPressed('S')) {
+		y1 += 0.02f;
+	}
+	if (wnd_->kbd.KeyIsPressed('A')) {
+		x1 += 0.02f;
+	}
+	if (wnd_->kbd.KeyIsPressed('D')) {
+		x1 -= 0.02f;
+	}
+	if (wnd_->kbd.KeyIsPressed(VK_SHIFT)) {
+		z1 += 0.002f;
+	}
+	if (wnd_->kbd.KeyIsPressed(VK_SPACE)) {
+		z1 -= 0.002f;
+	}
 }
 
 void D3DRenderer::Render()
@@ -35,10 +51,10 @@ void D3DRenderer::Render()
 		return;
 	}
 
+	wnd_->Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(y1, 3 * y1 / 4, z1, x1));
 	auto dt = timer.Mark();
 	wnd_->Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
-	for (auto& b : boxes)
-	{
+	for (auto& b : boxes) {
 		b->Update(dt);
 		b->Draw(wnd_->Gfx());
 	}

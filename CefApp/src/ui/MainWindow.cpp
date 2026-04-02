@@ -278,6 +278,7 @@ void MainWindow::StartFade(FadeAction action, int time)
 void MainWindow::Update()
 {
 	if (d3dRenderer_) {
+		d3dRenderer_->Update();
 		d3dRenderer_->Render();
 	}
 }
