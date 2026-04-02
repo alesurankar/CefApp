@@ -154,6 +154,7 @@
     <ClCompile Include="src\util\MyException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\renderer\drawables\DrawableBase.h" />
     <ClInclude Include="src\resources\resource.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />

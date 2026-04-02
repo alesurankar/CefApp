@@ -296,6 +296,9 @@
     <ClInclude Include="src\resources\resource.h">
       <Filter>Header Files\resources</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\drawables\DrawableBase.h">
+      <Filter>Header Files\renderer\drawables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest">
