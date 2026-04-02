@@ -1,6 +1,7 @@
 #include "Application.h"
 #include <util/AppThrowMacros.h>
 #include <filesystem>
+#include <util/DebugLog.h>
 
 
 int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -15,6 +16,8 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
         return exitCode;
     }
 
+    Logger::Init("logs/CefApp.log");
+    Logger::Log("Something happened, PID = " + std::to_string(GetCurrentProcessId()));
     try {
         Initialize();
         int code = RunMessageLoop();
@@ -101,6 +104,7 @@ int Application::RunBlockingLoop()
 void Application::Shutdown()
 {
     running_ = false;
+    Logger::Close();
     mainWnd_.reset();
     CefShutdown();
 }

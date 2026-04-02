@@ -168,6 +168,9 @@
     <ClCompile Include="src\util\AppException.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\DebugLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\platform\MyWin.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="src\renderer\geometry\Cone.h">
       <Filter>Header Files\renderer\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\DebugLog.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

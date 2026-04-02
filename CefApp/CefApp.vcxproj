@@ -150,6 +150,7 @@
     <ClCompile Include="src\renderer\RendererWindow.cpp" />
     <ClCompile Include="src\ui\WindowTitleBar.cpp" />
     <ClCompile Include="src\util\AppException.cpp" />
+    <ClCompile Include="src\util\DebugLog.cpp" />
     <ClCompile Include="src\util\DxginfoManager.cpp" />
     <ClCompile Include="src\util\MyException.cpp" />
   </ItemGroup>
@@ -178,6 +179,7 @@
     <ClInclude Include="src\renderer\drawables\Box.h" />
     <ClInclude Include="src\renderer\drawables\Drawable.h" />
     <ClInclude Include="src\util\AppThrowMacros.h" />
+    <ClInclude Include="src\util\DebugLog.h" />
     <ClInclude Include="src\util\DxgiInfoManager.h" />
     <ClInclude Include="src\util\GraphicsThrowMacros.h" />
     <ClInclude Include="src\ui\BrowserView.h" />
