@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include <cef/MyCefClient.h>
+#include <resources/resource.h>
 #include <util/WindowsThrowMacros.h>
 #include <util/AppThrowMacros.h>
 
@@ -156,22 +157,21 @@ MainWindow::MainWindowClass::MainWindowClass()
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = 0;
 	wcex.lpfnWndProc = MainWindowWndProc;
-
-	//wc.cbClsExtra = 0;
-	//wc.cbWndExtra = 0;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
 	wcex.hInstance = GetInstance();
-	//wcex.hIcon = static_cast<HICON>(LoadImage(
-	//	GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
-	//	IMAGE_ICON, 32, 32, 0
-	//));
+	wcex.hIcon = static_cast<HICON>(LoadImage(
+		GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
+		IMAGE_ICON, 32, 32, 0
+	));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = nullptr;
-	//wcex.lpszMenuName = nullptr;
+	wcex.lpszMenuName = nullptr;
 	wcex.lpszClassName = GetName();
-	//wcex.hIconSm = static_cast<HICON>(LoadImage(
-	//	GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
-	//	IMAGE_ICON, 16, 16, 0
-	//));
+	wcex.hIconSm = static_cast<HICON>(LoadImage(
+		GetInstance(), MAKEINTRESOURCE(IDI_ICON1),
+		IMAGE_ICON, 16, 16, 0
+	));
 	RegisterClassEx(&wcex);
 }
 

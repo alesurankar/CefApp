@@ -293,6 +293,9 @@
     <ClInclude Include="src\util\AppThrowMacros.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\resources\resource.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="bin\compatibility.manifest">
@@ -311,5 +314,15 @@
     <FxCompile Include="src\renderer\shaders\VertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\resources\CefApp.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\resources\favicon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
