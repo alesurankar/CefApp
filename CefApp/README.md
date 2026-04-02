@@ -11,26 +11,6 @@ CefApp/
    ├─ cef/          # CEF integration layer
    ├─ platform/
    ├─ renderer/
-   │  ├─ input/
-   │  │   ├─ Keyboard
-   │  │   └─ Mouse
-   │  ├─ shaders/     # HLSL files
-   │  ├─ bindables/
-   │  │  ├─ BindableBase.h    # includes all concrete bindables
-   │  │  ├─ Bindable          # abstract base class
-   │  │  ├─ ConstantBuffers
-   │  │  ├─ IndexBuffer
-   │  │  ├─ InputLayout
-   │  │  ├─ PixelShader
-   │  │  ├─ Topology
-   │  │  ├─ TransformCbuf
-   │  │  ├─ VertexBuffer     
-   │  │  └─ VertexShader    
-   │  ├─ drawables/
-   │  │  ├─ Box          
-   │  │  └─ Drawable         # abstract base class  
-   │  ├─ Graphics
-   │  └─ RendererWindow
    ├─ resources/
    ├─ ui/           # Native window composition layer
    │   ├─ BrowserView     # Cef Browser
@@ -42,6 +22,32 @@ CefApp/
        ├─ AppThrowMacros
        ├─ DxginfoManager
        ├─ GraphicsThrowMacros
-       └─ MyException
-       └─ WindowsThrowMacros
- ```
+       ├─ MyException
+       └─ WindowsThrowMacros 
+```
+
+
+```text
+renderer/
+├─ input/
+│   ├─ Keyboard
+│   └─ Mouse
+├─ shaders/     # HLSL files
+├─ bindables/
+│   ├─ BindableBase.h    # includes all concrete bindables
+│   ├─ Bindable          # abstract base class
+│   ├─ ConstantBuffers
+│   ├─ IndexBuffer
+│   ├─ InputLayout
+│   ├─ PixelShader
+│   ├─ Topology
+│   ├─ TransformCbuf
+│   ├─ VertexBuffer     
+│   └─ VertexShader    
+├─ drawables/
+│   ├─ Box          
+│   ├─ Drawable       # abstract base class 
+│   └─ DrawableBase   # Shared Bindable Cache
+├─ Graphics
+└─ RendererWindow
+```
