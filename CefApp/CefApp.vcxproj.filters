@@ -85,6 +85,9 @@
     <Filter Include="Source Files\renderer\drawables">
       <UniqueIdentifier>{4e8b8ca9-8b21-4d86-a7fd-b96ab7125e0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\renderer\geometry">
+      <UniqueIdentifier>{a33fa37a-fe40-4933-b944-1fd804c98576}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\EntryPoint.cpp">
@@ -298,6 +301,27 @@
     </ClInclude>
     <ClInclude Include="src\renderer\drawables\DrawableBase.h">
       <Filter>Header Files\renderer\drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\MyMath.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\geometry\IndexedTriangleList.h">
+      <Filter>Header Files\renderer\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\geometry\Sphere.h">
+      <Filter>Header Files\renderer\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\geometry\Prism.h">
+      <Filter>Header Files\renderer\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\geometry\Plane.h">
+      <Filter>Header Files\renderer\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\geometry\Cube.h">
+      <Filter>Header Files\renderer\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\geometry\Cone.h">
+      <Filter>Header Files\renderer\geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

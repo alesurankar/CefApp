@@ -154,7 +154,14 @@
     <ClCompile Include="src\util\MyException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\platform\MyMath.h" />
+    <ClInclude Include="src\renderer\geometry\Cone.h" />
+    <ClInclude Include="src\renderer\geometry\Cube.h" />
     <ClInclude Include="src\renderer\drawables\DrawableBase.h" />
+    <ClInclude Include="src\renderer\geometry\Plane.h" />
+    <ClInclude Include="src\renderer\geometry\Prism.h" />
+    <ClInclude Include="src\renderer\geometry\Sphere.h" />
+    <ClInclude Include="src\renderer\geometry\IndexedTriangleList.h" />
     <ClInclude Include="src\resources\resource.h" />
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\cef\config\base\MyCefConfig_callback.h" />
