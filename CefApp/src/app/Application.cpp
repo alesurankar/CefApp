@@ -19,7 +19,8 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
     Logger::Init("logs/CefApp.log");
     try {
         Initialize();
-        int code = RunMessageLoop();
+        int code = RunMessageLoop(); 
+        mainWnd_.reset();
         Shutdown();
         return code;
     }
@@ -106,7 +107,6 @@ void Application::Shutdown()
 {
     DBG_LOG("Application::Shutdown called");
     running_ = false;
-    Logger::Close();
-    mainWnd_.reset();
     CefShutdown();
+    Logger::Close();
 }

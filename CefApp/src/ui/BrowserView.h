@@ -7,7 +7,7 @@ class BrowserView
 {
 public:
 	BrowserView(HWND hwndParent);
-	~BrowserView() = default;
+	~BrowserView();
 	void SetBrowserHWND(HWND hWnd);
 	void OnSize(int width, int height);
 	void CloseBrowser();

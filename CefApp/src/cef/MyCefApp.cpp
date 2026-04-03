@@ -2,10 +2,12 @@
 #include "MyCefApp.h"
 #include "config/wrapper/MyCefConfig_closure_task.h"
 #include "config/base/MyCefConfig_callback.h"
+#include <util/DebugLog.h>
 
 
 void MyCefApp::OnContextInitialized()
 {
+    DBG_LOG("MyCefApp::OnContextInitialized called");
     // Register custom scheme handler (used later during requests)
     CefRegisterSchemeHandlerFactory(
         "http", "disk", new FileSchemeHandlerFactory{}
@@ -15,6 +17,7 @@ void MyCefApp::OnContextInitialized()
 void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
     CefRefPtr<CefFrame> pFrame, CefRefPtr<CefV8Context> pV8Context)
 {
+    DBG_LOG("MyCefApp::OnContextCreated called");
     // From JS, calling doVersion(...) goes to MyCefApp::Execute()
     auto global = pV8Context->GetGlobal();
     global->SetValue(
@@ -76,6 +79,7 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
 bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     const CefV8ValueList& argPtrs, CefRefPtr<CefV8Value>& pRet, CefString& exception)
 {
+    DBG_LOG("MyCefApp::Execute called");
     if (name == "function1") {
         HandleFunction1(argPtrs);
     }

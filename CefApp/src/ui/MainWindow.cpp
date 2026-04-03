@@ -226,11 +226,18 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
 	DBG_LOG("MainWindw destructor called");
-	DestroyWindow(hWnd_);
+	browserView_.reset();
+	titleBar_.reset();
+
+	if (hWnd_) {
+		DestroyWindow(hWnd_);
+		hWnd_ = nullptr;
+	}
 }
 
 void MainWindow::CreateD3DRenderer()
 {
+	DBG_LOG("MainWindow::CreateD3DRenderer called");
 	d3dRenderer_ = std::make_unique<D3DRenderer>(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }
@@ -262,6 +269,7 @@ void MainWindow::OnSize(WPARAM wParam)
 
 void MainWindow::RequestClose()
 {
+	DBG_LOG("MainWindw::RequestClose called");
 	if (isClosing_) {
 		DestroyWindow(hWnd_);
 		return;

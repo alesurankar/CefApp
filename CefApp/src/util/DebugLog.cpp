@@ -16,6 +16,7 @@ void Logger::Log(const std::string& msg)
 {
     std::lock_guard<std::mutex> lock(mtx_);
     ofs_ << msg << '\n';
+    ofs_.flush();
 }
 
 void Logger::Close() 

@@ -23,6 +23,15 @@ BrowserView::BrowserView(HWND hwndParent)
 	}
 }
 
+BrowserView::~BrowserView()
+{
+	OutputDebugStringA("BrowserView destructor called\n");
+
+	if (client_) {
+		client_ = nullptr;
+	}
+}
+
 void BrowserView::SetBrowserHWND(HWND hWnd)
 {
 	hWnd_ = hWnd;
