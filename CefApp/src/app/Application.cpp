@@ -17,7 +17,6 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
     }
 
     Logger::Init("logs/CefApp.log");
-    Logger::Log("Something happened, PID = " + std::to_string(GetCurrentProcessId()));
     try {
         Initialize();
         int code = RunMessageLoop();
@@ -43,6 +42,7 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 void Application::Initialize()
 {
+    DBG_LOG("Application::Initialize called");
     CefSettings settings;
     settings.multi_threaded_message_loop = true;
     settings.no_sandbox = true;
@@ -64,6 +64,7 @@ void Application::Initialize()
 
 int Application::RunMessageLoop()
 {
+    DBG_LOG("Application::RunMessageLoop called");
     return useRealTimeLoop_ ? RunRealTimeLoop() : RunBlockingLoop();
 }
 
@@ -103,6 +104,7 @@ int Application::RunBlockingLoop()
 
 void Application::Shutdown()
 {
+    DBG_LOG("Application::Shutdown called");
     running_ = false;
     Logger::Close();
     mainWnd_.reset();

@@ -1,10 +1,12 @@
 #include "D3DRenderer.h"
 #include <renderer/drawables/Box.h>
 #include <memory>
+#include <util/DebugLog.h>
 
 
 D3DRenderer::D3DRenderer(HWND hwndParent)
 {
+	DBG_LOG("D3DRenderer constructor called");
 	wnd_ = std::make_unique<RendererWindow>(hwndParent);
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_real_distribution<float> adist(0.0f, 3.1415f * 2.0f);
@@ -21,7 +23,9 @@ D3DRenderer::D3DRenderer(HWND hwndParent)
 }
 
 D3DRenderer::~D3DRenderer()
-{}
+{
+	DBG_LOG("D3DRenderer destructor called");
+}
 
 void D3DRenderer::Update()
 {

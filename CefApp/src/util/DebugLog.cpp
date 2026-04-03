@@ -4,15 +4,21 @@
 std::ofstream Logger::ofs_;
 std::mutex Logger::mtx_;
 
-void Logger::Init(const std::string& filename) {
-    ofs_.open(filename, std::ios::out | std::ios::app);
+void Logger::Init(const std::string& filename) 
+{
+    if (ofs_.is_open()) {
+        ofs_.close();
+    }
+    ofs_.open(filename, std::ios::out | std::ios::trunc);
 }
 
-void Logger::Log(const std::string& msg) {
+void Logger::Log(const std::string& msg) 
+{
     std::lock_guard<std::mutex> lock(mtx_);
-    ofs_ << msg << std::endl;
+    ofs_ << msg << '\n';
 }
 
-void Logger::Close() {
+void Logger::Close() 
+{
     ofs_.close();
 }

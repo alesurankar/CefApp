@@ -1,6 +1,7 @@
 #include "RendererWindow.h"
 #include <util/WindowsThrowMacros.h>
 #include <cassert>
+#include <util/DebugLog.h>
 
 
 // RendererWindow Class Stuff
@@ -45,6 +46,7 @@ RendererWindow::RendererWindow(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
+	DBG_LOG("RendererWindow constructor called");
 	hWnd_ = CreateWindowExA(
 		0,
 		RendererWindowClass::GetName(), 
@@ -66,6 +68,7 @@ RendererWindow::RendererWindow(HWND hwndParent)
 
 RendererWindow::~RendererWindow()
 {
+	DBG_LOG("RendererWindow destructor called");
 	if (hWnd_) {
 		DestroyWindow(hWnd_);
 		hWnd_ = nullptr;

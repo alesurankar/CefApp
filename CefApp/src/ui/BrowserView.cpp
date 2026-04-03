@@ -1,11 +1,13 @@
 #include "BrowserView.h"
 #include <util/AppThrowMacros.h>
+#include <util/DebugLog.h>
 
 
 BrowserView::BrowserView(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
+	DBG_LOG("BrowserView constructor called");
 	client_ = new MyCefClient(hwndParent_);
 	RECT rect{};
 	GetClientRect(hwndParent_, &rect);
@@ -42,6 +44,7 @@ void BrowserView::OnSize(int width, int height)
 
 void BrowserView::CloseBrowser()
 {
+	DBG_LOG("BrowserView::CloseBrowser called");
 	if (!client_) {
 		return;
 	}
