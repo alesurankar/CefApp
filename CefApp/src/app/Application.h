@@ -8,8 +8,6 @@
 class Application 
 {
 public:
-	Application() = default;
-	~Application() = default;
 	int Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow);
 	void EnableRealTimeLoop(bool enable) { useRealTimeLoop_ = enable; }
 private:

@@ -7,7 +7,6 @@
 bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
-	DBG_LOG("MyCefClient::OnProcessMessageReceived called");
 	MainWindow* window = MainWindow::GetMainWindow(hWndParent_);
 	if (!window) return true;
 	std::string msgName = message->GetName();
@@ -60,7 +59,7 @@ bool MyCefClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRef
 
 void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 {
-	DBG_LOG("MyCefClient::OnAfterCreated called");
+	DBG_LOG("Callback MyCefClient::OnAfterCreated");
 	assert(pBrowser);
 	browserCount_++;
 	if (!mainBrowser_) {
@@ -79,17 +78,17 @@ void MyCefClient::OnAfterCreated(CefRefPtr<CefBrowser> pBrowser)
 void MyCefClient::OnLoadEnd(CefRefPtr<CefBrowser> pBrowser,
 	CefRefPtr<CefFrame> pFrame, int httpStatusCode)
 {
-	DBG_LOG("MyCefClient::OnLoadEnd called");
+	DBG_LOG("Callback MyCefClient::OnLoadEnd");
 	MainWindow* window = MainWindow::GetMainWindow(hWndParent_);
 	ShowWindow(hWndParent_, SW_RESTORE);
 }
 
 void MyCefClient::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
-	DBG_LOG("MyCefClient::OnBeforeClose called");
+	DBG_LOG("Callback MyCefClient::OnBeforeClose");
 	int count = --browserCount_;
 	if (count == 0) {
-		HWND hwnd = hWndParent_;  // copy first
+		HWND hwnd = hWndParent_;
 
 		mainBrowser_ = nullptr;
 		hWndParent_ = nullptr;

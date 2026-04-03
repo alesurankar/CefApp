@@ -43,7 +43,7 @@ int Application::Run(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 void Application::Initialize()
 {
-    DBG_LOG("Application::Initialize called");
+    DBG_LOG("Application::Initialize");
     CefSettings settings;
     settings.multi_threaded_message_loop = true;
     settings.no_sandbox = true;
@@ -65,7 +65,7 @@ void Application::Initialize()
 
 int Application::RunMessageLoop()
 {
-    DBG_LOG("Application::RunMessageLoop called");
+    DBG_LOG("Application::RunMessageLoop");
     return useRealTimeLoop_ ? RunRealTimeLoop() : RunBlockingLoop();
 }
 
@@ -105,7 +105,7 @@ int Application::RunBlockingLoop()
 
 void Application::Shutdown()
 {
-    DBG_LOG("Application::Shutdown called");
+    DBG_LOG("Application::Shutdown");
     running_ = false;
     CefShutdown();
     Logger::Close();

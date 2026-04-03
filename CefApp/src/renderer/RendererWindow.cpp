@@ -46,7 +46,7 @@ RendererWindow::RendererWindow(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
-	DBG_LOG("RendererWindow constructor called");
+	DBG_LOG("Constructing RendererWindow");
 	hWnd_ = CreateWindowExA(
 		0,
 		RendererWindowClass::GetName(), 
@@ -68,7 +68,7 @@ RendererWindow::RendererWindow(HWND hwndParent)
 
 RendererWindow::~RendererWindow()
 {
-	DBG_LOG("RendererWindow destructor called");
+	DBG_LOG("Destroying RendererWindow");
 	if (hWnd_) {
 		DestroyWindow(hWnd_);
 		hWnd_ = nullptr;

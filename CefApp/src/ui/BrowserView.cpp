@@ -7,7 +7,7 @@ BrowserView::BrowserView(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
-	DBG_LOG("BrowserView constructor called");
+	DBG_LOG("Constructing BrowserView");
 	client_ = new MyCefClient(hwndParent_);
 	RECT rect{};
 	GetClientRect(hwndParent_, &rect);
@@ -20,15 +20,6 @@ BrowserView::BrowserView(HWND hwndParent)
 			CefBrowserSettings{},
 			nullptr, nullptr)) {
 		throw APP_EXCEPT("Failed to create browser");
-	}
-}
-
-BrowserView::~BrowserView()
-{
-	OutputDebugStringA("BrowserView destructor called\n");
-
-	if (client_) {
-		client_ = nullptr;
 	}
 }
 
@@ -53,7 +44,7 @@ void BrowserView::OnSize(int width, int height)
 
 void BrowserView::CloseBrowser()
 {
-	DBG_LOG("BrowserView::CloseBrowser called");
+	DBG_LOG("BrowserView::CloseBrowser");
 	if (!client_) {
 		return;
 	}

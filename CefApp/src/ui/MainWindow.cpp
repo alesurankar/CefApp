@@ -15,7 +15,6 @@ namespace
 
 		switch (msg) {
 		case WM_NCCREATE: {
-			DBG_LOG("MainWindow.cpp: MainWindowWndProc: WM_NCCREATE triggered");
 			CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
 			window = static_cast<MainWindow*>(cs->lpCreateParams);
 
@@ -128,19 +127,16 @@ namespace
 		}
 
 		case WM_CLOSE: {
-			DBG_LOG("MainWindow.cpp: MainWindowWndProc: WM_CLOSE triggered");
 			window->RequestClose();
 			return 0;
 		}
 
 		case WM_APP + 99: {
-			DBG_LOG("MainWindow.cpp: MainWindowWndProc: WM_APP + 99 triggered");
 			DestroyWindow(hWnd);
 			return 0;
 		}
 
 		case WM_DESTROY: {
-			DBG_LOG("MainWindow.cpp: MainWindowWndProc: WM_DESTROY triggered");
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
 			PostQuitMessage(0);
 			return 0;
@@ -199,7 +195,7 @@ HINSTANCE MainWindow::MainWindowClass::GetInstance() noexcept
 // MainWindow Stuff
 MainWindow::MainWindow()
 {
-	DBG_LOG("MainWindow constructor called");
+	DBG_LOG("Constructing MainWindow");
 	hWnd_ = CreateWindowEx(
 		0,
 		MainWindowClass::GetName(),
@@ -225,7 +221,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	DBG_LOG("MainWindw destructor called");
+	DBG_LOG("Destroying MainWindow");
 	browserView_.reset();
 	titleBar_.reset();
 
@@ -237,7 +233,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::CreateD3DRenderer()
 {
-	DBG_LOG("MainWindow::CreateD3DRenderer called");
 	d3dRenderer_ = std::make_unique<D3DRenderer>(hWnd_);
 	PostMessage(hWnd_, WM_SIZE, 0, 0);
 }
@@ -269,7 +264,6 @@ void MainWindow::OnSize(WPARAM wParam)
 
 void MainWindow::RequestClose()
 {
-	DBG_LOG("MainWindw::RequestClose called");
 	if (isClosing_) {
 		DestroyWindow(hWnd_);
 		return;

@@ -32,7 +32,7 @@ WindowTitleBar::WindowTitleBar(HWND hwndParent)
 	:
 	hwndParent_(hwndParent)
 {
-	DBG_LOG("WindowTitleBar constructor called");
+	DBG_LOG("Constructing WindowTitleBar");
 	hWnd_ = CreateWindowExA(
 		//0,                           // change to this to show the hendleBar
 		WS_EX_TRANSPARENT,			   // change to this to hide the handleBar
@@ -54,7 +54,7 @@ WindowTitleBar::WindowTitleBar(HWND hwndParent)
 
 WindowTitleBar::~WindowTitleBar()
 {
-	DBG_LOG("WindowTitleBar destructor called");
+	DBG_LOG("Destroying WindowTitleBar");
 	if (hWnd_) {
 		DestroyWindow(hWnd_);
 		hWnd_ = nullptr;

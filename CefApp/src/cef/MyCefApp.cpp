@@ -7,7 +7,7 @@
 
 void MyCefApp::OnContextInitialized()
 {
-    DBG_LOG("MyCefApp::OnContextInitialized called");
+    DBG_LOG("Callback MyCefApp::OnContextInitialized");
     // Register custom scheme handler (used later during requests)
     CefRegisterSchemeHandlerFactory(
         "http", "disk", new FileSchemeHandlerFactory{}
@@ -17,7 +17,7 @@ void MyCefApp::OnContextInitialized()
 void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
     CefRefPtr<CefFrame> pFrame, CefRefPtr<CefV8Context> pV8Context)
 {
-    DBG_LOG("MyCefApp::OnContextCreated called");
+    DBG_LOG("Callback MyCefApp::OnContextCreated");
     // From JS, calling doVersion(...) goes to MyCefApp::Execute()
     auto global = pV8Context->GetGlobal();
     global->SetValue(
@@ -79,7 +79,7 @@ void MyCefApp::OnContextCreated(CefRefPtr<CefBrowser> pBrowser,
 bool MyCefApp::Execute(const CefString& name, CefRefPtr<CefV8Value> object,
     const CefV8ValueList& argPtrs, CefRefPtr<CefV8Value>& pRet, CefString& exception)
 {
-    DBG_LOG("MyCefApp::Execute called");
+    DBG_LOG("Callback MyCefApp::Execute");
     if (name == "function1") {
         HandleFunction1(argPtrs);
     }
