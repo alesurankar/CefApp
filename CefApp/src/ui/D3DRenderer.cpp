@@ -24,7 +24,10 @@ D3DRenderer::D3DRenderer(HWND hwndParent)
 
 D3DRenderer::~D3DRenderer()
 {
-	DBG_LOG("Destroying D3DRenderer");
+	DBG_LOG("Destroying D3DRenderer"); 
+	boxes.clear();
+	DrawableBase<Box>::ClearStaticBinds();
+	wnd_.reset();
 }
 
 void D3DRenderer::Update()

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <DirectXMath.h>
 #include <util/GraphicsThrowMacros.h>
+#include <util/DebugLog.h>
 
 
 namespace wrl = Microsoft::WRL;
@@ -13,6 +14,7 @@ namespace dx = DirectX;
 
 Graphics::Graphics(HWND hwndOverlay)
 {
+    DBG_LOG("Constructing Graphics");
     // Minimal Direct3D11 initialization
     DXGI_SWAP_CHAIN_DESC sd = {};
     sd.BufferDesc.Width = 0;
@@ -121,6 +123,22 @@ void Graphics::Resize(int width, int height)
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
     pContext->RSSetViewports(1u, &vp);
+}
+
+Graphics::~Graphics()
+{
+    DBG_LOG("Destroying Graphics");
+
+    if (pContext) {
+        pContext->ClearState();
+        pContext->Flush();
+        pContext->OMSetRenderTargets(0, nullptr, nullptr);
+    }
+    pTarget.Reset();
+    pDSV.Reset();
+    pSwap.Reset();
+    pContext.Reset();
+    pDevice.Reset();
 }
 
 void Graphics::BeginFrame(float red, float green, float blue) noexcept

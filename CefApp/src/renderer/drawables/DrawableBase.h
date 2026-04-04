@@ -1,11 +1,20 @@
 #pragma once
 #include "Drawable.h"
 #include <renderer/bindables/IndexBuffer.h>
+#include <renderer/bindables/TransformCbuf.h>
+#include <util/DebugLog.h>
 
 
 template<class T>
 class DrawableBase : public Drawable
 {
+public:
+	static void ClearStaticBinds() noexcept
+	{
+		DBG_LOG("DrawableBase::ClearStaticBinds");
+		staticBinds.clear();
+		TransformCbuf::Reset();
+	}
 protected:
 	static bool IsStaticInitialized() noexcept
 	{
