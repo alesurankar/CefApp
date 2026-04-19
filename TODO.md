@@ -1,7 +1,7 @@
 
 # TODO
 
-last updated: 25.3.2026
+last updated: 10.4.2026
 
 
 ## Finished Tasks
@@ -9,10 +9,10 @@ last updated: 25.3.2026
 - [X] forward mouse messages to D3DRenderer
 - [X] forward mouse keyboard to D3DRenderer
 - [X] integrate advanced graphics debugging
+- [x] adding favicon.ico to the project
+- [x] fix crash when opening second d3d window, or when toggle
 
 
 ## Unfinished Tasks
 - [ ] Refactor Cef browser to do offscreen rendering to eliminate window flicker
 - [ ] on d3d toggle hide and show the window instead of destroy and recreate
-- [ ] adding favicon.ico to the project
-- [ ] fix crash when opening second d3d window, or when toggle

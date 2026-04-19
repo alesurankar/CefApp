@@ -1,5 +1,4 @@
 #include <app/Application.h>
-#include <util/MyException.h>
 
 
 int APIENTRY WinMain(

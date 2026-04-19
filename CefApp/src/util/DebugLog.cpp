@@ -1,4 +1,3 @@
-// DebugLog.cpp
 #include "DebugLog.h"
 
 std::ofstream Logger::ofs_;
